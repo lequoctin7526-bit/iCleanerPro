@@ -23,31 +23,26 @@ jobs:
           rm -rf ./build
           mkdir -p ./build
 
-          set -o pipefail
-          xcodebuild clean build \
+          xcodebuild clean archive \
             -project iCleanerPro.xcodeproj \
             -scheme iCleanerPro \
             -configuration Release \
-            -sdk iphoneos \
             -destination 'generic/platform=iOS' \
+            -archivePath ./build/iCleanerPro.xcarchive \
             ARCHS=arm64 \
-            ONLY_ACTIVE_ARCH=NO \
-            SYMROOT="$(pwd)/build/Derived" \
             CODE_SIGN_STYLE=Manual \
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGN_IDENTITY="" \
-            AD_HOC_CODE_SIGNING_ALLOWED=YES 2>&1 | tee xcodebuild.log || {
-              echo "### ❌ xcodebuild Error Log" >> $GITHUB_STEP_SUMMARY
-              echo '```text' >> $GITHUB_STEP_SUMMARY
-              tail -n 80 xcodebuild.log >> $GITHUB_STEP_SUMMARY
-              echo '```' >> $GITHUB_STEP_SUMMARY
+            AD_HOC_CODE_SIGNING_ALLOWED=YES > xcodebuild.log 2>&1 || {
+              echo "=== XCODEBUILD FAILED ==="
+              cat xcodebuild.log | grep -E "error:|fatal error:|failed|Signing" -C 3 || tail -n 60 xcodebuild.log
               exit 1
             }
 
-          APP_BUNDLE="$(find ./build/Derived -name 'iCleanerPro.app' -type d | head -n 1)"
-          if [ -z "$APP_BUNDLE" ]; then
-            echo "ERROR: iCleanerPro.app not found!"
+          APP_BUNDLE="./build/iCleanerPro.xcarchive/Products/Applications/iCleanerPro.app"
+          if [ ! -d "$APP_BUNDLE" ]; then
+            echo "ERROR: iCleanerPro.app not found at $APP_BUNDLE!"
             exit 1
           fi
 
@@ -70,7 +65,15 @@ jobs:
           (cd ./build && zip -qr iCleanerPro.ipa Payload)
           ls -lh ./build/iCleanerPro.ipa
 
+      - name: Upload Build Log on Failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: xcodebuild-log
+          path: xcodebuild.log
+
       - name: Upload IPA Artifact
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: iCleanerPro-IPA
