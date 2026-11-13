@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Generates a valid Xcode 15/16 project.pbxproj for iCleanerPro and iCleanerProTests."""
+"""Generates a valid Xcode 15/16 project.pbxproj for BoosterPro and BoosterProTests."""
 
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-APP_DIR = ROOT / "iCleanerPro"
-TEST_DIR = ROOT / "iCleanerProTests"
+APP_DIR = ROOT / "BoosterPro"
+TEST_DIR = ROOT / "BoosterProTests"
 
 ID_PROJECT = "A00000010000000000000001"
 ID_MAIN_GROUP = "A00000010000000000000002"
@@ -66,8 +66,8 @@ def main() -> None:
             groups[rel_path.parent.as_posix()]["children"].append((gid, rel_path.name))
         return gid
 
-    ensure_group(Path("iCleanerPro"))
-    ensure_group(Path("iCleanerProTests"))
+    ensure_group(Path("BoosterPro"))
+    ensure_group(Path("BoosterProTests"))
 
     for sf in app_swift:
         rel = sf.relative_to(ROOT)
@@ -90,10 +90,10 @@ def main() -> None:
         groups[rel.parent.as_posix()]["children"].append((fid, sf.name))
 
     res_specs = [
-        (Path("iCleanerPro/Assets.xcassets"), "folder.assetcatalog", True),
-        (Path("iCleanerPro/Resources/Localizable.strings"), "text.plist.strings", True),
-        (Path("iCleanerPro/Info.plist"), "text.plist.xml", False),
-        (Path("iCleanerPro/iCleanerPro.entitlements"), "text.plist.entitlements", False),
+        (Path("BoosterPro/Assets.xcassets"), "folder.assetcatalog", True),
+        (Path("BoosterPro/Resources/Localizable.strings"), "text.plist.strings", True),
+        (Path("BoosterPro/Info.plist"), "text.plist.xml", False),
+        (Path("BoosterPro/BoosterPro.entitlements"), "text.plist.entitlements", False),
     ]
     for rel, ftype, in_resources in res_specs:
         ensure_group(rel.parent)
@@ -128,13 +128,13 @@ def main() -> None:
         f"\t\t\tcontainerPortal = {ID_PROJECT} /* Project object */;",
         "\t\t\tproxyType = 1;",
         f"\t\t\tremoteGlobalIDString = {ID_TARGET_APP};",
-        "\t\t\tremoteInfo = iCleanerPro;",
+        "\t\t\tremoteInfo = BoosterPro;",
         "\t\t};",
         "/* End PBXContainerItemProxy section */",
         "",
         "/* Begin PBXFileReference section */",
-        f"\t\t{ID_APP_PRODUCT} /* iCleanerPro.app */ = {{isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iCleanerPro.app; sourceTree = BUILT_PRODUCTS_DIR; }};",
-        f"\t\t{ID_TEST_PRODUCT} /* iCleanerProTests.xctest */ = {{isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iCleanerProTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; }};",
+        f"\t\t{ID_APP_PRODUCT} /* BoosterPro.app */ = {{isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BoosterPro.app; sourceTree = BUILT_PRODUCTS_DIR; }};",
+        f"\t\t{ID_TEST_PRODUCT} /* BoosterProTests.xctest */ = {{isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BoosterProTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; }};",
     ])
     for fid, name, path, ftype in file_refs:
         lines.append(
@@ -152,8 +152,8 @@ def main() -> None:
         f"\t\t{ID_MAIN_GROUP} = {{",
         "\t\t\tisa = PBXGroup;",
         "\t\t\tchildren = (",
-        f'\t\t\t\t{groups["iCleanerPro"]["id"]} /* iCleanerPro */,',
-        f'\t\t\t\t{groups["iCleanerProTests"]["id"]} /* iCleanerProTests */,',
+        f'\t\t\t\t{groups["BoosterPro"]["id"]} /* BoosterPro */,',
+        f'\t\t\t\t{groups["BoosterProTests"]["id"]} /* BoosterProTests */,',
         f"\t\t\t\t{ID_PRODUCTS_GROUP} /* Products */,",
         "\t\t\t);",
         '\t\t\tsourceTree = "<group>";',
@@ -161,8 +161,8 @@ def main() -> None:
         f"\t\t{ID_PRODUCTS_GROUP} /* Products */ = {{",
         "\t\t\tisa = PBXGroup;",
         "\t\t\tchildren = (",
-        f"\t\t\t\t{ID_APP_PRODUCT} /* iCleanerPro.app */,",
-        f"\t\t\t\t{ID_TEST_PRODUCT} /* iCleanerProTests.xctest */,",
+        f"\t\t\t\t{ID_APP_PRODUCT} /* BoosterPro.app */,",
+        f"\t\t\t\t{ID_TEST_PRODUCT} /* BoosterProTests.xctest */,",
         "\t\t\t);",
         "\t\t\tname = Products;",
         '\t\t\tsourceTree = "<group>";',
@@ -183,9 +183,9 @@ def main() -> None:
         "/* End PBXGroup section */",
         "",
         "/* Begin PBXNativeTarget section */",
-        f"\t\t{ID_TARGET_APP} /* iCleanerPro */ = {{",
+        f"\t\t{ID_TARGET_APP} /* BoosterPro */ = {{",
         "\t\t\tisa = PBXNativeTarget;",
-        f'\t\t\tbuildConfigurationList = {ID_APP_CFG_LIST} /* Build configuration list for PBXNativeTarget "iCleanerPro" */;',
+        f'\t\t\tbuildConfigurationList = {ID_APP_CFG_LIST} /* Build configuration list for PBXNativeTarget "BoosterPro" */;',
         "\t\t\tbuildPhases = (",
         f"\t\t\t\t{ID_APP_SOURCES_PHASE} /* Sources */,",
         f"\t\t\t\t{ID_APP_FRAMEWORKS_PHASE} /* Frameworks */,",
@@ -193,14 +193,14 @@ def main() -> None:
         "\t\t\t);",
         "\t\t\tbuildRules = ();",
         "\t\t\tdependencies = ();",
-        "\t\t\tname = iCleanerPro;",
-        "\t\t\tproductName = iCleanerPro;",
-        f"\t\t\tproductReference = {ID_APP_PRODUCT} /* iCleanerPro.app */;",
+        "\t\t\tname = BoosterPro;",
+        "\t\t\tproductName = BoosterPro;",
+        f"\t\t\tproductReference = {ID_APP_PRODUCT} /* BoosterPro.app */;",
         '\t\t\tproductType = "com.apple.product-type.application";',
         "\t\t};",
-        f"\t\t{ID_TARGET_TEST} /* iCleanerProTests */ = {{",
+        f"\t\t{ID_TARGET_TEST} /* BoosterProTests */ = {{",
         "\t\t\tisa = PBXNativeTarget;",
-        f'\t\t\tbuildConfigurationList = {ID_TEST_CFG_LIST} /* Build configuration list for PBXNativeTarget "iCleanerProTests" */;',
+        f'\t\t\tbuildConfigurationList = {ID_TEST_CFG_LIST} /* Build configuration list for PBXNativeTarget "BoosterProTests" */;',
         "\t\t\tbuildPhases = (",
         f"\t\t\t\t{ID_TEST_SOURCES_PHASE} /* Sources */,",
         f"\t\t\t\t{ID_TEST_FRAMEWORKS_PHASE} /* Frameworks */,",
@@ -208,9 +208,9 @@ def main() -> None:
         "\t\t\t);",
         "\t\t\tbuildRules = ();",
         f"\t\t\tdependencies = ({ID_TARGET_DEP} /* PBXTargetDependency */,);",
-        "\t\t\tname = iCleanerProTests;",
-        "\t\t\tproductName = iCleanerProTests;",
-        f"\t\t\tproductReference = {ID_TEST_PRODUCT} /* iCleanerProTests.xctest */;",
+        "\t\t\tname = BoosterProTests;",
+        "\t\t\tproductName = BoosterProTests;",
+        f"\t\t\tproductReference = {ID_TEST_PRODUCT} /* BoosterProTests.xctest */;",
         '\t\t\tproductType = "com.apple.product-type.bundle.unit-test";',
         "\t\t};",
         "/* End PBXNativeTarget section */",
@@ -227,7 +227,7 @@ def main() -> None:
         f"\t\t\t\t\t{ID_TARGET_TEST} = {{CreatedOnToolsVersion = 15.4; TestTargetID = {ID_TARGET_APP}; }};",
         "\t\t\t\t};",
         "\t\t\t};",
-        f'\t\t\tbuildConfigurationList = {ID_PROJ_CFG_LIST} /* Build configuration list for PBXProject "iCleanerPro" */;',
+        f'\t\t\tbuildConfigurationList = {ID_PROJ_CFG_LIST} /* Build configuration list for PBXProject "BoosterPro" */;',
         '\t\t\tcompatibilityVersion = "Xcode 14.0";',
         "\t\t\tdevelopmentRegion = vi;",
         "\t\t\thasScannedForEncodings = 0;",
@@ -236,7 +236,7 @@ def main() -> None:
         f"\t\t\tproductRefGroup = {ID_PRODUCTS_GROUP} /* Products */;",
         '\t\t\tprojectDirPath = "";',
         '\t\t\tprojectRoot = "";',
-        f"\t\t\ttargets = ({ID_TARGET_APP} /* iCleanerPro */, {ID_TARGET_TEST} /* iCleanerProTests */,);",
+        f"\t\t\ttargets = ({ID_TARGET_APP} /* BoosterPro */, {ID_TARGET_TEST} /* BoosterProTests */,);",
         "\t\t};",
         "/* End PBXProject section */",
         "",
@@ -283,7 +283,7 @@ def main() -> None:
         "/* Begin PBXTargetDependency section */",
         f"\t\t{ID_TARGET_DEP} /* PBXTargetDependency */ = {{",
         "\t\t\tisa = PBXTargetDependency;",
-        f"\t\t\ttarget = {ID_TARGET_APP} /* iCleanerPro */;",
+        f"\t\t\ttarget = {ID_TARGET_APP} /* BoosterPro */;",
         f"\t\t\ttargetProxy = {ID_CONTAINER_PROXY} /* PBXContainerItemProxy */;",
         "\t\t};",
         "/* End PBXTargetDependency section */",
@@ -335,11 +335,11 @@ def main() -> None:
 \t\t\t\tCODE_SIGNING_REQUIRED = NO;
 \t\t\t\tCURRENT_PROJECT_VERSION = 1;
 \t\t\t\tGENERATE_INFOPLIST_FILE = NO;
-\t\t\t\tINFOPLIST_FILE = iCleanerPro/Info.plist;
+\t\t\t\tINFOPLIST_FILE = BoosterPro/Info.plist;
 \t\t\t\tIPHONEOS_DEPLOYMENT_TARGET = 16.0;
 \t\t\t\tLD_RUNPATH_SEARCH_PATHS = ("$(inherited)", "@executable_path/Frameworks");
 \t\t\t\tMARKETING_VERSION = 1.0.0;
-\t\t\t\tPRODUCT_BUNDLE_IDENTIFIER = com.icleanerpro.app;
+\t\t\t\tPRODUCT_BUNDLE_IDENTIFIER = com.boosterpro.app;
 \t\t\t\tPRODUCT_NAME = "$(TARGET_NAME)";
 \t\t\t\tSUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 \t\t\t\tSUPPORTS_MACCATALYST = NO;
@@ -356,11 +356,11 @@ def main() -> None:
 \t\t\t\tGENERATE_INFOPLIST_FILE = YES;
 \t\t\t\tIPHONEOS_DEPLOYMENT_TARGET = 16.0;
 \t\t\t\tMARKETING_VERSION = 1.0.0;
-\t\t\t\tPRODUCT_BUNDLE_IDENTIFIER = com.icleanerpro.app.tests;
+\t\t\t\tPRODUCT_BUNDLE_IDENTIFIER = com.boosterpro.app.tests;
 \t\t\t\tPRODUCT_NAME = "$(TARGET_NAME)";
 \t\t\t\tSWIFT_VERSION = 5.0;
 \t\t\t\tTARGETED_DEVICE_FAMILY = "1,2";
-\t\t\t\tTEST_HOST = "$(BUILT_PRODUCTS_DIR)/iCleanerPro.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/iCleanerPro";"""
+\t\t\t\tTEST_HOST = "$(BUILT_PRODUCTS_DIR)/BoosterPro.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/BoosterPro";"""
 
     configs = [
         (ID_PROJ_CFG_DEBUG, "Debug", proj_debug),
@@ -392,7 +392,7 @@ def main() -> None:
         "}",
     ])
 
-    out_pbx = ROOT / "iCleanerPro.xcodeproj" / "project.pbxproj"
+    out_pbx = ROOT / "BoosterPro.xcodeproj" / "project.pbxproj"
     out_pbx.write_text("\n".join(lines) + "\n", encoding="utf-8")
     print(f"Generated {out_pbx} with {len(app_swift)} app files and {len(test_swift)} test files.")
 

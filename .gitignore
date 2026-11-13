@@ -4,4 +4,6 @@ build/
 xcuserdata/
 *.xcuserdatad
 DerivedData/
+BoosterPro.ipa
 iCleanerPro.ipa
+*.ipa

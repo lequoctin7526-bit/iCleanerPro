@@ -1,4 +1,4 @@
-# iCleaner Pro (iOS 16+ SwiftUI)
+# Booster Pro (iOS 16+ SwiftUI)
 
 Ứng dụng iOS dọn dẹp và tối ưu thiết bị xây dựng bằng **Swift + SwiftUI (MVVM)**, sử dụng 100% Apple Public APIs, không Private API, không số liệu giả.
 
@@ -15,7 +15,7 @@
   + **Auto Detect Installed Games**: Nhận diện game đã cài đặt thông qua URL Scheme (`canOpenURL` + `LSApplicationQueriesSchemes`).
   + **Auto Game Update Checker**: Tự động truy vấn Apple iTunes Lookup API so sánh phiên bản đang cài đặt với App Store, gắn huy hiệu `UPDATE AVAILABLE` và nút `UPDATE NOW` mở trực tiếp trang cập nhật App Store.
   + **One-Tap Open Game & Play**: Mở game trực tiếp qua URL Scheme hoặc hiển thị hướng dẫn mở thủ công kèm bộ đếm giờ phiên chơi ngầm.
-  + **Auto Game Optimizer**: Quy trình 3 bước tự động phân tích thiết bị, dọn cache & RAM của iCleaner Pro trước khi vào trận.
+  + **Auto Game Optimizer**: Quy trình 3 bước tự động phân tích thiết bị, dọn cache & RAM của Booster Pro trước khi vào trận.
   + **Auto Clean After Gaming**: Tự động dọn dẹp tệp tạm sandbox & thu hồi bộ nhớ ngay sau khi phiên chơi game kết thúc.
   + **Kho Game Phổ Biến & Tìm Kiếm App Store**: Tích hợp danh mục game HOT tại VN/Quốc tế và tìm kiếm trực tiếp trên App Store theo từ khóa.
   + **Smart Automation Settings**: Bật/tắt 6 cơ chế tự động hóa linh hoạt và minh bạch.

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Verifies the structural integrity of iCleanerPro Xcode project:
-1. Every .swift file under iCleanerPro/ and iCleanerProTests/ is registered in project.pbxproj.
+Verifies the structural integrity of BoosterPro Xcode project:
+1. Every .swift file under BoosterPro/ and BoosterProTests/ is registered in project.pbxproj.
 2. Info.plist and ExportOptions.plist are valid XML plists with required privacy & deployment settings.
 3. All Assets.xcassets JSON files are valid JSON.
 4. All Swift files have balanced delimiters ({} () []) and zero forbidden private API calls.
@@ -15,9 +15,9 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-APP_DIR = ROOT / "iCleanerPro"
-TEST_DIR = ROOT / "iCleanerProTests"
-PBXPROJ = ROOT / "iCleanerPro.xcodeproj" / "project.pbxproj"
+APP_DIR = ROOT / "BoosterPro"
+TEST_DIR = ROOT / "BoosterProTests"
+PBXPROJ = ROOT / "BoosterPro.xcodeproj" / "project.pbxproj"
 
 FORBIDDEN_PATTERNS = [
     r"\bdlopen\s*\(",
@@ -111,8 +111,8 @@ def main() -> int:
     # 3. Verify Deployment Target & Bundle ID in project.pbxproj
     if "IPHONEOS_DEPLOYMENT_TARGET = 16.0;" not in pbx_text:
         errors.append("project.pbxproj missing IPHONEOS_DEPLOYMENT_TARGET = 16.0")
-    if "PRODUCT_BUNDLE_IDENTIFIER = com.icleanerpro.app;" not in pbx_text:
-        errors.append("project.pbxproj missing PRODUCT_BUNDLE_IDENTIFIER = com.icleanerpro.app")
+    if "PRODUCT_BUNDLE_IDENTIFIER = com.boosterpro.app;" not in pbx_text:
+        errors.append("project.pbxproj missing PRODUCT_BUNDLE_IDENTIFIER = com.boosterpro.app")
 
     # 4. Verify Assets.xcassets JSON files
     for json_file in (APP_DIR / "Assets.xcassets").rglob("*.json"):

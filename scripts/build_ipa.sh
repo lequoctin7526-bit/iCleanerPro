@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-PROJECT_NAME="iCleanerPro"
-SCHEME="iCleanerPro"
+PROJECT_NAME="BoosterPro"
+SCHEME="BoosterPro"
 CONFIGURATION="Release"
 ARCHIVE_PATH="./build/${PROJECT_NAME}.xcarchive"
 EXPORT_PATH="./build/ipa"
@@ -22,7 +22,7 @@ xcodebuild clean archive \
   ENABLE_BITCODE=NO
 
 if [[ "${1:-}" == "--unsigned" ]]; then
-  echo "==> Creating unsigned .ipa package (Payload/iCleanerPro.app)..."
+  echo "==> Creating unsigned .ipa package (Payload/BoosterPro.app)..."
   mkdir -p ./build/unsigned/Payload
   cp -R "${ARCHIVE_PATH}/Products/Applications/${PROJECT_NAME}.app" ./build/unsigned/Payload/
   (cd ./build/unsigned && zip -qr "../${PROJECT_NAME}-unsigned.ipa" Payload)

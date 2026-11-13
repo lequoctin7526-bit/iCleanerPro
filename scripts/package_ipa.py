@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Packages the iCleanerPro bundle structure into iCleanerPro.ipa (standard ZIP with Payload/iCleanerPro.app/).
+Packages the BoosterPro bundle structure into BoosterPro.ipa (standard ZIP with Payload/BoosterPro.app/).
 Generates iOS icon sizes (120x120, 180x180, 152x152) for CFBundleIcons so Feather / ESign display the app icon properly.
-Note: Compiling Swift/SwiftUI into an arm64 Mach-O binary (`Payload/iCleanerPro.app/iCleanerPro`) requires
+Note: Compiling Swift/SwiftUI into an arm64 Mach-O binary (`Payload/BoosterPro.app/BoosterPro`) requires
 macOS + Xcode iOS SDK (use `.github/workflows/build-ipa.yml` or `scripts/build_ipa.sh` on macOS).
 """
 
@@ -14,8 +14,8 @@ import zlib
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-APP_SRC = ROOT / "iCleanerPro"
-OUT_IPA = ROOT / "iCleanerPro.ipa"
+APP_SRC = ROOT / "BoosterPro"
+OUT_IPA = ROOT / "BoosterPro.ipa"
 
 
 def render_icon_png(size: int) -> bytes:
@@ -54,9 +54,9 @@ def build_resolved_info_plist() -> bytes:
     with (APP_SRC / "Info.plist").open("rb") as f:
         info = plistlib.load(f)
 
-    info["CFBundleExecutable"] = "iCleanerPro"
-    info["CFBundleIdentifier"] = "com.icleanerpro.app"
-    info["CFBundleName"] = "iCleanerPro"
+    info["CFBundleExecutable"] = "BoosterPro"
+    info["CFBundleIdentifier"] = "com.boosterpro.app"
+    info["CFBundleName"] = "BoosterPro"
     info["CFBundlePackageType"] = "APPL"
     info["MinimumOSVersion"] = "16.0"
     info["UIDeviceFamily"] = [1, 2]
@@ -66,7 +66,7 @@ def build_resolved_info_plist() -> bytes:
 
 
 def main() -> None:
-    app_prefix = "Payload/iCleanerPro.app"
+    app_prefix = "Payload/BoosterPro.app"
 
     with zipfile.ZipFile(OUT_IPA, "w", compression=zipfile.ZIP_DEFLATED) as zf:
         # 1. Resolved Info.plist & PkgInfo
@@ -92,7 +92,7 @@ def main() -> None:
                 rel = path.relative_to(ROOT).as_posix()
                 zf.write(path, f"{app_prefix}/SourceBundle/{rel}")
 
-        xcodeproj_dir = ROOT / "iCleanerPro.xcodeproj"
+        xcodeproj_dir = ROOT / "BoosterPro.xcodeproj"
         for path in sorted(xcodeproj_dir.rglob("*")):
             if path.is_file():
                 rel = path.relative_to(ROOT).as_posix()
@@ -119,7 +119,7 @@ def main() -> None:
         assert f"{app_prefix}/AppIcon60x60@2x.png" in names
         assert f"{app_prefix}/AppIcon60x60@3x.png" in names
         plist_check = plistlib.loads(zf.read(f"{app_prefix}/Info.plist"))
-        assert plist_check["CFBundleIdentifier"] == "com.icleanerpro.app"
+        assert plist_check["CFBundleIdentifier"] == "com.boosterpro.app"
         assert plist_check["MinimumOSVersion"] == "16.0"
 
     size_kb = OUT_IPA.stat().st_size / 1024.0

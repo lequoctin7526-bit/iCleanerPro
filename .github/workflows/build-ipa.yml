@@ -1,4 +1,4 @@
-name: Build iCleanerPro iOS IPA
+name: Build BoosterPro iOS IPA
 
 on:
   workflow_dispatch:
@@ -24,11 +24,11 @@ jobs:
           mkdir -p ./build
 
           xcodebuild clean archive \
-            -project iCleanerPro.xcodeproj \
-            -scheme iCleanerPro \
+            -project BoosterPro.xcodeproj \
+            -scheme BoosterPro \
             -configuration Release \
             -destination 'generic/platform=iOS' \
-            -archivePath ./build/iCleanerPro.xcarchive \
+            -archivePath ./build/BoosterPro.xcarchive \
             ARCHS=arm64 \
             CODE_SIGN_STYLE=Manual \
             CODE_SIGNING_ALLOWED=NO \
@@ -42,30 +42,30 @@ jobs:
               exit 1
             }
 
-          APP_BUNDLE="./build/iCleanerPro.xcarchive/Products/Applications/iCleanerPro.app"
+          APP_BUNDLE="./build/BoosterPro.xcarchive/Products/Applications/BoosterPro.app"
           if [ ! -d "$APP_BUNDLE" ]; then
-            echo "ERROR: iCleanerPro.app not found at $APP_BUNDLE!"
+            echo "ERROR: BoosterPro.app not found at $APP_BUNDLE!"
             exit 1
           fi
 
           mkdir -p ./build/Payload
-          cp -R "$APP_BUNDLE" ./build/Payload/iCleanerPro.app
+          cp -R "$APP_BUNDLE" ./build/Payload/BoosterPro.app
 
           # Verify compiled arm64 Mach-O executable exists
-          file ./build/Payload/iCleanerPro.app/iCleanerPro
+          file ./build/Payload/BoosterPro.app/BoosterPro
 
           # Ensure AppIcon PNGs exist for Feather / ESign preview
-          if [ ! -f ./build/Payload/iCleanerPro.app/AppIcon60x60@2x.png ]; then
-            sips -z 120 120 iCleanerPro/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png --out ./build/Payload/iCleanerPro.app/AppIcon60x60@2x.png
-            sips -z 180 180 iCleanerPro/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png --out ./build/Payload/iCleanerPro.app/AppIcon60x60@3x.png
-            sips -z 152 152 iCleanerPro/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png --out ./build/Payload/iCleanerPro.app/AppIcon76x76@2x~ipad.png
+          if [ ! -f ./build/Payload/BoosterPro.app/AppIcon60x60@2x.png ]; then
+            sips -z 120 120 BoosterPro/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png --out ./build/Payload/BoosterPro.app/AppIcon60x60@2x.png
+            sips -z 180 180 BoosterPro/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png --out ./build/Payload/BoosterPro.app/AppIcon60x60@3x.png
+            sips -z 152 152 BoosterPro/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png --out ./build/Payload/BoosterPro.app/AppIcon76x76@2x~ipad.png
           fi
 
           # Apply ad-hoc Mach-O signature so Feather/ZSign can cleanly re-sign LC_CODE_SIGNATURE
-          codesign --force --deep --sign - ./build/Payload/iCleanerPro.app
+          codesign --force --deep --sign - ./build/Payload/BoosterPro.app
 
-          (cd ./build && zip -qr iCleanerPro.ipa Payload)
-          ls -lh ./build/iCleanerPro.ipa
+          (cd ./build && zip -qr BoosterPro.ipa Payload)
+          ls -lh ./build/BoosterPro.ipa
 
       - name: Upload Build Log on Failure
         if: failure()
@@ -78,5 +78,5 @@ jobs:
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: iCleanerPro-IPA
-          path: ./build/iCleanerPro.ipa
+          name: BoosterPro-IPA
+          path: ./build/BoosterPro.ipa

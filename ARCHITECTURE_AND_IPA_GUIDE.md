@@ -1,8 +1,8 @@
-# iCleaner Pro — Phân Tích Kiến Trúc, Giới Hạn Kỹ Thuật iOS & Hướng Dẫn Xuất File `.ipa`
+# Booster Pro — Phân Tích Kiến Trúc, Giới Hạn Kỹ Thuật iOS & Hướng Dẫn Xuất File `.ipa`
 
 ## 1. Kiến trúc hệ thống (MVVM + Modular Services)
 
-Ứng dụng **iCleaner Pro** được xây dựng theo kiến trúc **MVVM (Model – View – ViewModel)** kết hợp tầng **Services** tách biệt hoàn toàn với giao diện SwiftUI, tương thích **iOS 16.0+**, sử dụng 100% API công khai của Apple (`Foundation`, `SwiftUI`, `Darwin.Mach`, `os.proc`, `Photos`, `Vision`, `CryptoKit`, `UniformTypeIdentifiers`, `UIKit`).
+Ứng dụng **Booster Pro** được xây dựng theo kiến trúc **MVVM (Model – View – ViewModel)** kết hợp tầng **Services** tách biệt hoàn toàn với giao diện SwiftUI, tương thích **iOS 16.0+**, sử dụng 100% API công khai của Apple (`Foundation`, `SwiftUI`, `Darwin.Mach`, `os.proc`, `Photos`, `Vision`, `CryptoKit`, `UniformTypeIdentifiers`, `UIKit`).
 
 ```text
 Views (SwiftUI) ──▶ ViewModels (@MainActor ObservableObject) ──▶ Services (Domain Logic) ──▶ Apple Public Frameworks
@@ -12,9 +12,9 @@ Views (SwiftUI) ──▶ ViewModels (@MainActor ObservableObject) ──▶ Ser
 
 ## 2. Phân tích giới hạn kỹ thuật của iOS (Non-Jailbreak) & Phương án triển khai hợp lệ
 
-Hệ điều hành iOS áp dụng mô hình **App Sandbox** và cơ chế quản lý tiến trình/bộ nhớ nghiêm ngặt nhằm bảo vệ quyền riêng tư và ổn định hệ thống. Dưới đây là chi tiết giới hạn thực tế và cách **iCleaner Pro** xử lý hợp lệ 100%:
+Hệ điều hành iOS áp dụng mô hình **App Sandbox** và cơ chế quản lý tiến trình/bộ nhớ nghiêm ngặt nhằm bảo vệ quyền riêng tư và ổn định hệ thống. Dưới đây là chi tiết giới hạn thực tế và cách **Booster Pro** xử lý hợp lệ 100%:
 
-| Chức năng | Giới hạn kỹ thuật iOS (Không Jailbreak) | Phương án hợp lệ triển khai trong iCleaner Pro |
+| Chức năng | Giới hạn kỹ thuật iOS (Không Jailbreak) | Phương án hợp lệ triển khai trong Booster Pro |
 | :--- | :--- | :--- |
 | **Dọn dẹp rác (Junk Cleaner)** | Ứng dụng không thể truy cập `/var/mobile` hay thư mục container của ứng dụng khác. | Quét và tính dung lượng thực tế bằng `URLResourceValues` trong toàn bộ Sandbox ứng dụng (`tmp/`, `Library/Caches/`, `Library/Logs/`, `Documents/Staging`, `Documents/Downloads`), phân loại theo loại & ngưỡng dung lượng (`<1MB`, `1-10MB`, `10-50MB`, `>50MB`), xóa chọn lọc và đo lại dung lượng giải phóng thực tế. |
 | **Tăng tốc thiết bị (Device Booster)** | Public API không cho phép kill tiến trình ứng dụng khác hay thay đổi xung nhịp CPU phần cứng. | Dùng Mach `task_threads` + `thread_info(THREAD_BASIC_INFO)` để đo CPU thật của ứng dụng, `ProcessInfo.thermalState`, `isLowPowerModeEnabled`, `UIDevice.batteryLevel`, `UIScreen.brightness`; phân tích nguyên nhân gây chậm thực tế (nóng máy, bộ nhớ trống < 15%, áp lực RAM, Low Power Mode) và thực thi quy trình tối ưu an toàn nội bộ. |
@@ -29,17 +29,17 @@ Hệ điều hành iOS áp dụng mô hình **App Sandbox** và cơ chế quản
 > **Lưu ý môi trường build**: Biên dịch iOS `.xcarchive` và xuất `.ipa` yêu cầu **macOS với Xcode 15+** (hoặc dùng GitHub Actions macOS runner được cấu hình sẵn tại `.github/workflows/build-ipa.yml`).
 
 ### Cách 1: Xuất `.ipa` bằng Xcode GUI (Khuyên dùng)
-1. Mở file `iCleanerPro.xcodeproj` trên máy Mac bằng Xcode 15+.
-2. Chọn target **iCleanerPro** → tab **Signing & Capabilities**:
+1. Mở file `BoosterPro.xcodeproj` trên máy Mac bằng Xcode 15+.
+2. Chọn target **BoosterPro** → tab **Signing & Capabilities**:
    - Đánh dấu **Automatically manage signing**.
    - Chọn **Team** (Apple Developer Account).
-   - Xác nhận **Bundle Identifier**: `com.icleanerpro.app` (hoặc đổi theo domain của bạn).
+   - Xác nhận **Bundle Identifier**: `com.boosterpro.app` (hoặc đổi theo domain của bạn).
    - Xác nhận **iOS Deployment Target**: `16.0`.
 3. Ở thanh chọn thiết bị trên cùng, chọn **Any iOS Device (arm64)** (không chọn Simulator).
-4. Trên thanh menu, chọn **Product → Archive** (cấu hình **Release** đã được đặt mặc định cho Archive trong `iCleanerPro.xcscheme`).
+4. Trên thanh menu, chọn **Product → Archive** (cấu hình **Release** đã được đặt mặc định cho Archive trong `BoosterPro.xcscheme`).
 5. Khi cửa sổ **Organizer** mở ra, nhấn **Distribute App**:
    - Chọn **Development** (cài test qua Xcode/Apple Configurator), **Ad Hoc** (phân phối nội bộ qua UDID), hoặc **App Store Connect** (TestFlight / App Store).
-   - Chọn Certificate & Provisioning Profile hợp lệ → nhấn **Export** để nhận file `iCleanerPro.ipa`.
+   - Chọn Certificate & Provisioning Profile hợp lệ → nhấn **Export** để nhận file `BoosterPro.ipa`.
 
 ### Cách 2: Xuất `.ipa` bằng dòng lệnh (`scripts/build_ipa.sh`)
 ```bash
@@ -54,5 +54,5 @@ chmod +x scripts/build_ipa.sh
 
 ### Cách 3: Tự động build `.ipa` trên Cloud bằng GitHub Actions
 File `.github/workflows/build-ipa.yml` đã được thiết lập sẵn chạy trên `macos-14`:
-- Tự động chạy Unit Tests (`iCleanerProTests`).
-- Tự động Archive Release và đóng gói thành `iCleanerPro-unsigned.ipa` trong mục Artifacts.
+- Tự động chạy Unit Tests (`BoosterProTests`).
+- Tự động Archive Release và đóng gói thành `BoosterPro-unsigned.ipa` trong mục Artifacts.
