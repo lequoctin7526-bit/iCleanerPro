@@ -86,6 +86,10 @@ def main() -> None:
         if strings_path.exists():
             zf.write(strings_path, f"{app_prefix}/vi.lproj/Localizable.strings")
 
+        privacy_path = APP_SRC / "PrivacyInfo.xcprivacy"
+        if privacy_path.exists():
+            zf.write(privacy_path, f"{app_prefix}/PrivacyInfo.xcprivacy")
+
         # 3. Self-contained SourceBundle
         for path in sorted(APP_SRC.rglob("*")):
             if path.is_file():

@@ -53,6 +53,26 @@ chmod +x scripts/build_ipa.sh
 ```
 
 ### Cách 3: Tự động build `.ipa` trên Cloud bằng GitHub Actions
-File `.github/workflows/build-ipa.yml` đã được thiết lập sẵn chạy trên `macos-14`:
-- Tự động chạy Unit Tests (`BoosterProTests`).
-- Tự động Archive Release và đóng gói thành `BoosterPro-unsigned.ipa` trong mục Artifacts.
+File `.github/workflows/build-ipa.yml` đã được thiết lập sẵn chạy trên `macos-latest`:
+- Tự động chạy Unit Tests (`BoosterProTests`) trên iOS Simulator.
+- Tự động đóng gói Release `arm64` bundle kèm `PrivacyInfo.xcprivacy` và `AppIcon`.
+- **Hỗ trợ Ký số Apple Development / Distribution**: Nếu cấu hình GitHub Repository Secrets:
+  + `BUILD_CERTIFICATE_BASE64`: Chứng chỉ `.p12` mã hóa base64.
+  + `P12_PASSWORD`: Mật khẩu chứng chỉ.
+  + `BUILD_PROVISION_PROFILE_BASE64`: File `.mobileprovision` mã hóa base64.
+  Quy trình CI sẽ tự động ký chính thức bằng chứng chỉ Apple của bạn.
+  Nếu chưa có Secrets, hệ thống xuất gói kèm chữ ký ad-hoc sẵn sàng cài qua Feather, ESign, Scarlet hoặc Sideloadly.
+
+### Cách 4: Ký lại file IPA bằng Script (`scripts/sign_ipa.sh`)
+```bash
+chmod +x scripts/sign_ipa.sh
+./scripts/sign_ipa.sh BoosterPro.ipa "Apple Distribution: Tên Bạn (TEAM_ID)" my_profile.mobileprovision BoosterPro-Signed.ipa
+```
+
+## 5. Apple Privacy Manifest (PrivacyInfo.xcprivacy)
+Ứng dụng tuân thủ 100% quy định của Apple bắt buộc từ năm 2024:
+- **DiskSpace (`NSPrivacyAccessedAPICategoryDiskSpace`)**: Mã lý do `E174.1` (Hiển thị dung lượng lưu trữ cho người dùng và kiểm tra không gian trống).
+- **FileTimestamp (`NSPrivacyAccessedAPICategoryFileTimestamp`)**: Mã lý do `C617.1` (Truy cập thời gian file trong sandbox) & `0A2A.1` (Hiển thị thời gian cho người dùng).
+- **SystemBootTime (`NSPrivacyAccessedAPICategorySystemBootTime`)**: Mã lý do `35F9.1` (Đo thời gian hoạt động hệ thống qua `ProcessInfo.systemUptime`).
+- **UserDefaults (`NSPrivacyAccessedAPICategoryUserDefaults`)**: Mã lý do `CA92.1` (Lưu trữ cài đặt cục bộ của ứng dụng).
+- **Tracking & Data Collection**: Không thu thập dữ liệu cá nhân, không theo dõi người dùng (`NSPrivacyTracking = false`).

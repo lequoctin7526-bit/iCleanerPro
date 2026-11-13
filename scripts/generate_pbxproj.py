@@ -92,6 +92,7 @@ def main() -> None:
     res_specs = [
         (Path("BoosterPro/Assets.xcassets"), "folder.assetcatalog", True),
         (Path("BoosterPro/Resources/Localizable.strings"), "text.plist.strings", True),
+        (Path("BoosterPro/PrivacyInfo.xcprivacy"), "text.xml", True),
         (Path("BoosterPro/Info.plist"), "text.plist.xml", False),
         (Path("BoosterPro/BoosterPro.entitlements"), "text.plist.entitlements", False),
     ]

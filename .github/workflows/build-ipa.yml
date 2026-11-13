@@ -15,8 +15,50 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Show Xcode version
-        run: xcodebuild -version
+      - name: Show Xcode & SDK version
+        run: |
+          xcodebuild -version
+          xcrun --sdk iphoneos --show-sdk-version
+
+      - name: Set up Apple Certificate & Provisioning Profile (if Secrets provided)
+        id: setup_signing
+        env:
+          BUILD_CERTIFICATE_BASE64: ${{ secrets.BUILD_CERTIFICATE_BASE64 }}
+          P12_PASSWORD: ${{ secrets.P12_PASSWORD }}
+          BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.BUILD_PROVISION_PROFILE_BASE64 }}
+          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+        run: |
+          if [ -n "$BUILD_CERTIFICATE_BASE64" ] && [ -n "$BUILD_PROVISION_PROFILE_BASE64" ]; then
+            echo "==> Configuring official Apple Code Signing from Secrets..."
+            CERT_PATH="$RUNNER_TEMP/build_cert.p12"
+            PP_PATH="$RUNNER_TEMP/build_profile.mobileprovision"
+            KEYCHAIN_PATH="$RUNNER_TEMP/app-signing.keychain-db"
+
+            echo "$BUILD_CERTIFICATE_BASE64" | base64 --decode > "$CERT_PATH"
+            echo "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode > "$PP_PATH"
+
+            security create-keychain -p "${KEYCHAIN_PASSWORD:-secret}" "$KEYCHAIN_PATH"
+            security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
+            security unlock-keychain -p "${KEYCHAIN_PASSWORD:-secret}" "$KEYCHAIN_PATH"
+
+            security import "$CERT_PATH" -P "${P12_PASSWORD:-}" -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH"
+            security list-keychain -d user -s "$KEYCHAIN_PATH" $(security list-keychains -d user | sed -e 's/^[ \t]*"//' -e 's/"$//')
+            security set-key-partition-list -S apple-tool:,apple: -s -k "${KEYCHAIN_PASSWORD:-secret}" "$KEYCHAIN_PATH"
+
+            mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+            PROFILE_UUID=$(/usr/libexec/PlistBuddy -c "Print :UUID" /dev/stdin <<< $(security cms -D -i "$PP_PATH"))
+            cp "$PP_PATH" ~/Library/MobileDevice/Provisioning\ Profiles/${PROFILE_UUID}.mobileprovision
+
+            SIGNING_IDENTITY=$(security find-identity -v -p codesigning "$KEYCHAIN_PATH" | head -n 1 | awk -F '"' '{print $2}')
+            echo "HAS_SECRETS=true" >> $GITHUB_ENV
+            echo "SIGNING_IDENTITY=$SIGNING_IDENTITY" >> $GITHUB_ENV
+            echo "PROFILE_UUID=$PROFILE_UUID" >> $GITHUB_ENV
+            echo "==> Installed signing identity: $SIGNING_IDENTITY with profile UUID: $PROFILE_UUID"
+          else
+            echo "HAS_SECRETS=false" >> $GITHUB_ENV
+            echo "==> NOTICE: No Apple Developer Certificate secrets found in repository secrets."
+            echo "==> Will produce an ad-hoc signed arm64 bundle ready for Feather, ESign, Scarlet, Sideloadly."
+          fi
 
       - name: Run Unit Tests on iOS Simulator
         continue-on-error: true
@@ -30,7 +72,7 @@ jobs:
             CODE_SIGN_IDENTITY="-" \
             CODE_SIGNING_ALLOWED=YES || true
 
-      - name: Build Release arm64 App Bundle (Unsigned for Feather / ESign / Sideloadly)
+      - name: Build & Archive Release arm64 App
         run: |
           rm -rf ./build
           mkdir -p ./build
@@ -63,7 +105,7 @@ jobs:
           mkdir -p ./build/Payload
           cp -R "$APP_BUNDLE" ./build/Payload/BoosterPro.app
 
-          # Verify compiled arm64 Mach-O executable exists
+          # Verify arm64 Mach-O binary
           file ./build/Payload/BoosterPro.app/BoosterPro
 
           # Ensure AppIcon PNGs exist for Feather / ESign preview
@@ -73,8 +115,22 @@ jobs:
             sips -z 152 152 BoosterPro/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png --out ./build/Payload/BoosterPro.app/AppIcon76x76@2x~ipad.png
           fi
 
-          # Apply ad-hoc Mach-O signature so Feather/ZSign can cleanly re-sign LC_CODE_SIGNATURE
-          codesign --force --deep --sign - ./build/Payload/BoosterPro.app
+          # Ensure PrivacyInfo.xcprivacy is bundled
+          if [ -f BoosterPro/PrivacyInfo.xcprivacy ] && [ ! -f ./build/Payload/BoosterPro.app/PrivacyInfo.xcprivacy ]; then
+            cp BoosterPro/PrivacyInfo.xcprivacy ./build/Payload/BoosterPro.app/PrivacyInfo.xcprivacy
+          fi
+          test -f ./build/Payload/BoosterPro.app/PrivacyInfo.xcprivacy && echo "==> Verified PrivacyInfo.xcprivacy exists in bundle!"
+
+          # Apply code signing (Official Certificate if secrets provided, else ad-hoc for sideloading)
+          if [ "$HAS_SECRETS" = "true" ] && [ -n "$SIGNING_IDENTITY" ]; then
+            echo "==> Signing with official Apple identity: $SIGNING_IDENTITY..."
+            codesign --force --deep --sign "$SIGNING_IDENTITY" ./build/Payload/BoosterPro.app
+          else
+            echo "==> Applying ad-hoc Mach-O code signature for sideloading..."
+            codesign --force --deep --sign - ./build/Payload/BoosterPro.app
+          fi
+
+          codesign -dvv ./build/Payload/BoosterPro.app
 
           (cd ./build && zip -qr BoosterPro.ipa Payload)
           ls -lh ./build/BoosterPro.ipa

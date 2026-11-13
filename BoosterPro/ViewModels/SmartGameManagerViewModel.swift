@@ -51,12 +51,84 @@ final class SmartGameManagerViewModel: ObservableObject {
     @Published var automationSettings: SmartGameAutomationSettings = .default
 
     private let service = SmartGameManagerService.shared
+    private let activeSessionStorageKey = "BoosterPro_active_session_state_v1"
     private var sessionTimer: AnyCancellable?
     private var sessionStartDate: Date?
+    private var cancellables = Set<AnyCancellable>()
 
     init() {
         loadSettings()
         loadLibrary()
+        setupLifecycleObservers()
+        restoreActiveSessionIfAny()
+    }
+
+    // MARK: - Lifecycle Handling
+    private func setupLifecycleObservers() {
+        NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)
+            .sink { [weak self] _ in
+                Task { @MainActor [weak self] in
+                    self?.handleAppDidBecomeActive()
+                }
+            }
+            .store(in: &cancellables)
+
+        NotificationCenter.default.publisher(for: UIApplication.didEnterBackgroundNotification)
+            .sink { [weak self] _ in
+                Task { @MainActor [weak self] in
+                    self?.handleAppDidEnterBackground()
+                }
+            }
+            .store(in: &cancellables)
+    }
+
+    private func handleAppDidBecomeActive() {
+        // Transparent lifecycle: accurately calculate elapsed time across background/suspension
+        if let start = sessionStartDate {
+            sessionElapsedSeconds = max(0, Date().timeIntervalSince(start))
+            restartSessionTimer()
+        }
+    }
+
+    private func handleAppDidEnterBackground() {
+        // Transparent: stop active foreground timer while app is suspended by iOS
+        sessionTimer?.cancel()
+        sessionTimer = nil
+    }
+
+    private func restoreActiveSessionIfAny() {
+        guard let saved = UserDefaults.standard.dictionary(forKey: activeSessionStorageKey),
+              let gameIdStr = saved["gameId"] as? String,
+              let gameId = UUID(uuidString: gameIdStr),
+              let startTimestamp = saved["startTime"] as? TimeInterval else {
+            return
+        }
+
+        let start = Date(timeIntervalSince1970: startTimestamp)
+        // If session started more than 12 hours ago, consider it stale and clear
+        if Date().timeIntervalSince(start) > 12 * 3600 {
+            UserDefaults.standard.removeObject(forKey: activeSessionStorageKey)
+            return
+        }
+
+        if let matchingGame = games.first(where: { $0.id == gameId }) {
+            activeSessionGame = matchingGame
+            sessionStartDate = start
+            sessionElapsedSeconds = max(0, Date().timeIntervalSince(start))
+            restartSessionTimer()
+        }
+    }
+
+    private func persistActiveSessionState(game: SmartGameModel, start: Date) {
+        let payload: [String: Any] = [
+            "gameId": game.id.uuidString,
+            "startTime": start.timeIntervalSince1970
+        ]
+        UserDefaults.standard.set(payload, forKey: activeSessionStorageKey)
+    }
+
+    private func clearActiveSessionState() {
+        UserDefaults.standard.removeObject(forKey: activeSessionStorageKey)
     }
 
     // MARK: - Computed Properties
@@ -203,15 +275,21 @@ final class SmartGameManagerViewModel: ObservableObject {
     // MARK: - Active Gaming Session Tracking
     private func startSession(for game: SmartGameModel) {
         activeSessionGame = game
-        sessionStartDate = Date()
+        let now = Date()
+        sessionStartDate = now
         sessionElapsedSeconds = 0
+        persistActiveSessionState(game: game, start: now)
 
+        restartSessionTimer()
+    }
+
+    private func restartSessionTimer() {
         sessionTimer?.cancel()
         sessionTimer = Timer.publish(every: 1.0, on: .main, in: .common)
             .autoconnect()
             .sink { [weak self] _ in
-                guard let self = self else { return }
-                self.sessionElapsedSeconds += 1
+                guard let self = self, let start = self.sessionStartDate else { return }
+                self.sessionElapsedSeconds = max(0, Date().timeIntervalSince(start))
             }
     }
 
@@ -219,6 +297,7 @@ final class SmartGameManagerViewModel: ObservableObject {
         guard let game = activeSessionGame else { return }
         sessionTimer?.cancel()
         sessionTimer = nil
+        clearActiveSessionState()
 
         let duration = max(1, sessionElapsedSeconds)
 

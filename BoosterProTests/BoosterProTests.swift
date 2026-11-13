@@ -194,6 +194,43 @@ final class BoosterProTests: XCTestCase {
         XCTAssertGreaterThanOrEqual(result.appFootprintAfter, 0)
     }
 
+    func testPrivacyManifestRequiredCategories() {
+        guard let url = Bundle.main.url(forResource: "PrivacyInfo", withExtension: "xcprivacy") ??
+                        Bundle(for: Self.self).url(forResource: "PrivacyInfo", withExtension: "xcprivacy") else {
+            let sourcePath = URL(fileURLWithPath: #file)
+                .deletingLastPathComponent()
+                .deletingLastPathComponent()
+                .appendingPathComponent("BoosterPro/PrivacyInfo.xcprivacy")
+            guard let data = try? Data(contentsOf: sourcePath),
+                  let plist = try? PropertyListSerialization.propertyList(from: data, format: nil) as? [String: Any] else {
+                XCTFail("Failed to load PrivacyInfo.xcprivacy")
+                return
+            }
+            assertPrivacyPlistContent(plist)
+            return
+        }
+
+        guard let data = try? Data(contentsOf: url),
+              let plist = try? PropertyListSerialization.propertyList(from: data, format: nil) as? [String: Any] else {
+            XCTFail("Failed to parse PrivacyInfo.xcprivacy")
+            return
+        }
+        assertPrivacyPlistContent(plist)
+    }
+
+    private func assertPrivacyPlistContent(_ plist: [String: Any]) {
+        XCTAssertEqual(plist["NSPrivacyTracking"] as? Bool, false)
+        guard let accessed = plist["NSPrivacyAccessedAPITypes"] as? [[String: Any]] else {
+            XCTFail("Missing NSPrivacyAccessedAPITypes")
+            return
+        }
+        let types = Set(accessed.compactMap { $0["NSPrivacyAccessedAPIType"] as? String })
+        XCTAssertTrue(types.contains("NSPrivacyAccessedAPICategoryDiskSpace"))
+        XCTAssertTrue(types.contains("NSPrivacyAccessedAPICategoryFileTimestamp"))
+        XCTAssertTrue(types.contains("NSPrivacyAccessedAPICategorySystemBootTime"))
+        XCTAssertTrue(types.contains("NSPrivacyAccessedAPICategoryUserDefaults"))
+    }
+
     private func makeGradientCGImage(reverse: Bool) -> CGImage? {
         let width = 32
         let height = 32

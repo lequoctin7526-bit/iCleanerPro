@@ -108,7 +108,31 @@ def main() -> int:
     except Exception as exc:
         errors.append(f"Invalid ExportOptions.plist: {exc}")
 
-    # 3. Verify Deployment Target & Bundle ID in project.pbxproj
+    # 3. Verify PrivacyInfo.xcprivacy Manifest
+    privacy_manifest = APP_DIR / "PrivacyInfo.xcprivacy"
+    if not privacy_manifest.exists():
+        errors.append("Missing PrivacyInfo.xcprivacy manifest")
+    else:
+        try:
+            with privacy_manifest.open("rb") as f:
+                privacy_data = plistlib.load(f)
+            if privacy_data.get("NSPrivacyTracking") is not False:
+                errors.append("PrivacyInfo.xcprivacy NSPrivacyTracking must be false")
+            accessed_apis = privacy_data.get("NSPrivacyAccessedAPITypes", [])
+            categories = {item.get("NSPrivacyAccessedAPIType") for item in accessed_apis}
+            required_cats = {
+                "NSPrivacyAccessedAPICategoryDiskSpace",
+                "NSPrivacyAccessedAPICategoryFileTimestamp",
+                "NSPrivacyAccessedAPICategorySystemBootTime",
+                "NSPrivacyAccessedAPICategoryUserDefaults",
+            }
+            missing = required_cats - categories
+            if missing:
+                errors.append(f"PrivacyInfo.xcprivacy missing required API categories: {missing}")
+        except Exception as exc:
+            errors.append(f"Invalid PrivacyInfo.xcprivacy: {exc}")
+
+    # 4. Verify Deployment Target & Bundle ID in project.pbxproj
     if "IPHONEOS_DEPLOYMENT_TARGET = 16.0;" not in pbx_text:
         errors.append("project.pbxproj missing IPHONEOS_DEPLOYMENT_TARGET = 16.0")
     if "PRODUCT_BUNDLE_IDENTIFIER = com.boosterpro.app;" not in pbx_text:
