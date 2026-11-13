@@ -152,6 +152,48 @@ final class BoosterProTests: XCTestCase {
         XCTAssertEqual(reloaded.autoOptimizeBeforePlay, settings.autoOptimizeBeforePlay)
     }
 
+    func testDeviceStorageInfoMetrics() {
+        let service = StorageManagerService()
+        let info = service.fetchDeviceStorageInfo()
+        XCTAssertGreaterThan(info.totalBytes, 0)
+        XCTAssertGreaterThanOrEqual(info.availableBytes, 0)
+        XCTAssertGreaterThanOrEqual(info.usedPercentage, 0.0)
+        XCTAssertLessThanOrEqual(info.usedPercentage, 1.0)
+    }
+
+    @MainActor
+    func testDeviceMonitorCPUMetrics() {
+        let service = DeviceMonitorService()
+        let metrics = service.collectCPUMetrics()
+        XCTAssertGreaterThan(metrics.processorCount, 0)
+        XCTAssertGreaterThan(metrics.activeProcessorCount, 0)
+        XCTAssertGreaterThanOrEqual(metrics.appCPUUsagePercent, 0.0)
+    }
+
+    @MainActor
+    func testDeviceSlowdownAnalysis() {
+        let service = DeviceMonitorService()
+        let factors = service.analyzeSlowdownFactors()
+        for factor in factors {
+            XCTAssertFalse(factor.title.isEmpty)
+            XCTAssertFalse(factor.recommendation.isEmpty)
+        }
+    }
+
+    func testByteFormatterUtilities() {
+        XCTAssertFalse(ByteFormatterUtil.formatFileSize(1024).isEmpty)
+        XCTAssertFalse(ByteFormatterUtil.formatMemorySize(UInt64(1024 * 1024 * 50)).isEmpty)
+        XCTAssertEqual(ByteFormatterUtil.formatPercentage(0.45), "45%")
+        XCTAssertEqual(ByteFormatterUtil.formatPercentage(1.0), "100%")
+        XCTAssertEqual(ByteFormatterUtil.formatDuration(3665), "1h 1m")
+    }
+
+    func testSafeMemoryPurge() async {
+        let service = MemoryMonitorService()
+        let result = await service.performSafeMemoryCleanup()
+        XCTAssertGreaterThanOrEqual(result.appFootprintAfter, 0)
+    }
+
     private func makeGradientCGImage(reverse: Bool) -> CGImage? {
         let width = 32
         let height = 32

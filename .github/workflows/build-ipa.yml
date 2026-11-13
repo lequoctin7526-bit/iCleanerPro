@@ -18,6 +18,19 @@ jobs:
       - name: Show Xcode version
         run: xcodebuild -version
 
+      - name: Run Unit Tests on iOS Simulator
+        run: |
+          DEVICE_NAME=$(xcrun simctl list devices available | grep -m 1 "iPhone" | sed -E 's/.*(iPhone [^()]+).*/\1/' | xargs)
+          echo "Selected available iOS Simulator: ${DEVICE_NAME:-iPhone 16}"
+          xcodebuild test \
+            -project BoosterPro.xcodeproj \
+            -scheme BoosterPro \
+            -destination "platform=iOS Simulator,name=${DEVICE_NAME:-iPhone 16}" \
+            CODE_SIGN_STYLE=Manual \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY=""
+
       - name: Build Release arm64 App Bundle (Unsigned for Feather / ESign / Sideloadly)
         run: |
           rm -rf ./build
