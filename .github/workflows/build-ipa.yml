@@ -1,0 +1,68 @@
+name: Build iCleanerPro iOS IPA
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: write
+
+jobs:
+  build-ios:
+    runs-on: macos-14
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Show Xcode version
+        run: xcodebuild -version
+
+      - name: Build Release arm64 App Bundle (Unsigned for Feather / ESign / Sideloadly)
+        run: |
+          rm -rf ./build
+          mkdir -p ./build
+
+          xcodebuild clean build \
+            -project iCleanerPro.xcodeproj \
+            -scheme iCleanerPro \
+            -configuration Release \
+            -sdk iphoneos \
+            -destination 'generic/platform=iOS' \
+            ARCHS=arm64 \
+            ONLY_ACTIVE_ARCH=NO \
+            SYMROOT="$(pwd)/build/Derived" \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY=""
+
+          APP_BUNDLE="$(find ./build/Derived -name 'iCleanerPro.app' -type d | head -n 1)"
+          if [ -z "$APP_BUNDLE" ]; then
+            echo "ERROR: iCleanerPro.app not found!"
+            exit 1
+          fi
+
+          mkdir -p ./build/Payload
+          cp -R "$APP_BUNDLE" ./build/Payload/iCleanerPro.app
+
+          # Verify compiled arm64 Mach-O executable exists
+          file ./build/Payload/iCleanerPro.app/iCleanerPro
+
+          # Ensure AppIcon PNGs exist for Feather / ESign preview
+          if [ ! -f ./build/Payload/iCleanerPro.app/AppIcon60x60@2x.png ]; then
+            sips -z 120 120 iCleanerPro/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png --out ./build/Payload/iCleanerPro.app/AppIcon60x60@2x.png
+            sips -z 180 180 iCleanerPro/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png --out ./build/Payload/iCleanerPro.app/AppIcon60x60@3x.png
+            sips -z 152 152 iCleanerPro/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png --out ./build/Payload/iCleanerPro.app/AppIcon76x76@2x~ipad.png
+          fi
+
+          # Apply ad-hoc Mach-O signature so Feather/ZSign can cleanly re-sign LC_CODE_SIGNATURE
+          codesign --force --deep --sign - ./build/Payload/iCleanerPro.app
+
+          (cd ./build && zip -qr iCleanerPro.ipa Payload)
+          ls -lh ./build/iCleanerPro.ipa
+
+      - name: Upload IPA Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: iCleanerPro-IPA
+          path: ./build/iCleanerPro.ipa

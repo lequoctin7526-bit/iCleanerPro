@@ -1,0 +1,7 @@
+build/
+*.xcarchive
+.DS_Store
+xcuserdata/
+*.xcuserdatad
+DerivedData/
+iCleanerPro.ipa
