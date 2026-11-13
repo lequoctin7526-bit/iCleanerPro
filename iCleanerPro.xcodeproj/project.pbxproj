@@ -19,50 +19,53 @@
 		D0000000000000000000001B /* CacheModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000001A /* CacheModels.swift */; };
 		D0000000000000000000001D /* DeviceHealthModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000001C /* DeviceHealthModels.swift */; };
 		D0000000000000000000001F /* GameBoosterModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000001E /* GameBoosterModels.swift */; };
-		D00000000000000000000021 /* JunkItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000020 /* JunkItem.swift */; };
-		D00000000000000000000023 /* MemoryModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000022 /* MemoryModels.swift */; };
-		D00000000000000000000025 /* PhotoAnalysisModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000024 /* PhotoAnalysisModels.swift */; };
-		D00000000000000000000027 /* ScanResultModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000026 /* ScanResultModels.swift */; };
-		D00000000000000000000029 /* StorageModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000028 /* StorageModels.swift */; };
-		D0000000000000000000002C /* CacheCleanerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000002B /* CacheCleanerService.swift */; };
-		D0000000000000000000002E /* DeviceMonitorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000002D /* DeviceMonitorService.swift */; };
-		D00000000000000000000030 /* FilePickerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000002F /* FilePickerService.swift */; };
-		D00000000000000000000032 /* GameBoosterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000031 /* GameBoosterService.swift */; };
-		D00000000000000000000034 /* JunkCleanerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000033 /* JunkCleanerService.swift */; };
-		D00000000000000000000036 /* MemoryMonitorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000035 /* MemoryMonitorService.swift */; };
-		D00000000000000000000038 /* PhotoAnalysisService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000037 /* PhotoAnalysisService.swift */; };
-		D0000000000000000000003A /* StorageManagerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000039 /* StorageManagerService.swift */; };
-		D0000000000000000000003D /* AppTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000003C /* AppTheme.swift */; };
-		D0000000000000000000003F /* ByteFormatterUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000003E /* ByteFormatterUtil.swift */; };
-		D00000000000000000000041 /* DiagnosticLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000040 /* DiagnosticLogger.swift */; };
-		D00000000000000000000043 /* ImageHasher.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000042 /* ImageHasher.swift */; };
-		D00000000000000000000046 /* CacheCleanerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000045 /* CacheCleanerViewModel.swift */; };
-		D00000000000000000000048 /* DashboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000047 /* DashboardViewModel.swift */; };
-		D0000000000000000000004A /* DeviceBoosterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000049 /* DeviceBoosterViewModel.swift */; };
-		D0000000000000000000004C /* GameBoosterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000004B /* GameBoosterViewModel.swift */; };
-		D0000000000000000000004E /* JunkCleanerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000004D /* JunkCleanerViewModel.swift */; };
-		D00000000000000000000050 /* RAMCleanerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000004F /* RAMCleanerViewModel.swift */; };
-		D00000000000000000000052 /* SmartScanViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000051 /* SmartScanViewModel.swift */; };
-		D00000000000000000000054 /* StorageManagerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000053 /* StorageManagerViewModel.swift */; };
-		D00000000000000000000058 /* CacheCleanerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000057 /* CacheCleanerView.swift */; };
-		D0000000000000000000005B /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000005A /* DashboardView.swift */; };
-		D0000000000000000000005E /* DeviceBoosterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000005D /* DeviceBoosterView.swift */; };
-		D00000000000000000000061 /* GameBoosterDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000060 /* GameBoosterDashboardView.swift */; };
-		D00000000000000000000063 /* GameHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000062 /* GameHistoryView.swift */; };
-		D00000000000000000000065 /* GameLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000064 /* GameLibraryView.swift */; };
-		D00000000000000000000067 /* GameSessionActiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000066 /* GameSessionActiveView.swift */; };
-		D00000000000000000000069 /* GamingModeChecklistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000068 /* GamingModeChecklistView.swift */; };
-		D0000000000000000000006C /* JunkCleanerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000006B /* JunkCleanerView.swift */; };
-		D0000000000000000000006F /* RAMCleanerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000006E /* RAMCleanerView.swift */; };
-		D00000000000000000000072 /* ScanResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000071 /* ScanResultView.swift */; };
-		D00000000000000000000074 /* SmartScanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000073 /* SmartScanView.swift */; };
-		D00000000000000000000077 /* DuplicatePhotosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000076 /* DuplicatePhotosView.swift */; };
-		D00000000000000000000079 /* LargeMediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000078 /* LargeMediaView.swift */; };
-		D0000000000000000000007B /* SandboxFilesManagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000007A /* SandboxFilesManagerView.swift */; };
-		D0000000000000000000007D /* StorageManagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000007C /* StorageManagerView.swift */; };
-		D0000000000000000000007F /* iCleanerProTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000007E /* iCleanerProTests.swift */; };
-		D00000000000000000000081 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000080 /* Assets.xcassets */; };
-		D00000000000000000000084 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000083 /* Localizable.strings */; };
+		D00000000000000000000021 /* IntroSlideItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000020 /* IntroSlideItem.swift */; };
+		D00000000000000000000023 /* JunkItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000022 /* JunkItem.swift */; };
+		D00000000000000000000025 /* MemoryModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000024 /* MemoryModels.swift */; };
+		D00000000000000000000027 /* PhotoAnalysisModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000026 /* PhotoAnalysisModels.swift */; };
+		D00000000000000000000029 /* ScanResultModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000028 /* ScanResultModels.swift */; };
+		D0000000000000000000002B /* StorageModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000002A /* StorageModels.swift */; };
+		D0000000000000000000002E /* CacheCleanerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000002D /* CacheCleanerService.swift */; };
+		D00000000000000000000030 /* DeviceMonitorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000002F /* DeviceMonitorService.swift */; };
+		D00000000000000000000032 /* FilePickerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000031 /* FilePickerService.swift */; };
+		D00000000000000000000034 /* GameBoosterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000033 /* GameBoosterService.swift */; };
+		D00000000000000000000036 /* JunkCleanerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000035 /* JunkCleanerService.swift */; };
+		D00000000000000000000038 /* MemoryMonitorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000037 /* MemoryMonitorService.swift */; };
+		D0000000000000000000003A /* PhotoAnalysisService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000039 /* PhotoAnalysisService.swift */; };
+		D0000000000000000000003C /* StorageManagerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000003B /* StorageManagerService.swift */; };
+		D0000000000000000000003F /* AppTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000003E /* AppTheme.swift */; };
+		D00000000000000000000041 /* ByteFormatterUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000040 /* ByteFormatterUtil.swift */; };
+		D00000000000000000000043 /* DiagnosticLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000042 /* DiagnosticLogger.swift */; };
+		D00000000000000000000045 /* ImageHasher.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000044 /* ImageHasher.swift */; };
+		D00000000000000000000048 /* CacheCleanerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000047 /* CacheCleanerViewModel.swift */; };
+		D0000000000000000000004A /* DashboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000049 /* DashboardViewModel.swift */; };
+		D0000000000000000000004C /* DeviceBoosterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000004B /* DeviceBoosterViewModel.swift */; };
+		D0000000000000000000004E /* GameBoosterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000004D /* GameBoosterViewModel.swift */; };
+		D00000000000000000000050 /* JunkCleanerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000004F /* JunkCleanerViewModel.swift */; };
+		D00000000000000000000052 /* RAMCleanerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000051 /* RAMCleanerViewModel.swift */; };
+		D00000000000000000000054 /* SmartScanViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000053 /* SmartScanViewModel.swift */; };
+		D00000000000000000000056 /* StorageManagerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000055 /* StorageManagerViewModel.swift */; };
+		D0000000000000000000005A /* CacheCleanerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000059 /* CacheCleanerView.swift */; };
+		D0000000000000000000005D /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000005C /* DashboardView.swift */; };
+		D00000000000000000000060 /* DeviceBoosterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000005F /* DeviceBoosterView.swift */; };
+		D00000000000000000000063 /* GameBoosterDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000062 /* GameBoosterDashboardView.swift */; };
+		D00000000000000000000065 /* GameHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000064 /* GameHistoryView.swift */; };
+		D00000000000000000000067 /* GameLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000066 /* GameLibraryView.swift */; };
+		D00000000000000000000069 /* GameSessionActiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000068 /* GameSessionActiveView.swift */; };
+		D0000000000000000000006B /* GamingModeChecklistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000006A /* GamingModeChecklistView.swift */; };
+		D0000000000000000000006E /* AppSplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000006D /* AppSplashView.swift */; };
+		D00000000000000000000070 /* OnboardingIntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000006F /* OnboardingIntroView.swift */; };
+		D00000000000000000000073 /* JunkCleanerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000072 /* JunkCleanerView.swift */; };
+		D00000000000000000000076 /* RAMCleanerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000075 /* RAMCleanerView.swift */; };
+		D00000000000000000000079 /* ScanResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000078 /* ScanResultView.swift */; };
+		D0000000000000000000007B /* SmartScanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000007A /* SmartScanView.swift */; };
+		D0000000000000000000007E /* DuplicatePhotosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000007D /* DuplicatePhotosView.swift */; };
+		D00000000000000000000080 /* LargeMediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000007F /* LargeMediaView.swift */; };
+		D00000000000000000000082 /* SandboxFilesManagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000081 /* SandboxFilesManagerView.swift */; };
+		D00000000000000000000084 /* StorageManagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000083 /* StorageManagerView.swift */; };
+		D00000000000000000000086 /* iCleanerProTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000085 /* iCleanerProTests.swift */; };
+		D00000000000000000000088 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000087 /* Assets.xcassets */; };
+		D0000000000000000000008B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000008A /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -91,52 +94,55 @@
 		F0000000000000000000001A /* CacheModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheModels.swift; sourceTree = "<group>"; };
 		F0000000000000000000001C /* DeviceHealthModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceHealthModels.swift; sourceTree = "<group>"; };
 		F0000000000000000000001E /* GameBoosterModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBoosterModels.swift; sourceTree = "<group>"; };
-		F00000000000000000000020 /* JunkItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JunkItem.swift; sourceTree = "<group>"; };
-		F00000000000000000000022 /* MemoryModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryModels.swift; sourceTree = "<group>"; };
-		F00000000000000000000024 /* PhotoAnalysisModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAnalysisModels.swift; sourceTree = "<group>"; };
-		F00000000000000000000026 /* ScanResultModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanResultModels.swift; sourceTree = "<group>"; };
-		F00000000000000000000028 /* StorageModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageModels.swift; sourceTree = "<group>"; };
-		F0000000000000000000002B /* CacheCleanerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheCleanerService.swift; sourceTree = "<group>"; };
-		F0000000000000000000002D /* DeviceMonitorService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceMonitorService.swift; sourceTree = "<group>"; };
-		F0000000000000000000002F /* FilePickerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilePickerService.swift; sourceTree = "<group>"; };
-		F00000000000000000000031 /* GameBoosterService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBoosterService.swift; sourceTree = "<group>"; };
-		F00000000000000000000033 /* JunkCleanerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JunkCleanerService.swift; sourceTree = "<group>"; };
-		F00000000000000000000035 /* MemoryMonitorService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryMonitorService.swift; sourceTree = "<group>"; };
-		F00000000000000000000037 /* PhotoAnalysisService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAnalysisService.swift; sourceTree = "<group>"; };
-		F00000000000000000000039 /* StorageManagerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManagerService.swift; sourceTree = "<group>"; };
-		F0000000000000000000003C /* AppTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTheme.swift; sourceTree = "<group>"; };
-		F0000000000000000000003E /* ByteFormatterUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ByteFormatterUtil.swift; sourceTree = "<group>"; };
-		F00000000000000000000040 /* DiagnosticLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagnosticLogger.swift; sourceTree = "<group>"; };
-		F00000000000000000000042 /* ImageHasher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageHasher.swift; sourceTree = "<group>"; };
-		F00000000000000000000045 /* CacheCleanerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheCleanerViewModel.swift; sourceTree = "<group>"; };
-		F00000000000000000000047 /* DashboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewModel.swift; sourceTree = "<group>"; };
-		F00000000000000000000049 /* DeviceBoosterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceBoosterViewModel.swift; sourceTree = "<group>"; };
-		F0000000000000000000004B /* GameBoosterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBoosterViewModel.swift; sourceTree = "<group>"; };
-		F0000000000000000000004D /* JunkCleanerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JunkCleanerViewModel.swift; sourceTree = "<group>"; };
-		F0000000000000000000004F /* RAMCleanerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAMCleanerViewModel.swift; sourceTree = "<group>"; };
-		F00000000000000000000051 /* SmartScanViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartScanViewModel.swift; sourceTree = "<group>"; };
-		F00000000000000000000053 /* StorageManagerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManagerViewModel.swift; sourceTree = "<group>"; };
-		F00000000000000000000057 /* CacheCleanerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheCleanerView.swift; sourceTree = "<group>"; };
-		F0000000000000000000005A /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
-		F0000000000000000000005D /* DeviceBoosterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceBoosterView.swift; sourceTree = "<group>"; };
-		F00000000000000000000060 /* GameBoosterDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBoosterDashboardView.swift; sourceTree = "<group>"; };
-		F00000000000000000000062 /* GameHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameHistoryView.swift; sourceTree = "<group>"; };
-		F00000000000000000000064 /* GameLibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameLibraryView.swift; sourceTree = "<group>"; };
-		F00000000000000000000066 /* GameSessionActiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSessionActiveView.swift; sourceTree = "<group>"; };
-		F00000000000000000000068 /* GamingModeChecklistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamingModeChecklistView.swift; sourceTree = "<group>"; };
-		F0000000000000000000006B /* JunkCleanerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JunkCleanerView.swift; sourceTree = "<group>"; };
-		F0000000000000000000006E /* RAMCleanerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAMCleanerView.swift; sourceTree = "<group>"; };
-		F00000000000000000000071 /* ScanResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanResultView.swift; sourceTree = "<group>"; };
-		F00000000000000000000073 /* SmartScanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartScanView.swift; sourceTree = "<group>"; };
-		F00000000000000000000076 /* DuplicatePhotosView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuplicatePhotosView.swift; sourceTree = "<group>"; };
-		F00000000000000000000078 /* LargeMediaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeMediaView.swift; sourceTree = "<group>"; };
-		F0000000000000000000007A /* SandboxFilesManagerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SandboxFilesManagerView.swift; sourceTree = "<group>"; };
-		F0000000000000000000007C /* StorageManagerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManagerView.swift; sourceTree = "<group>"; };
-		F0000000000000000000007E /* iCleanerProTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iCleanerProTests.swift; sourceTree = "<group>"; };
-		F00000000000000000000080 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		F00000000000000000000083 /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
-		F00000000000000000000085 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F00000000000000000000086 /* iCleanerPro.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iCleanerPro.entitlements; sourceTree = "<group>"; };
+		F00000000000000000000020 /* IntroSlideItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroSlideItem.swift; sourceTree = "<group>"; };
+		F00000000000000000000022 /* JunkItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JunkItem.swift; sourceTree = "<group>"; };
+		F00000000000000000000024 /* MemoryModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryModels.swift; sourceTree = "<group>"; };
+		F00000000000000000000026 /* PhotoAnalysisModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAnalysisModels.swift; sourceTree = "<group>"; };
+		F00000000000000000000028 /* ScanResultModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanResultModels.swift; sourceTree = "<group>"; };
+		F0000000000000000000002A /* StorageModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageModels.swift; sourceTree = "<group>"; };
+		F0000000000000000000002D /* CacheCleanerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheCleanerService.swift; sourceTree = "<group>"; };
+		F0000000000000000000002F /* DeviceMonitorService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceMonitorService.swift; sourceTree = "<group>"; };
+		F00000000000000000000031 /* FilePickerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilePickerService.swift; sourceTree = "<group>"; };
+		F00000000000000000000033 /* GameBoosterService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBoosterService.swift; sourceTree = "<group>"; };
+		F00000000000000000000035 /* JunkCleanerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JunkCleanerService.swift; sourceTree = "<group>"; };
+		F00000000000000000000037 /* MemoryMonitorService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryMonitorService.swift; sourceTree = "<group>"; };
+		F00000000000000000000039 /* PhotoAnalysisService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAnalysisService.swift; sourceTree = "<group>"; };
+		F0000000000000000000003B /* StorageManagerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManagerService.swift; sourceTree = "<group>"; };
+		F0000000000000000000003E /* AppTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTheme.swift; sourceTree = "<group>"; };
+		F00000000000000000000040 /* ByteFormatterUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ByteFormatterUtil.swift; sourceTree = "<group>"; };
+		F00000000000000000000042 /* DiagnosticLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagnosticLogger.swift; sourceTree = "<group>"; };
+		F00000000000000000000044 /* ImageHasher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageHasher.swift; sourceTree = "<group>"; };
+		F00000000000000000000047 /* CacheCleanerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheCleanerViewModel.swift; sourceTree = "<group>"; };
+		F00000000000000000000049 /* DashboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewModel.swift; sourceTree = "<group>"; };
+		F0000000000000000000004B /* DeviceBoosterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceBoosterViewModel.swift; sourceTree = "<group>"; };
+		F0000000000000000000004D /* GameBoosterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBoosterViewModel.swift; sourceTree = "<group>"; };
+		F0000000000000000000004F /* JunkCleanerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JunkCleanerViewModel.swift; sourceTree = "<group>"; };
+		F00000000000000000000051 /* RAMCleanerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAMCleanerViewModel.swift; sourceTree = "<group>"; };
+		F00000000000000000000053 /* SmartScanViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartScanViewModel.swift; sourceTree = "<group>"; };
+		F00000000000000000000055 /* StorageManagerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManagerViewModel.swift; sourceTree = "<group>"; };
+		F00000000000000000000059 /* CacheCleanerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheCleanerView.swift; sourceTree = "<group>"; };
+		F0000000000000000000005C /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+		F0000000000000000000005F /* DeviceBoosterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceBoosterView.swift; sourceTree = "<group>"; };
+		F00000000000000000000062 /* GameBoosterDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBoosterDashboardView.swift; sourceTree = "<group>"; };
+		F00000000000000000000064 /* GameHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameHistoryView.swift; sourceTree = "<group>"; };
+		F00000000000000000000066 /* GameLibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameLibraryView.swift; sourceTree = "<group>"; };
+		F00000000000000000000068 /* GameSessionActiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSessionActiveView.swift; sourceTree = "<group>"; };
+		F0000000000000000000006A /* GamingModeChecklistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamingModeChecklistView.swift; sourceTree = "<group>"; };
+		F0000000000000000000006D /* AppSplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSplashView.swift; sourceTree = "<group>"; };
+		F0000000000000000000006F /* OnboardingIntroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingIntroView.swift; sourceTree = "<group>"; };
+		F00000000000000000000072 /* JunkCleanerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JunkCleanerView.swift; sourceTree = "<group>"; };
+		F00000000000000000000075 /* RAMCleanerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAMCleanerView.swift; sourceTree = "<group>"; };
+		F00000000000000000000078 /* ScanResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanResultView.swift; sourceTree = "<group>"; };
+		F0000000000000000000007A /* SmartScanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartScanView.swift; sourceTree = "<group>"; };
+		F0000000000000000000007D /* DuplicatePhotosView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuplicatePhotosView.swift; sourceTree = "<group>"; };
+		F0000000000000000000007F /* LargeMediaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeMediaView.swift; sourceTree = "<group>"; };
+		F00000000000000000000081 /* SandboxFilesManagerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SandboxFilesManagerView.swift; sourceTree = "<group>"; };
+		F00000000000000000000083 /* StorageManagerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManagerView.swift; sourceTree = "<group>"; };
+		F00000000000000000000085 /* iCleanerProTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iCleanerProTests.swift; sourceTree = "<group>"; };
+		F00000000000000000000087 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F0000000000000000000008A /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
+		F0000000000000000000008C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F0000000000000000000008D /* iCleanerPro.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iCleanerPro.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -169,14 +175,14 @@
 				C00000000000000000000003 /* App */,
 				C00000000000000000000008 /* Components */,
 				C00000000000000000000019 /* Models */,
-				C0000000000000000000002A /* Services */,
-				C0000000000000000000003B /* Utilities */,
-				C00000000000000000000044 /* ViewModels */,
-				C00000000000000000000056 /* Views */,
-				F00000000000000000000080 /* Assets.xcassets */,
-				C00000000000000000000082 /* Resources */,
-				F00000000000000000000085 /* Info.plist */,
-				F00000000000000000000086 /* iCleanerPro.entitlements */,
+				C0000000000000000000002C /* Services */,
+				C0000000000000000000003D /* Utilities */,
+				C00000000000000000000046 /* ViewModels */,
+				C00000000000000000000058 /* Views */,
+				F00000000000000000000087 /* Assets.xcassets */,
+				C00000000000000000000089 /* Resources */,
+				F0000000000000000000008C /* Info.plist */,
+				F0000000000000000000008D /* iCleanerPro.entitlements */,
 			);
 			path = iCleanerPro;
 			sourceTree = "<group>";
@@ -211,147 +217,158 @@
 				F0000000000000000000001A /* CacheModels.swift */,
 				F0000000000000000000001C /* DeviceHealthModels.swift */,
 				F0000000000000000000001E /* GameBoosterModels.swift */,
-				F00000000000000000000020 /* JunkItem.swift */,
-				F00000000000000000000022 /* MemoryModels.swift */,
-				F00000000000000000000024 /* PhotoAnalysisModels.swift */,
-				F00000000000000000000026 /* ScanResultModels.swift */,
-				F00000000000000000000028 /* StorageModels.swift */,
+				F00000000000000000000020 /* IntroSlideItem.swift */,
+				F00000000000000000000022 /* JunkItem.swift */,
+				F00000000000000000000024 /* MemoryModels.swift */,
+				F00000000000000000000026 /* PhotoAnalysisModels.swift */,
+				F00000000000000000000028 /* ScanResultModels.swift */,
+				F0000000000000000000002A /* StorageModels.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
 		};
-		C00000000000000000000082 /* Resources */ = {
+		C00000000000000000000089 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				F00000000000000000000083 /* Localizable.strings */,
+				F0000000000000000000008A /* Localizable.strings */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		C0000000000000000000002A /* Services */ = {
+		C0000000000000000000002C /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				F0000000000000000000002B /* CacheCleanerService.swift */,
-				F0000000000000000000002D /* DeviceMonitorService.swift */,
-				F0000000000000000000002F /* FilePickerService.swift */,
-				F00000000000000000000031 /* GameBoosterService.swift */,
-				F00000000000000000000033 /* JunkCleanerService.swift */,
-				F00000000000000000000035 /* MemoryMonitorService.swift */,
-				F00000000000000000000037 /* PhotoAnalysisService.swift */,
-				F00000000000000000000039 /* StorageManagerService.swift */,
+				F0000000000000000000002D /* CacheCleanerService.swift */,
+				F0000000000000000000002F /* DeviceMonitorService.swift */,
+				F00000000000000000000031 /* FilePickerService.swift */,
+				F00000000000000000000033 /* GameBoosterService.swift */,
+				F00000000000000000000035 /* JunkCleanerService.swift */,
+				F00000000000000000000037 /* MemoryMonitorService.swift */,
+				F00000000000000000000039 /* PhotoAnalysisService.swift */,
+				F0000000000000000000003B /* StorageManagerService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
 		};
-		C0000000000000000000003B /* Utilities */ = {
+		C0000000000000000000003D /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				F0000000000000000000003C /* AppTheme.swift */,
-				F0000000000000000000003E /* ByteFormatterUtil.swift */,
-				F00000000000000000000040 /* DiagnosticLogger.swift */,
-				F00000000000000000000042 /* ImageHasher.swift */,
+				F0000000000000000000003E /* AppTheme.swift */,
+				F00000000000000000000040 /* ByteFormatterUtil.swift */,
+				F00000000000000000000042 /* DiagnosticLogger.swift */,
+				F00000000000000000000044 /* ImageHasher.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
 		};
-		C00000000000000000000044 /* ViewModels */ = {
+		C00000000000000000000046 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				F00000000000000000000045 /* CacheCleanerViewModel.swift */,
-				F00000000000000000000047 /* DashboardViewModel.swift */,
-				F00000000000000000000049 /* DeviceBoosterViewModel.swift */,
-				F0000000000000000000004B /* GameBoosterViewModel.swift */,
-				F0000000000000000000004D /* JunkCleanerViewModel.swift */,
-				F0000000000000000000004F /* RAMCleanerViewModel.swift */,
-				F00000000000000000000051 /* SmartScanViewModel.swift */,
-				F00000000000000000000053 /* StorageManagerViewModel.swift */,
+				F00000000000000000000047 /* CacheCleanerViewModel.swift */,
+				F00000000000000000000049 /* DashboardViewModel.swift */,
+				F0000000000000000000004B /* DeviceBoosterViewModel.swift */,
+				F0000000000000000000004D /* GameBoosterViewModel.swift */,
+				F0000000000000000000004F /* JunkCleanerViewModel.swift */,
+				F00000000000000000000051 /* RAMCleanerViewModel.swift */,
+				F00000000000000000000053 /* SmartScanViewModel.swift */,
+				F00000000000000000000055 /* StorageManagerViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
-		C00000000000000000000056 /* Views */ = {
+		C00000000000000000000058 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				C00000000000000000000055 /* CacheCleaner */,
-				C00000000000000000000059 /* Dashboard */,
-				C0000000000000000000005C /* DeviceBooster */,
-				C0000000000000000000005F /* GameBooster */,
-				C0000000000000000000006A /* JunkCleaner */,
-				C0000000000000000000006D /* RAMCleaner */,
-				C00000000000000000000070 /* Scan */,
-				C00000000000000000000075 /* StorageManager */,
+				C00000000000000000000057 /* CacheCleaner */,
+				C0000000000000000000005B /* Dashboard */,
+				C0000000000000000000005E /* DeviceBooster */,
+				C00000000000000000000061 /* GameBooster */,
+				C0000000000000000000006C /* Intro */,
+				C00000000000000000000071 /* JunkCleaner */,
+				C00000000000000000000074 /* RAMCleaner */,
+				C00000000000000000000077 /* Scan */,
+				C0000000000000000000007C /* StorageManager */,
 			);
 			path = Views;
 			sourceTree = "<group>";
 		};
-		C00000000000000000000055 /* CacheCleaner */ = {
+		C00000000000000000000057 /* CacheCleaner */ = {
 			isa = PBXGroup;
 			children = (
-				F00000000000000000000057 /* CacheCleanerView.swift */,
+				F00000000000000000000059 /* CacheCleanerView.swift */,
 			);
 			path = CacheCleaner;
 			sourceTree = "<group>";
 		};
-		C00000000000000000000059 /* Dashboard */ = {
+		C0000000000000000000005B /* Dashboard */ = {
 			isa = PBXGroup;
 			children = (
-				F0000000000000000000005A /* DashboardView.swift */,
+				F0000000000000000000005C /* DashboardView.swift */,
 			);
 			path = Dashboard;
 			sourceTree = "<group>";
 		};
-		C0000000000000000000005C /* DeviceBooster */ = {
+		C0000000000000000000005E /* DeviceBooster */ = {
 			isa = PBXGroup;
 			children = (
-				F0000000000000000000005D /* DeviceBoosterView.swift */,
+				F0000000000000000000005F /* DeviceBoosterView.swift */,
 			);
 			path = DeviceBooster;
 			sourceTree = "<group>";
 		};
-		C0000000000000000000005F /* GameBooster */ = {
+		C00000000000000000000061 /* GameBooster */ = {
 			isa = PBXGroup;
 			children = (
-				F00000000000000000000060 /* GameBoosterDashboardView.swift */,
-				F00000000000000000000062 /* GameHistoryView.swift */,
-				F00000000000000000000064 /* GameLibraryView.swift */,
-				F00000000000000000000066 /* GameSessionActiveView.swift */,
-				F00000000000000000000068 /* GamingModeChecklistView.swift */,
+				F00000000000000000000062 /* GameBoosterDashboardView.swift */,
+				F00000000000000000000064 /* GameHistoryView.swift */,
+				F00000000000000000000066 /* GameLibraryView.swift */,
+				F00000000000000000000068 /* GameSessionActiveView.swift */,
+				F0000000000000000000006A /* GamingModeChecklistView.swift */,
 			);
 			path = GameBooster;
 			sourceTree = "<group>";
 		};
-		C0000000000000000000006A /* JunkCleaner */ = {
+		C0000000000000000000006C /* Intro */ = {
 			isa = PBXGroup;
 			children = (
-				F0000000000000000000006B /* JunkCleanerView.swift */,
+				F0000000000000000000006D /* AppSplashView.swift */,
+				F0000000000000000000006F /* OnboardingIntroView.swift */,
+			);
+			path = Intro;
+			sourceTree = "<group>";
+		};
+		C00000000000000000000071 /* JunkCleaner */ = {
+			isa = PBXGroup;
+			children = (
+				F00000000000000000000072 /* JunkCleanerView.swift */,
 			);
 			path = JunkCleaner;
 			sourceTree = "<group>";
 		};
-		C0000000000000000000006D /* RAMCleaner */ = {
+		C00000000000000000000074 /* RAMCleaner */ = {
 			isa = PBXGroup;
 			children = (
-				F0000000000000000000006E /* RAMCleanerView.swift */,
+				F00000000000000000000075 /* RAMCleanerView.swift */,
 			);
 			path = RAMCleaner;
 			sourceTree = "<group>";
 		};
-		C00000000000000000000070 /* Scan */ = {
+		C00000000000000000000077 /* Scan */ = {
 			isa = PBXGroup;
 			children = (
-				F00000000000000000000071 /* ScanResultView.swift */,
-				F00000000000000000000073 /* SmartScanView.swift */,
+				F00000000000000000000078 /* ScanResultView.swift */,
+				F0000000000000000000007A /* SmartScanView.swift */,
 			);
 			path = Scan;
 			sourceTree = "<group>";
 		};
-		C00000000000000000000075 /* StorageManager */ = {
+		C0000000000000000000007C /* StorageManager */ = {
 			isa = PBXGroup;
 			children = (
-				F00000000000000000000076 /* DuplicatePhotosView.swift */,
-				F00000000000000000000078 /* LargeMediaView.swift */,
-				F0000000000000000000007A /* SandboxFilesManagerView.swift */,
-				F0000000000000000000007C /* StorageManagerView.swift */,
+				F0000000000000000000007D /* DuplicatePhotosView.swift */,
+				F0000000000000000000007F /* LargeMediaView.swift */,
+				F00000000000000000000081 /* SandboxFilesManagerView.swift */,
+				F00000000000000000000083 /* StorageManagerView.swift */,
 			);
 			path = StorageManager;
 			sourceTree = "<group>";
@@ -359,7 +376,7 @@
 		C00000000000000000000002 /* iCleanerProTests */ = {
 			isa = PBXGroup;
 			children = (
-				F0000000000000000000007E /* iCleanerProTests.swift */,
+				F00000000000000000000085 /* iCleanerProTests.swift */,
 			);
 			path = iCleanerProTests;
 			sourceTree = "<group>";
@@ -429,8 +446,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D00000000000000000000081 /* Assets.xcassets in Resources */,
-				D00000000000000000000084 /* Localizable.strings in Resources */,
+				D00000000000000000000088 /* Assets.xcassets in Resources */,
+				D0000000000000000000008B /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -455,47 +472,50 @@
 				D0000000000000000000001B /* CacheModels.swift in Sources */,
 				D0000000000000000000001D /* DeviceHealthModels.swift in Sources */,
 				D0000000000000000000001F /* GameBoosterModels.swift in Sources */,
-				D00000000000000000000021 /* JunkItem.swift in Sources */,
-				D00000000000000000000023 /* MemoryModels.swift in Sources */,
-				D00000000000000000000025 /* PhotoAnalysisModels.swift in Sources */,
-				D00000000000000000000027 /* ScanResultModels.swift in Sources */,
-				D00000000000000000000029 /* StorageModels.swift in Sources */,
-				D0000000000000000000002C /* CacheCleanerService.swift in Sources */,
-				D0000000000000000000002E /* DeviceMonitorService.swift in Sources */,
-				D00000000000000000000030 /* FilePickerService.swift in Sources */,
-				D00000000000000000000032 /* GameBoosterService.swift in Sources */,
-				D00000000000000000000034 /* JunkCleanerService.swift in Sources */,
-				D00000000000000000000036 /* MemoryMonitorService.swift in Sources */,
-				D00000000000000000000038 /* PhotoAnalysisService.swift in Sources */,
-				D0000000000000000000003A /* StorageManagerService.swift in Sources */,
-				D0000000000000000000003D /* AppTheme.swift in Sources */,
-				D0000000000000000000003F /* ByteFormatterUtil.swift in Sources */,
-				D00000000000000000000041 /* DiagnosticLogger.swift in Sources */,
-				D00000000000000000000043 /* ImageHasher.swift in Sources */,
-				D00000000000000000000046 /* CacheCleanerViewModel.swift in Sources */,
-				D00000000000000000000048 /* DashboardViewModel.swift in Sources */,
-				D0000000000000000000004A /* DeviceBoosterViewModel.swift in Sources */,
-				D0000000000000000000004C /* GameBoosterViewModel.swift in Sources */,
-				D0000000000000000000004E /* JunkCleanerViewModel.swift in Sources */,
-				D00000000000000000000050 /* RAMCleanerViewModel.swift in Sources */,
-				D00000000000000000000052 /* SmartScanViewModel.swift in Sources */,
-				D00000000000000000000054 /* StorageManagerViewModel.swift in Sources */,
-				D00000000000000000000058 /* CacheCleanerView.swift in Sources */,
-				D0000000000000000000005B /* DashboardView.swift in Sources */,
-				D0000000000000000000005E /* DeviceBoosterView.swift in Sources */,
-				D00000000000000000000061 /* GameBoosterDashboardView.swift in Sources */,
-				D00000000000000000000063 /* GameHistoryView.swift in Sources */,
-				D00000000000000000000065 /* GameLibraryView.swift in Sources */,
-				D00000000000000000000067 /* GameSessionActiveView.swift in Sources */,
-				D00000000000000000000069 /* GamingModeChecklistView.swift in Sources */,
-				D0000000000000000000006C /* JunkCleanerView.swift in Sources */,
-				D0000000000000000000006F /* RAMCleanerView.swift in Sources */,
-				D00000000000000000000072 /* ScanResultView.swift in Sources */,
-				D00000000000000000000074 /* SmartScanView.swift in Sources */,
-				D00000000000000000000077 /* DuplicatePhotosView.swift in Sources */,
-				D00000000000000000000079 /* LargeMediaView.swift in Sources */,
-				D0000000000000000000007B /* SandboxFilesManagerView.swift in Sources */,
-				D0000000000000000000007D /* StorageManagerView.swift in Sources */,
+				D00000000000000000000021 /* IntroSlideItem.swift in Sources */,
+				D00000000000000000000023 /* JunkItem.swift in Sources */,
+				D00000000000000000000025 /* MemoryModels.swift in Sources */,
+				D00000000000000000000027 /* PhotoAnalysisModels.swift in Sources */,
+				D00000000000000000000029 /* ScanResultModels.swift in Sources */,
+				D0000000000000000000002B /* StorageModels.swift in Sources */,
+				D0000000000000000000002E /* CacheCleanerService.swift in Sources */,
+				D00000000000000000000030 /* DeviceMonitorService.swift in Sources */,
+				D00000000000000000000032 /* FilePickerService.swift in Sources */,
+				D00000000000000000000034 /* GameBoosterService.swift in Sources */,
+				D00000000000000000000036 /* JunkCleanerService.swift in Sources */,
+				D00000000000000000000038 /* MemoryMonitorService.swift in Sources */,
+				D0000000000000000000003A /* PhotoAnalysisService.swift in Sources */,
+				D0000000000000000000003C /* StorageManagerService.swift in Sources */,
+				D0000000000000000000003F /* AppTheme.swift in Sources */,
+				D00000000000000000000041 /* ByteFormatterUtil.swift in Sources */,
+				D00000000000000000000043 /* DiagnosticLogger.swift in Sources */,
+				D00000000000000000000045 /* ImageHasher.swift in Sources */,
+				D00000000000000000000048 /* CacheCleanerViewModel.swift in Sources */,
+				D0000000000000000000004A /* DashboardViewModel.swift in Sources */,
+				D0000000000000000000004C /* DeviceBoosterViewModel.swift in Sources */,
+				D0000000000000000000004E /* GameBoosterViewModel.swift in Sources */,
+				D00000000000000000000050 /* JunkCleanerViewModel.swift in Sources */,
+				D00000000000000000000052 /* RAMCleanerViewModel.swift in Sources */,
+				D00000000000000000000054 /* SmartScanViewModel.swift in Sources */,
+				D00000000000000000000056 /* StorageManagerViewModel.swift in Sources */,
+				D0000000000000000000005A /* CacheCleanerView.swift in Sources */,
+				D0000000000000000000005D /* DashboardView.swift in Sources */,
+				D00000000000000000000060 /* DeviceBoosterView.swift in Sources */,
+				D00000000000000000000063 /* GameBoosterDashboardView.swift in Sources */,
+				D00000000000000000000065 /* GameHistoryView.swift in Sources */,
+				D00000000000000000000067 /* GameLibraryView.swift in Sources */,
+				D00000000000000000000069 /* GameSessionActiveView.swift in Sources */,
+				D0000000000000000000006B /* GamingModeChecklistView.swift in Sources */,
+				D0000000000000000000006E /* AppSplashView.swift in Sources */,
+				D00000000000000000000070 /* OnboardingIntroView.swift in Sources */,
+				D00000000000000000000073 /* JunkCleanerView.swift in Sources */,
+				D00000000000000000000076 /* RAMCleanerView.swift in Sources */,
+				D00000000000000000000079 /* ScanResultView.swift in Sources */,
+				D0000000000000000000007B /* SmartScanView.swift in Sources */,
+				D0000000000000000000007E /* DuplicatePhotosView.swift in Sources */,
+				D00000000000000000000080 /* LargeMediaView.swift in Sources */,
+				D00000000000000000000082 /* SandboxFilesManagerView.swift in Sources */,
+				D00000000000000000000084 /* StorageManagerView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -503,7 +523,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D0000000000000000000007F /* iCleanerProTests.swift in Sources */,
+				D00000000000000000000086 /* iCleanerProTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

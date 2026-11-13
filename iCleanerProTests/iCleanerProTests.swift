@@ -93,6 +93,18 @@ final class iCleanerProTests: XCTestCase {
         XCTAssertFalse(afterDelete.contains(where: { $0.id == testGame.id }))
     }
 
+    func testIntroSlideItemsIntegrity() {
+        let slides = IntroSlideItem.defaultSlides
+        XCTAssertEqual(slides.count, 4)
+        for slide in slides {
+            XCTAssertFalse(slide.title.isEmpty)
+            XCTAssertFalse(slide.subtitle.isEmpty)
+            XCTAssertFalse(slide.badgeText.isEmpty)
+            XCTAssertFalse(slide.iconName.isEmpty)
+            XCTAssertFalse(slide.gradientColors.isEmpty)
+        }
+    }
+
     private func makeGradientCGImage(reverse: Bool) -> CGImage? {
         let width = 32
         let height = 32

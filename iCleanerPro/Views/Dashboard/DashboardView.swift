@@ -6,6 +6,7 @@ struct DashboardView: View {
 
     @State private var showSmartScanSheet = false
     @State private var navigateToDeviceBooster = false
+    @State private var showIntroSheet = false
 
     var body: some View {
         NavigationStack {
@@ -24,6 +25,15 @@ struct DashboardView: View {
             .background(AppTheme.background.ignoresSafeArea())
             .navigationTitle("iCleaner Pro")
             .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        showIntroSheet = true
+                    } label: {
+                        Image(systemName: "info.circle")
+                    }
+                    .accessibilityLabel("Giới thiệu ứng dụng")
+                }
+
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         Task { await viewModel.refreshDashboard() }
@@ -42,6 +52,11 @@ struct DashboardView: View {
             }
             .task {
                 await viewModel.refreshDashboard()
+            }
+            .sheet(isPresented: $showIntroSheet) {
+                OnboardingIntroView {
+                    showIntroSheet = false
+                }
             }
             .sheet(isPresented: $showSmartScanSheet, onDismiss: {
                 Task { await viewModel.refreshDashboard() }

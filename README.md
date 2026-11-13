@@ -11,5 +11,6 @@
 - **Cache Cleaner**: Phân biệt rõ vùng Cache an toàn có thể xóa và Dữ liệu người dùng được bảo vệ.
 - **Storage Manager**: Tích hợp **PhotoKit** (Full & Limited Access), tìm ảnh trùng lặp bằng **dHash + Vision FeaturePrint**, tìm ảnh/video dung lượng lớn, và quản lý tệp qua **Files Picker (`.fileImporter`)**.
 - **Game Booster**: Giao diện Cyberpunk Neon Gaming, đồng hồ đo độ sẵn sàng của máy (Readiness Score 0-100), nút BOOST NOW tối ưu bộ nhớ trước trận, cấu hình Gaming Presets (Balanced, Performance, Battery Saver, Gaming Focus), Checklist chuẩn bị, Thư viện Game (launch URL scheme), theo dõi phiên chơi game trực tiếp (Stopwatch HUD) và lưu trữ lịch sử phiên chơi.
+- **Intro & Onboarding Walkthrough**: Màn hình AppSplashView với hiệu ứng hào quang & vòng xoay neon mượt mà, bộ thẻ Onboarding hướng dẫn người dùng lần đầu vào app (lưu trạng thái tự động bằng `@AppStorage`), và nút biểu tượng `info.circle` trên thanh tiêu đề Dashboard giúp xem lại phần giới thiệu mọi lúc.
 
 Xem chi tiết kiến trúc và hướng dẫn xuất `.ipa` tại [ARCHITECTURE_AND_IPA_GUIDE.md](./ARCHITECTURE_AND_IPA_GUIDE.md).
