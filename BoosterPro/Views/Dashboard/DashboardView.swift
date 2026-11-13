@@ -7,6 +7,7 @@ struct DashboardView: View {
     @State private var showSmartScanSheet = false
     @State private var navigateToDeviceBooster = false
     @State private var showIntroSheet = false
+    @State private var showAutoCleanSettingsSheet = false
 
     var body: some View {
         NavigationStack {
@@ -14,6 +15,7 @@ struct DashboardView: View {
                 VStack(spacing: 18) {
                     heroStatusCard
                     smartScanCTAButton
+                    autoCleanBanner
                     gameBoosterBanner
                     storageOverviewCard
                     quickActionsGrid
@@ -26,12 +28,22 @@ struct DashboardView: View {
             .navigationTitle("Booster Pro")
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    Button {
-                        showIntroSheet = true
-                    } label: {
-                        Image(systemName: "info.circle")
+                    HStack(spacing: 12) {
+                        Button {
+                            showIntroSheet = true
+                        } label: {
+                            Image(systemName: "info.circle")
+                        }
+                        .accessibilityLabel("Giới thiệu ứng dụng")
+
+                        Button {
+                            showAutoCleanSettingsSheet = true
+                        } label: {
+                            Image(systemName: "gearshape.2.fill")
+                                .foregroundColor(AppTheme.primaryAccent)
+                        }
+                        .accessibilityLabel("Cài đặt Auto Clean")
                     }
-                    .accessibilityLabel("Giới thiệu ứng dụng")
                 }
 
                 ToolbarItem(placement: .topBarTrailing) {
@@ -57,6 +69,9 @@ struct DashboardView: View {
                 OnboardingIntroView {
                     showIntroSheet = false
                 }
+            }
+            .sheet(isPresented: $showAutoCleanSettingsSheet) {
+                AutoCleanSettingsView()
             }
             .sheet(isPresented: $showSmartScanSheet, onDismiss: {
                 Task { await viewModel.refreshDashboard() }
@@ -246,6 +261,47 @@ struct DashboardView: View {
                 .buttonStyle(.plain)
             }
         }
+    }
+
+    private var autoCleanBanner: some View {
+        Button {
+            showAutoCleanSettingsSheet = true
+        } label: {
+            HStack(spacing: 14) {
+                Image(systemName: "timer")
+                    .font(.title2)
+                    .foregroundStyle(Color(hex: "#00F5A0"))
+                    .frame(width: 44, height: 44)
+                    .background(Color(hex: "#00F5A0").opacity(0.16))
+                    .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+
+                VStack(alignment: .leading, spacing: 3) {
+                    HStack(spacing: 6) {
+                        Text("Auto Clean Settings")
+                            .font(.subheadline.weight(.bold))
+                            .foregroundStyle(.primary)
+                        Text("TỰ ĐỘNG")
+                            .font(.system(size: 9, weight: .black, design: .monospaced))
+                            .foregroundStyle(Color(hex: "#00F5A0"))
+                            .padding(.horizontal, 6)
+                            .padding(.vertical, 2)
+                            .background(Color(hex: "#00F5A0").opacity(0.18))
+                            .clipShape(Capsule())
+                    }
+                    Text("Lập lịch dọn rác, cache & tối ưu tự động theo tần suất")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+
+                Spacer()
+
+                Image(systemName: "chevron.right")
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(.tertiary)
+            }
+            .premiumCard(cornerRadius: 18, padding: 14)
+        }
+        .buttonStyle(.plain)
     }
 
     private var gameBoosterBanner: some View {

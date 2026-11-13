@@ -77,6 +77,16 @@
 	</dict>
 	<key>UIFileSharingEnabled</key>
 	<true/>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>processing</string>
+	</array>
+	<key>BGTaskSchedulerPermittedIdentifiers</key>
+	<array>
+		<string>com.boosterpro.app.autoclean.refresh</string>
+		<string>com.boosterpro.app.autoclean.processing</string>
+	</array>
 	<key>UILaunchScreen</key>
 	<dict>
 		<key>UIColorName</key>

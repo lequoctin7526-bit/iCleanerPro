@@ -6,6 +6,7 @@ struct SmartGameSettingsView: View {
     @Environment(\.dismiss) private var dismiss
 
     @State private var settings: SmartGameAutomationSettings
+    @State private var showAutoCleanSettingsSheet: Bool = false
 
     init(viewModel: SmartGameManagerViewModel) {
         self.viewModel = viewModel
@@ -17,6 +18,7 @@ struct SmartGameSettingsView: View {
             ScrollView {
                 VStack(spacing: 20) {
                     automationSection
+                    autoCleanDetailCard
                     privacyNoticeCard
                 }
                 .padding(16)
@@ -38,8 +40,45 @@ struct SmartGameSettingsView: View {
                     .foregroundStyle(GamingTheme.neonGreen)
                 }
             }
+            .sheet(isPresented: $showAutoCleanSettingsSheet) {
+                AutoCleanSettingsView()
+            }
         }
         .preferredColorScheme(.dark)
+    }
+
+    private var autoCleanDetailCard: some View {
+        Button {
+            showAutoCleanSettingsSheet = true
+        } label: {
+            HStack(spacing: 14) {
+                Image(systemName: "timer")
+                    .font(.title2)
+                    .foregroundStyle(GamingTheme.neonGreen)
+                    .frame(width: 36, height: 36)
+                    .background(GamingTheme.neonGreen.opacity(0.18))
+                    .clipShape(Circle())
+
+                VStack(alignment: .leading, spacing: 3) {
+                    Text("Cấu hình Lập lịch Auto Clean")
+                        .font(.subheadline.bold())
+                        .foregroundStyle(.white)
+                    Text("Tùy biến lịch chạy nền, điều kiện pin sạc và loại file dọn")
+                        .font(.caption2)
+                        .foregroundStyle(.white.opacity(0.6))
+                }
+
+                Spacer()
+
+                Image(systemName: "chevron.right")
+                    .font(.caption.bold())
+                    .foregroundStyle(.white.opacity(0.4))
+            }
+            .padding(14)
+            .background(GamingTheme.cardBackground)
+            .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+        }
+        .buttonStyle(.plain)
     }
 
     private var automationSection: some View {

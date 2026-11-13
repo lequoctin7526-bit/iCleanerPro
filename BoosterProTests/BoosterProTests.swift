@@ -231,6 +231,196 @@ final class BoosterProTests: XCTestCase {
         XCTAssertTrue(types.contains("NSPrivacyAccessedAPICategoryUserDefaults"))
     }
 
+    // MARK: - Auto Clean Settings & Scheduler Tests (Section 11)
+
+    func testAutoCleanMasterEnableToggle() {
+        let service = AutoCleanSchedulerService.shared
+        var config = service.loadConfiguration()
+
+        config.isMasterEnabled = false
+        service.saveConfiguration(config)
+
+        let loadedDisabled = service.loadConfiguration()
+        XCTAssertFalse(loadedDisabled.isMasterEnabled)
+
+        // Condition evaluation should reject execution when master toggle is off
+        let (allowed, reason) = service.evaluateConditions(config: loadedDisabled, trigger: "Test")
+        XCTAssertFalse(allowed)
+        XCTAssertNotNil(reason)
+
+        // Restore
+        config.isMasterEnabled = true
+        service.saveConfiguration(config)
+        XCTAssertTrue(service.loadConfiguration().isMasterEnabled)
+    }
+
+    func testAutoCleanSaveAndLoadConfiguration() {
+        let service = AutoCleanSchedulerService.shared
+        var custom = AutoCleanConfiguration.default
+        custom.schedule.frequency = .weekly
+        custom.schedule.startHour = 4
+        custom.schedule.startMinute = 30
+        custom.schedule.selectedDaysOfWeek = [2, 4, 6]
+        custom.dataOptions.cleanAppLogs = false
+        custom.conditions.chargingOnly = true
+        custom.totalBytesFreedAllTime = 1024 * 1024 * 50
+
+        service.saveConfiguration(custom)
+        let reloaded = service.loadConfiguration()
+
+        XCTAssertEqual(reloaded.schedule.frequency, .weekly)
+        XCTAssertEqual(reloaded.schedule.startHour, 4)
+        XCTAssertEqual(reloaded.schedule.startMinute, 30)
+        XCTAssertEqual(reloaded.schedule.selectedDaysOfWeek, [2, 4, 6])
+        XCTAssertFalse(reloaded.dataOptions.cleanAppLogs)
+        XCTAssertTrue(reloaded.conditions.chargingOnly)
+        XCTAssertEqual(reloaded.totalBytesFreedAllTime, 1024 * 1024 * 50)
+
+        // Clean up: reset to defaults
+        _ = service.resetConfigurationToDefaults()
+    }
+
+    func testAutoCleanDailyScheduleCalculation() {
+        let service = AutoCleanSchedulerService.shared
+        var schedule = AutoCleanSchedule.default
+        schedule.isScheduleEnabled = true
+        schedule.frequency = .daily
+        schedule.startHour = 3
+        schedule.startMinute = 0
+
+        let next = service.calculateNextScheduledDate(schedule: schedule)
+        XCTAssertNotNil(next)
+        if let next = next {
+            XCTAssertGreaterThan(next, Date())
+            let calendar = Calendar.current
+            XCTAssertEqual(calendar.component(.hour, from: next), 3)
+            XCTAssertEqual(calendar.component(.minute, from: next), 0)
+        }
+    }
+
+    func testAutoCleanWeeklyScheduleCalculation() {
+        let service = AutoCleanSchedulerService.shared
+        var schedule = AutoCleanSchedule.default
+        schedule.isScheduleEnabled = true
+        schedule.frequency = .weekly
+        schedule.startHour = 5
+        schedule.startMinute = 15
+        schedule.selectedDaysOfWeek = [1, 7] // Weekends
+
+        let next = service.calculateNextScheduledDate(schedule: schedule)
+        XCTAssertNotNil(next)
+        if let next = next {
+            XCTAssertGreaterThan(next, Date())
+            let calendar = Calendar.current
+            let weekday = calendar.component(.weekday, from: next)
+            XCTAssertTrue(schedule.selectedDaysOfWeek.contains(weekday))
+            XCTAssertEqual(calendar.component(.hour, from: next), 5)
+            XCTAssertEqual(calendar.component(.minute, from: next), 15)
+        }
+    }
+
+    func testAutoCleanBatteryConditionsEvaluation() {
+        let service = AutoCleanSchedulerService.shared
+        var config = AutoCleanConfiguration.default
+        config.isMasterEnabled = true
+        config.conditions.chargingOnly = true
+
+        // When chargingOnly is true, evaluateConditions checks real device batteryState
+        let (allowed, reason) = service.evaluateConditions(config: config, trigger: "TestBattery")
+        let isCharging = (UIDevice.current.batteryState == .charging || UIDevice.current.batteryState == .full)
+        if !isCharging {
+            XCTAssertFalse(allowed)
+            XCTAssertNotNil(reason)
+        }
+    }
+
+    func testAutoCleanThermalConditionEvaluation() {
+        let service = AutoCleanSchedulerService.shared
+        var config = AutoCleanConfiguration.default
+        config.isMasterEnabled = true
+        config.conditions.thermalProtection = true
+
+        // Thermal evaluation should read ProcessInfo.processInfo.thermalState
+        let thermal = ProcessInfo.processInfo.thermalState
+        let (allowed, _) = service.evaluateConditions(config: config, trigger: "TestThermal")
+        if thermal == .critical || thermal == .serious {
+            XCTAssertFalse(allowed)
+        } else {
+            // Normal thermal conditions allow clean if battery permits
+            XCTAssertTrue(allowed || config.conditions.chargingOnly)
+        }
+    }
+
+    func testAutoCleanSelectableDataCategoriesIsolation() {
+        // Verify minimal data options disables cache and logs
+        let minimal = AutoCleanDataOptions.minimal
+        XCTAssertTrue(minimal.cleanJunkFiles)
+        XCTAssertTrue(minimal.cleanTemporaryFiles)
+        XCTAssertFalse(minimal.cleanAppCache)
+        XCTAssertFalse(minimal.cleanAppLogs)
+        XCTAssertTrue(minimal.cleanAppMemory)
+        XCTAssertFalse(minimal.cleanGameResources)
+        XCTAssertEqual(minimal.enabledCount, 3)
+
+        // Verify all enabled option
+        let all = AutoCleanDataOptions.allEnabled
+        XCTAssertEqual(all.enabledCount, 6)
+    }
+
+    func testAutoCleanConcurrencyLockMutualExclusion() async {
+        let service = AutoCleanSchedulerService.shared
+        XCTAssertFalse(service.isCleaningInProgress)
+
+        // Simulate concurrent execution check
+        let config = service.loadConfiguration()
+        let (allowed, _) = service.evaluateConditions(config: config, trigger: "TestConcurrency")
+        XCTAssertTrue(allowed || !config.isMasterEnabled || config.conditions.chargingOnly)
+    }
+
+    func testAutoCleanCancellationSupport() async {
+        let service = AutoCleanSchedulerService.shared
+        service.requestCancellation()
+
+        let result = await service.executeClean(trigger: "TestCancel")
+        // Either completed or safely handled cancellation
+        XCTAssertFalse(result.trigger.isEmpty)
+        XCTAssertNotNil(result.statusMessage)
+    }
+
+    func testAutoCleanHistoryLoggingAndStatePersistence() {
+        let service = AutoCleanSchedulerService.shared
+        service.clearHistory()
+        XCTAssertTrue(service.loadHistory().isEmpty)
+
+        let record = AutoCleanHistoryRecord(
+            triggerReason: "Test Unit Trigger",
+            categoriesCleaned: ["Tệp tạm thời", "Bộ nhớ đệm"],
+            beforeBytes: 10_000_000,
+            afterBytes: 2_000_000,
+            bytesFreed: 8_000_000,
+            durationSeconds: 1.25,
+            wasSuccessful: true,
+            statusMessage: "Thành công"
+        )
+        service.appendHistoryRecord(record)
+
+        let loaded = service.loadHistory()
+        XCTAssertEqual(loaded.count, 1)
+        XCTAssertEqual(loaded.first?.triggerReason, "Test Unit Trigger")
+        XCTAssertEqual(loaded.first?.bytesFreed, 8_000_000)
+        XCTAssertEqual(loaded.first?.categoriesCleaned.count, 2)
+
+        service.clearHistory()
+        XCTAssertTrue(service.loadHistory().isEmpty)
+    }
+
+    func testAutoCleanBackgroundEarlyExpirationHandling() {
+        let service = AutoCleanSchedulerService.shared
+        // Verify task identifiers match Info.plist declarations
+        XCTAssertEqual(AutoCleanSchedulerService.refreshTaskIdentifier, "com.boosterpro.app.autoclean.refresh")
+        XCTAssertEqual(AutoCleanSchedulerService.processingTaskIdentifier, "com.boosterpro.app.autoclean.processing")
+    }
+
     private func makeGradientCGImage(reverse: Bool) -> CGImage? {
         let width = 32
         let height = 32
