@@ -228,7 +228,7 @@ final class AutoCleanSchedulerService {
             let junkItems = await junkService.scanSandboxJunk()
             var safeItems: [JunkItem] = []
             for item in junkItems {
-                if item.type == .tempFiles || item.type == .crashLogs {
+                if item.category == .temporaryFiles || item.category == .orphanedCaches || item.category == .importStaging {
                     safeItems.append(item)
                 }
             }
