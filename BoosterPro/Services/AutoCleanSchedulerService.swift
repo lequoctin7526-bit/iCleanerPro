@@ -225,10 +225,15 @@ final class AutoCleanSchedulerService {
         // Step A: Junk Files (tmp/)
         if config.dataOptions.cleanJunkFiles || config.dataOptions.cleanTemporaryFiles {
             progressCallback?("Đang dọn tệp rác và tệp tạm thời...", 0.3)
-            let junkItems = junkService.scanSandboxJunk()
-            let safeItems = junkItems.filter { $0.type == .tempFiles || $0.type == .crashLogs }
+            let junkItems = await junkService.scanSandboxJunk()
+            var safeItems: [JunkItem] = []
+            for item in junkItems {
+                if item.type == .tempFiles || item.type == .crashLogs {
+                    safeItems.append(item)
+                }
+            }
             if !safeItems.isEmpty {
-                _ = junkService.cleanSelectedItems(safeItems)
+                _ = await junkService.cleanSelectedItems(safeItems)
                 categoriesCleaned.append("Tệp tạm thời (tmp)")
             }
         }
@@ -243,7 +248,7 @@ final class AutoCleanSchedulerService {
             let partitions = cacheService.auditCachePartitions()
             let deletable = partitions.filter { $0.isDeletable }
             if !deletable.isEmpty {
-                _ = cacheService.cleanSelectedCaches(deletable)
+                _ = await cacheService.cleanSelectedCaches(deletable)
                 categoriesCleaned.append("Bộ nhớ đệm (Caches)")
             }
         }

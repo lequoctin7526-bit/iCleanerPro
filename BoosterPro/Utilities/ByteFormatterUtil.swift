@@ -23,6 +23,14 @@ enum ByteFormatterUtil {
         fileFormatter.string(fromByteCount: max(0, bytes))
     }
 
+    static func format(_ bytes: Int64) -> String {
+        formatFileSize(bytes)
+    }
+
+    static func format(_ bytes: UInt64) -> String {
+        formatFileSize(bytes)
+    }
+
     static func formatFileSize(_ bytes: UInt64) -> String {
         let clamped = bytes > UInt64(Int64.max) ? Int64.max : Int64(bytes)
         return fileFormatter.string(fromByteCount: clamped)

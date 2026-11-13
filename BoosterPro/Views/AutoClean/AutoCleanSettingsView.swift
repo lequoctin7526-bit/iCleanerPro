@@ -1,10 +1,25 @@
 import SwiftUI
 
+struct DayOfWeekItem: Identifiable {
+    let id: Int
+    let name: String
+}
+
 /// Main screen for Auto Clean Settings – Automatic Cleanup Scheduler.
 /// Meets all requirements of Sections 1, 2, 3, 4, 8, 9, and 10.
 struct AutoCleanSettingsView: View {
     @StateObject private var viewModel = AutoCleanSettingsViewModel()
     @Environment(\.dismiss) private var dismiss
+
+    private let weekDays: [DayOfWeekItem] = [
+        DayOfWeekItem(id: 1, name: "CN"),
+        DayOfWeekItem(id: 2, name: "T2"),
+        DayOfWeekItem(id: 3, name: "T3"),
+        DayOfWeekItem(id: 4, name: "T4"),
+        DayOfWeekItem(id: 5, name: "T5"),
+        DayOfWeekItem(id: 6, name: "T6"),
+        DayOfWeekItem(id: 7, name: "T7")
+    ]
 
     var body: some View {
         NavigationStack {
@@ -217,15 +232,12 @@ struct AutoCleanSettingsView: View {
                                 .foregroundColor(.secondary)
 
                             HStack(spacing: 6) {
-                                ForEach([
-                                    (1, "CN"), (2, "T2"), (3, "T3"),
-                                    (4, "T4"), (5, "T5"), (6, "T6"), (7, "T7")
-                                ], id: \.0) { day, name in
-                                    let isSelected = viewModel.config.schedule.selectedDaysOfWeek.contains(day)
+                                ForEach(weekDays) { item in
+                                    let isSelected = viewModel.config.schedule.selectedDaysOfWeek.contains(item.id)
                                     Button {
-                                        viewModel.toggleDayOfWeek(day)
+                                        viewModel.toggleDayOfWeek(item.id)
                                     } label: {
-                                        Text(name)
+                                        Text(item.name)
                                             .font(.caption.bold())
                                             .foregroundColor(isSelected ? .black : .primary)
                                             .frame(maxWidth: .infinity)
