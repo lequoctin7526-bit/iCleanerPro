@@ -36,7 +36,9 @@ jobs:
             CODE_SIGN_IDENTITY="" \
             AD_HOC_CODE_SIGNING_ALLOWED=YES > xcodebuild.log 2>&1 || {
               echo "=== XCODEBUILD FAILED ==="
-              cat xcodebuild.log | grep -E "error:|fatal error:|failed|Signing" -C 3 || tail -n 60 xcodebuild.log
+              while IFS= read -r line; do
+                echo "::error::$line"
+              done < <(grep -E "error:|fatal error:|BUILD FAILED" xcodebuild.log | head -n 30)
               exit 1
             }
 
