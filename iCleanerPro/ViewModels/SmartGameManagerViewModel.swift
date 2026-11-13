@@ -2,65 +2,65 @@ import Foundation
 import SwiftUI
 import Combine
 
-public enum GameFilter: String, CaseIterable, Identifiable {
+enum GameFilter: String, CaseIterable, Identifiable {
     case all = "Tất cả"
     case updateAvailable = "Có bản cập nhật"
     case installed = "Đã cài đặt"
 
-    public var id: String { rawValue }
+    var id: String { rawValue }
 }
 
-public enum GameSortOption: String, CaseIterable, Identifiable {
+enum GameSortOption: String, CaseIterable, Identifiable {
     case recent = "Gần đây nhất"
     case name = "Tên (A-Z)"
     case version = "Phiên bản"
     case playCount = "Chơi nhiều nhất"
 
-    public var id: String { rawValue }
+    var id: String { rawValue }
 }
 
 @MainActor
-public final class SmartGameManagerViewModel: ObservableObject {
-    @Published public var games: [SmartGameModel] = []
-    @Published public var searchText: String = ""
-    @Published public var selectedFilter: GameFilter = .all
-    @Published public var selectedSort: GameSortOption = .recent
+final class SmartGameManagerViewModel: ObservableObject {
+    @Published var games: [SmartGameModel] = []
+    @Published var searchText: String = ""
+    @Published var selectedFilter: GameFilter = .all
+    @Published var selectedSort: GameSortOption = .recent
 
-    @Published public var isLoading: Bool = false
-    @Published public var isCheckingUpdates: Bool = false
-    @Published public var statusMessage: String = ""
+    @Published var isLoading: Bool = false
+    @Published var isCheckingUpdates: Bool = false
+    @Published var statusMessage: String = ""
 
     // Sheets & modals
-    @Published public var showAddGameSheet: Bool = false
-    @Published public var showSettingsSheet: Bool = false
-    @Published public var showOptimizationModal: Bool = false
-    @Published public var showPostCleanSummary: Bool = false
-    @Published public var showManualLaunchGuidance: Bool = false
-    @Published public var selectedGameForGuidance: SmartGameModel? = nil
+    @Published var showAddGameSheet: Bool = false
+    @Published var showSettingsSheet: Bool = false
+    @Published var showOptimizationModal: Bool = false
+    @Published var showPostCleanSummary: Bool = false
+    @Published var showManualLaunchGuidance: Bool = false
+    @Published var selectedGameForGuidance: SmartGameModel? = nil
 
     // Active optimization state
-    @Published public var activeOptimizingGame: SmartGameModel? = nil
-    @Published public var optimizationProgressStep: Int = 0 // 0: Check, 1: Clean, 2: Done
-    @Published public var lastOptimizationSnapshot: GameOptimizationSnapshot? = nil
+    @Published var activeOptimizingGame: SmartGameModel? = nil
+    @Published var optimizationProgressStep: Int = 0 // 0: Check, 1: Clean, 2: Done
+    @Published var lastOptimizationSnapshot: GameOptimizationSnapshot? = nil
 
     // Active gaming session state
-    @Published public var activeSessionGame: SmartGameModel? = nil
-    @Published public var sessionElapsedSeconds: TimeInterval = 0
-    @Published public var lastCleanedSession: GameSessionRecord? = nil
+    @Published var activeSessionGame: SmartGameModel? = nil
+    @Published var sessionElapsedSeconds: TimeInterval = 0
+    @Published var lastCleanedSession: GameSessionRecord? = nil
 
-    @Published public var automationSettings: SmartGameAutomationSettings = .default
+    @Published var automationSettings: SmartGameAutomationSettings = .default
 
     private let service = SmartGameManagerService.shared
     private var sessionTimer: AnyCancellable?
     private var sessionStartDate: Date?
 
-    public init() {
+    init() {
         loadSettings()
         loadLibrary()
     }
 
     // MARK: - Computed Properties
-    public var filteredGames: [SmartGameModel] {
+    var filteredGames: [SmartGameModel] {
         var list = games
 
         // Filter by category / status
@@ -98,35 +98,35 @@ public final class SmartGameManagerViewModel: ObservableObject {
         return list
     }
 
-    public var updatesCount: Int {
+    var updatesCount: Int {
         games.filter { $0.hasUpdateAvailable }.count
     }
 
-    public var installedCount: Int {
+    var installedCount: Int {
         games.filter { $0.isInstalled }.count
     }
 
-    public var isSessionActive: Bool {
+    var isSessionActive: Bool {
         activeSessionGame != nil
     }
 
-    public var formattedSessionDuration: String {
+    var formattedSessionDuration: String {
         let mins = Int(sessionElapsedSeconds) / 60
         let secs = Int(sessionElapsedSeconds) % 60
         return String(format: "%02d:%02d", mins, secs)
     }
 
     // MARK: - Library Loading & Update Check
-    public func loadSettings() {
+    func loadSettings() {
         automationSettings = service.loadSettings()
     }
 
-    public func saveSettings(_ settings: SmartGameAutomationSettings) {
+    func saveSettings(_ settings: SmartGameAutomationSettings) {
         automationSettings = settings
         service.saveSettings(settings)
     }
 
-    public func loadLibrary() {
+    func loadLibrary() {
         isLoading = true
         var loaded = service.loadGames()
 
@@ -148,7 +148,7 @@ public final class SmartGameManagerViewModel: ObservableObject {
         }
     }
 
-    public func checkAllUpdates() async {
+    func checkAllUpdates() async {
         guard !isCheckingUpdates else { return }
         isCheckingUpdates = true
         statusMessage = "Đang kiểm tra App Store..."
@@ -161,7 +161,7 @@ public final class SmartGameManagerViewModel: ObservableObject {
     }
 
     // MARK: - Launch & Play Flow
-    public func playGame(_ game: SmartGameModel) {
+    func playGame(_ game: SmartGameModel) {
         if automationSettings.autoOptimizeBeforePlay {
             activeOptimizingGame = game
             optimizationProgressStep = 0
@@ -215,7 +215,7 @@ public final class SmartGameManagerViewModel: ObservableObject {
             }
     }
 
-    public func endActiveSession() {
+    func endActiveSession() {
         guard let game = activeSessionGame else { return }
         sessionTimer?.cancel()
         sessionTimer = nil
@@ -240,21 +240,21 @@ public final class SmartGameManagerViewModel: ObservableObject {
     }
 
     // MARK: - Actions
-    public func openAppStore(for game: SmartGameModel) {
+    func openAppStore(for game: SmartGameModel) {
         service.openAppStore(for: game)
     }
 
-    public func addGame(_ game: SmartGameModel) {
+    func addGame(_ game: SmartGameModel) {
         let updated = service.addGame(game)
         games = updated
     }
 
-    public func deleteGame(id: UUID) {
+    func deleteGame(id: UUID) {
         let updated = service.deleteGame(id: id)
         games = updated
     }
 
-    public func updateInstalledVersion(game: SmartGameModel, newVersion: String) {
+    func updateInstalledVersion(game: SmartGameModel, newVersion: String) {
         var copy = game
         copy.installedVersion = newVersion
         let updated = service.updateGame(copy)

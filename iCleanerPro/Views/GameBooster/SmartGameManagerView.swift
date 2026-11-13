@@ -3,13 +3,13 @@ import SwiftUI
 /// Master view for the Smart Game Manager module.
 /// Provides automatic game detection, App Store update tracking, 1-tap play,
 /// pre-game optimization, and auto clean after gaming.
-public struct SmartGameManagerView: View {
+struct SmartGameManagerView: View {
     @StateObject private var viewModel = SmartGameManagerViewModel()
     @Environment(\.dismiss) private var dismiss
 
-    public init() {}
+    init() {}
 
-    public var body: some View {
+    var body: some View {
         NavigationStack {
             ZStack {
                 GamingTheme.darkBackground.ignoresSafeArea()

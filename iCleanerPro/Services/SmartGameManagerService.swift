@@ -4,8 +4,8 @@ import UserNotifications
 
 /// Core service handling automated game management, App Store version tracking,
 /// installation detection, and pre/post game optimizations using official Apple APIs.
-public final class SmartGameManagerService: @unchecked Sendable {
-    public static let shared = SmartGameManagerService()
+final class SmartGameManagerService: @unchecked Sendable {
+    static let shared = SmartGameManagerService()
 
     private let libraryStorageKey = "iCleanerPro_smart_games_library_v1"
     private let settingsStorageKey = "iCleanerPro_smart_game_settings_v1"
@@ -16,10 +16,10 @@ public final class SmartGameManagerService: @unchecked Sendable {
     private let storageService = StorageManagerService()
     private let cacheService = CacheCleanerService()
 
-    public init() {}
+    init() {}
 
     // MARK: - Library Persistence
-    public func loadGames() -> [SmartGameModel] {
+    func loadGames() -> [SmartGameModel] {
         if let data = UserDefaults.standard.data(forKey: libraryStorageKey),
            let list = try? JSONDecoder().decode([SmartGameModel].self, from: data) {
             return list
@@ -29,13 +29,13 @@ public final class SmartGameManagerService: @unchecked Sendable {
         return defaults
     }
 
-    public func saveGames(_ games: [SmartGameModel]) {
+    func saveGames(_ games: [SmartGameModel]) {
         if let data = try? JSONEncoder().encode(games) {
             UserDefaults.standard.set(data, forKey: libraryStorageKey)
         }
     }
 
-    public func addGame(_ game: SmartGameModel) -> [SmartGameModel] {
+    func addGame(_ game: SmartGameModel) -> [SmartGameModel] {
         var current = loadGames()
         if let idx = current.firstIndex(where: { $0.bundleId == game.bundleId || $0.appStoreId == game.appStoreId }) {
             current[idx] = game
@@ -46,14 +46,14 @@ public final class SmartGameManagerService: @unchecked Sendable {
         return current
     }
 
-    public func deleteGame(id: UUID) -> [SmartGameModel] {
+    func deleteGame(id: UUID) -> [SmartGameModel] {
         var current = loadGames()
         current.removeAll { $0.id == id }
         saveGames(current)
         return current
     }
 
-    public func updateGame(_ game: SmartGameModel) -> [SmartGameModel] {
+    func updateGame(_ game: SmartGameModel) -> [SmartGameModel] {
         var current = loadGames()
         if let idx = current.firstIndex(where: { $0.id == game.id }) {
             current[idx] = game
@@ -63,7 +63,7 @@ public final class SmartGameManagerService: @unchecked Sendable {
     }
 
     // MARK: - Settings Persistence
-    public func loadSettings() -> SmartGameAutomationSettings {
+    func loadSettings() -> SmartGameAutomationSettings {
         if let data = UserDefaults.standard.data(forKey: settingsStorageKey),
            let settings = try? JSONDecoder().decode(SmartGameAutomationSettings.self, from: data) {
             return settings
@@ -71,7 +71,7 @@ public final class SmartGameManagerService: @unchecked Sendable {
         return .default
     }
 
-    public func saveSettings(_ settings: SmartGameAutomationSettings) {
+    func saveSettings(_ settings: SmartGameAutomationSettings) {
         if let data = try? JSONEncoder().encode(settings) {
             UserDefaults.standard.set(data, forKey: settingsStorageKey)
         }
@@ -80,7 +80,7 @@ public final class SmartGameManagerService: @unchecked Sendable {
     // MARK: - Game Installation Detection
     /// Uses UIApplication.canOpenURL to check if the game scheme is supported.
     @MainActor
-    public func isGameInstalled(_ game: SmartGameModel) -> Bool {
+    func isGameInstalled(_ game: SmartGameModel) -> Bool {
         guard let scheme = game.urlScheme,
               !scheme.trimmingCharacters(in: .whitespaces).isEmpty,
               let url = URL(string: scheme) else {
@@ -91,7 +91,7 @@ public final class SmartGameManagerService: @unchecked Sendable {
 
     /// Automatically scans and updates installation status for all games in the library.
     @MainActor
-    public func autoDetectInstallationStatus() -> [SmartGameModel] {
+    func autoDetectInstallationStatus() -> [SmartGameModel] {
         var current = loadGames()
         for i in 0..<current.count {
             if let scheme = current[i].urlScheme,
@@ -106,7 +106,7 @@ public final class SmartGameManagerService: @unchecked Sendable {
 
     // MARK: - Update Checker
     /// Checks App Store versions for games via public iTunes API.
-    public func checkUpdates(for games: [SmartGameModel]) async -> [SmartGameModel] {
+    func checkUpdates(for games: [SmartGameModel]) async -> [SmartGameModel] {
         var updatedList = games
         var newlyFoundUpdates = 0
 
@@ -156,7 +156,7 @@ public final class SmartGameManagerService: @unchecked Sendable {
 
     // MARK: - Auto Pre-Game Optimization
     /// Runs multi-step optimization before game launch.
-    public func executePreGameOptimization(for game: SmartGameModel) async -> GameOptimizationSnapshot {
+    func executePreGameOptimization(for game: SmartGameModel) async -> GameOptimizationSnapshot {
         let beforeRAM = memoryService.captureSnapshot()
         let beforeStorage = storageService.fetchDeviceStorageInfo()
 
@@ -193,7 +193,7 @@ public final class SmartGameManagerService: @unchecked Sendable {
 
     // MARK: - Auto Post-Game Clean
     /// Automatically cleans up iCleaner Pro temp caches after gaming session ends and saves session.
-    public func executePostGameAutoClean(
+    func executePostGameAutoClean(
         game: SmartGameModel,
         duration: TimeInterval,
         presetName: String = "Cân bằng"
@@ -234,7 +234,7 @@ public final class SmartGameManagerService: @unchecked Sendable {
 
     // MARK: - Game Launcher
     @MainActor
-    public func launchGame(_ game: SmartGameModel, completion: @escaping (Bool) -> Void) {
+    func launchGame(_ game: SmartGameModel, completion: @escaping (Bool) -> Void) {
         guard let scheme = game.urlScheme,
               !scheme.trimmingCharacters(in: .whitespaces).isEmpty,
               let url = URL(string: scheme) else {
@@ -252,7 +252,7 @@ public final class SmartGameManagerService: @unchecked Sendable {
     }
 
     @MainActor
-    public func openAppStore(for game: SmartGameModel) {
+    func openAppStore(for game: SmartGameModel) {
         var targetUrl: URL?
         if !game.appStoreId.isEmpty, let url = URL(string: "itms-apps://itunes.apple.com/app/id\(game.appStoreId)") {
             targetUrl = url

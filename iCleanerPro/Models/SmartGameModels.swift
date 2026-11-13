@@ -3,8 +3,8 @@ import SwiftUI
 
 // MARK: - Version Comparator Utility
 /// Safely compares semantic versions (e.g., "1.54.2" vs "1.55.0") using integer components.
-public enum VersionComparator {
-    public static func isNewer(storeVersion: String, installedVersion: String) -> Bool {
+enum VersionComparator {
+    static func isNewer(storeVersion: String, installedVersion: String) -> Bool {
         let storeComponents = parse(storeVersion)
         let installedComponents = parse(installedVersion)
 
@@ -28,28 +28,28 @@ public enum VersionComparator {
 
 // MARK: - Smart Game Model
 /// Full entity representing a game managed by the Smart Game Manager.
-public struct SmartGameModel: Identifiable, Codable, Hashable {
-    public let id: UUID
-    public var name: String
-    public var bundleId: String
-    public var appStoreId: String
-    public var urlScheme: String?
-    public var category: GameCategory
-    public var installedVersion: String
-    public var latestStoreVersion: String?
-    public var appStoreUrl: String?
-    public var iconUrl: String?
-    public var iconSymbol: String
-    public var colorHex: String
-    public var fileSizeBytes: Int64?
-    public var releaseNotes: String?
-    public var isInstalled: Bool
-    public var lastCheckedDate: Date?
-    public var lastPlayedDate: Date?
-    public var playCount: Int
-    public var customNotes: String?
+struct SmartGameModel: Identifiable, Codable, Hashable {
+    let id: UUID
+    var name: String
+    var bundleId: String
+    var appStoreId: String
+    var urlScheme: String?
+    var category: GameCategory
+    var installedVersion: String
+    var latestStoreVersion: String?
+    var appStoreUrl: String?
+    var iconUrl: String?
+    var iconSymbol: String
+    var colorHex: String
+    var fileSizeBytes: Int64?
+    var releaseNotes: String?
+    var isInstalled: Bool
+    var lastCheckedDate: Date?
+    var lastPlayedDate: Date?
+    var playCount: Int
+    var customNotes: String?
 
-    public init(
+    init(
         id: UUID = UUID(),
         name: String,
         bundleId: String,
@@ -92,12 +92,12 @@ public struct SmartGameModel: Identifiable, Codable, Hashable {
     }
 
     /// True if App Store reports a newer version than current installed version.
-    public var hasUpdateAvailable: Bool {
+    var hasUpdateAvailable: Bool {
         guard let latest = latestStoreVersion, !latest.isEmpty else { return false }
         return VersionComparator.isNewer(storeVersion: latest, installedVersion: installedVersion)
     }
 
-    public var formattedSize: String {
+    var formattedSize: String {
         guard let bytes = fileSizeBytes, bytes > 0 else { return "N/A" }
         return ByteFormatterUtil.formatFileSize(bytes)
     }
@@ -105,42 +105,42 @@ public struct SmartGameModel: Identifiable, Codable, Hashable {
 
 // MARK: - App Store iTunes Search API Models
 /// Apple Public iTunes Search/Lookup response root.
-public struct AppStoreLookupResponse: Codable {
-    public let resultCount: Int
-    public let results: [AppStoreLookupItem]
+struct AppStoreLookupResponse: Codable {
+    let resultCount: Int
+    let results: [AppStoreLookupItem]
 }
 
-public struct AppStoreLookupItem: Codable, Identifiable, Hashable {
-    public var id: Int { trackId }
-    public let trackId: Int
-    public let trackName: String
-    public let bundleId: String?
-    public let version: String
-    public let artworkUrl100: String?
-    public let artworkUrl512: String?
-    public let trackViewUrl: String?
-    public let fileSizeBytes: String?
-    public let releaseNotes: String?
-    public let primaryGenreName: String?
-    public let sellerName: String?
-    public let currentVersionReleaseDate: String?
+struct AppStoreLookupItem: Codable, Identifiable, Hashable {
+    var id: Int { trackId }
+    let trackId: Int
+    let trackName: String
+    let bundleId: String?
+    let version: String
+    let artworkUrl100: String?
+    let artworkUrl512: String?
+    let trackViewUrl: String?
+    let fileSizeBytes: String?
+    let releaseNotes: String?
+    let primaryGenreName: String?
+    let sellerName: String?
+    let currentVersionReleaseDate: String?
 
-    public var parsedFileSizeBytes: Int64? {
+    var parsedFileSizeBytes: Int64? {
         guard let s = fileSizeBytes else { return nil }
         return Int64(s)
     }
 }
 
 // MARK: - Smart Automation Settings
-public struct SmartGameAutomationSettings: Codable, Equatable {
-    public var autoDetectGames: Bool
-    public var autoCheckUpdates: Bool
-    public var autoOptimizeBeforePlay: Bool
-    public var autoCleanAfterGaming: Bool
-    public var gamingFocusRecommendations: Bool
-    public var updateNotifications: Bool
+struct SmartGameAutomationSettings: Codable, Equatable {
+    var autoDetectGames: Bool
+    var autoCheckUpdates: Bool
+    var autoOptimizeBeforePlay: Bool
+    var autoCleanAfterGaming: Bool
+    var gamingFocusRecommendations: Bool
+    var updateNotifications: Bool
 
-    public static let `default` = SmartGameAutomationSettings(
+    static let `default` = SmartGameAutomationSettings(
         autoDetectGames: true,
         autoCheckUpdates: true,
         autoOptimizeBeforePlay: true,
@@ -151,8 +151,8 @@ public struct SmartGameAutomationSettings: Codable, Equatable {
 }
 
 // MARK: - Preset Popular Games Catalog
-public struct GamePresetCatalog {
-    public static let presets: [SmartGameModel] = [
+struct GamePresetCatalog {
+    static let presets: [SmartGameModel] = [
         SmartGameModel(
             name: "Liên Quân Mobile",
             bundleId: "com.garena.game.kgvn",

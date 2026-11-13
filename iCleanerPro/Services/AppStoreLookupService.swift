@@ -2,17 +2,17 @@ import Foundation
 
 /// Service to query official Apple public iTunes Search & Lookup APIs.
 /// 100% compliant with Apple terms: no API keys required, safe HTTPS queries.
-public final class AppStoreLookupService: @unchecked Sendable {
-    public static let shared = AppStoreLookupService()
+final class AppStoreLookupService: @unchecked Sendable {
+    static let shared = AppStoreLookupService()
 
     private let session: URLSession
 
-    public init(session: URLSession = .shared) {
+    init(session: URLSession = .shared) {
         self.session = session
     }
 
     /// Looks up an app by its numeric App Store ID (trackId).
-    public func lookup(appStoreId: String, country: String = "vn") async throws -> AppStoreLookupItem? {
+    func lookup(appStoreId: String, country: String = "vn") async throws -> AppStoreLookupItem? {
         guard let encodedId = appStoreId.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
               let url = URL(string: "https://itunes.apple.com/lookup?id=\(encodedId)&country=\(country)&entity=software") else {
             return nil
@@ -32,7 +32,7 @@ public final class AppStoreLookupService: @unchecked Sendable {
     }
 
     /// Looks up an app by its bundle identifier.
-    public func lookup(bundleId: String, country: String = "vn") async throws -> AppStoreLookupItem? {
+    func lookup(bundleId: String, country: String = "vn") async throws -> AppStoreLookupItem? {
         guard let encodedBundle = bundleId.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
               let url = URL(string: "https://itunes.apple.com/lookup?bundleId=\(encodedBundle)&country=\(country)&entity=software") else {
             return nil
@@ -51,7 +51,7 @@ public final class AppStoreLookupService: @unchecked Sendable {
     }
 
     /// Searches apps on App Store by keyword query.
-    public func search(term: String, country: String = "vn", limit: Int = 15) async throws -> [AppStoreLookupItem] {
+    func search(term: String, country: String = "vn", limit: Int = 15) async throws -> [AppStoreLookupItem] {
         guard !term.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
               let encodedTerm = term.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
               let url = URL(string: "https://itunes.apple.com/search?term=\(encodedTerm)&entity=software&country=\(country)&limit=\(limit)") else {
