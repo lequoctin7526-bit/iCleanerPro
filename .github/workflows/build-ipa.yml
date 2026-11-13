@@ -23,6 +23,7 @@ jobs:
           rm -rf ./build
           mkdir -p ./build
 
+          set -o pipefail
           xcodebuild clean build \
             -project iCleanerPro.xcodeproj \
             -scheme iCleanerPro \
@@ -36,7 +37,13 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGN_IDENTITY="" \
-            AD_HOC_CODE_SIGNING_ALLOWED=YES
+            AD_HOC_CODE_SIGNING_ALLOWED=YES 2>&1 | tee xcodebuild.log || {
+              echo "### ❌ xcodebuild Error Log" >> $GITHUB_STEP_SUMMARY
+              echo '```text' >> $GITHUB_STEP_SUMMARY
+              tail -n 80 xcodebuild.log >> $GITHUB_STEP_SUMMARY
+              echo '```' >> $GITHUB_STEP_SUMMARY
+              exit 1
+            }
 
           APP_BUNDLE="$(find ./build/Derived -name 'iCleanerPro.app' -type d | head -n 1)"
           if [ -z "$APP_BUNDLE" ]; then
