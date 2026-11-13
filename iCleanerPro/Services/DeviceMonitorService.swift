@@ -59,9 +59,7 @@ final class DeviceMonitorService {
 
         defer {
             let size = vm_size_t(Int(threadCount) * MemoryLayout<thread_t>.stride)
-            if let ptr = threads {
-                vm_deallocate(mach_task_self_, vm_address_t(UInt(bitPattern: ptr)), size)
-            }
+            vm_deallocate(mach_task_self_, vm_address_t(UInt(bitPattern: threads)), size)
         }
 
         var totalCPU: Double = 0
