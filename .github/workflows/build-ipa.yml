@@ -32,9 +32,11 @@ jobs:
             ARCHS=arm64 \
             ONLY_ACTIVE_ARCH=NO \
             SYMROOT="$(pwd)/build/Derived" \
+            CODE_SIGN_STYLE=Manual \
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGN_IDENTITY=""
+            CODE_SIGN_IDENTITY="" \
+            AD_HOC_CODE_SIGNING_ALLOWED=YES
 
           APP_BUNDLE="$(find ./build/Derived -name 'iCleanerPro.app' -type d | head -n 1)"
           if [ -z "$APP_BUNDLE" ]; then

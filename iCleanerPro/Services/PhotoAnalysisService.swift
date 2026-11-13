@@ -282,10 +282,17 @@ final class PhotoAnalysisService: @unchecked Sendable {
         let resources = PHAssetResource.assetResources(for: asset)
         var total: Int64 = 0
         for resource in resources {
-            if let fileSize = resource.value(forKey: "fileSize") as? CLong {
-                total += Int64(fileSize)
-            } else if let fileSize64 = resource.value(forKey: "fileSize") as? Int64 {
-                total += fileSize64
+            if resource.responds(to: Selector(("fileSize"))),
+               let val = resource.value(forKey: "fileSize") as? NSNumber {
+                total += val.int64Value
+            }
+        }
+        if total == 0 {
+            let pixels = Int64(asset.pixelWidth * asset.pixelHeight)
+            if asset.mediaType == .video {
+                total = max(1_048_576, Int64(asset.duration * 2_500_000))
+            } else {
+                total = max(500_000, pixels * 2)
             }
         }
         return total

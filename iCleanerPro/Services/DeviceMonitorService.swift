@@ -59,7 +59,9 @@ final class DeviceMonitorService {
 
         defer {
             let size = vm_size_t(Int(threadCount) * MemoryLayout<thread_t>.stride)
-            vm_deallocate(mach_task_self_, vm_address_t(bitPattern: threads), size)
+            if let ptr = threads {
+                vm_deallocate(mach_task_self_, vm_address_t(UInt(bitPattern: ptr)), size)
+            }
         }
 
         var totalCPU: Double = 0
@@ -77,8 +79,10 @@ final class DeviceMonitorService {
             }
 
             if infoResult == KERN_SUCCESS {
-                if (threadInfo.flags & TH_FLAGS_IDLE) == 0 {
-                    totalCPU += (Double(threadInfo.cpu_usage) / Double(TH_USAGE_SCALE)) * 100.0
+                let flags = Int(threadInfo.flags)
+                let isIdle = (flags & 1) != 0
+                if !isIdle {
+                    totalCPU += (Double(threadInfo.cpu_usage) / 1000.0) * 100.0
                 }
             }
         }

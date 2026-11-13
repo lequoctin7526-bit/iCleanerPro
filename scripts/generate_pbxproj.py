@@ -294,6 +294,10 @@ def main() -> None:
     proj_debug = """\t\t\t\tALWAYS_SEARCH_USER_PATHS = NO;
 \t\t\t\tCLANG_ENABLE_MODULES = YES;
 \t\t\t\tCLANG_ENABLE_OBJC_ARC = YES;
+\t\t\t\tCODE_SIGN_STYLE = Manual;
+\t\t\t\tCODE_SIGNING_ALLOWED = NO;
+\t\t\t\tCODE_SIGNING_REQUIRED = NO;
+\t\t\t\tCODE_SIGN_IDENTITY = "";
 \t\t\t\tCOPY_PHASE_STRIP = NO;
 \t\t\t\tDEBUG_INFORMATION_FORMAT = dwarf;
 \t\t\t\tENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -309,6 +313,10 @@ def main() -> None:
     proj_release = """\t\t\t\tALWAYS_SEARCH_USER_PATHS = NO;
 \t\t\t\tCLANG_ENABLE_MODULES = YES;
 \t\t\t\tCLANG_ENABLE_OBJC_ARC = YES;
+\t\t\t\tCODE_SIGN_STYLE = Manual;
+\t\t\t\tCODE_SIGNING_ALLOWED = NO;
+\t\t\t\tCODE_SIGNING_REQUIRED = NO;
+\t\t\t\tCODE_SIGN_IDENTITY = "";
 \t\t\t\tCOPY_PHASE_STRIP = NO;
 \t\t\t\tDEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 \t\t\t\tENABLE_NS_ASSERTIONS = NO;
@@ -318,10 +326,13 @@ def main() -> None:
 \t\t\t\tSWIFT_COMPILATION_MODE = wholemodule;
 \t\t\t\tVALIDATE_PRODUCT = YES;"""
 
-    app_common = """\t\t\t\tASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+    app_common = """\t\t\t\tAD_HOC_CODE_SIGNING_ALLOWED = YES;
+\t\t\t\tASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 \t\t\t\tASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-\t\t\t\tCODE_SIGN_ENTITLEMENTS = iCleanerPro/iCleanerPro.entitlements;
-\t\t\t\tCODE_SIGN_STYLE = Automatic;
+\t\t\t\tCODE_SIGN_IDENTITY = "";
+\t\t\t\tCODE_SIGN_STYLE = Manual;
+\t\t\t\tCODE_SIGNING_ALLOWED = NO;
+\t\t\t\tCODE_SIGNING_REQUIRED = NO;
 \t\t\t\tCURRENT_PROJECT_VERSION = 1;
 \t\t\t\tGENERATE_INFOPLIST_FILE = NO;
 \t\t\t\tINFOPLIST_FILE = iCleanerPro/Info.plist;
@@ -337,7 +348,10 @@ def main() -> None:
 \t\t\t\tTARGETED_DEVICE_FAMILY = "1,2";"""
 
     test_common = """\t\t\t\tBUNDLE_LOADER = "$(TEST_HOST)";
-\t\t\t\tCODE_SIGN_STYLE = Automatic;
+\t\t\t\tCODE_SIGN_IDENTITY = "";
+\t\t\t\tCODE_SIGN_STYLE = Manual;
+\t\t\t\tCODE_SIGNING_ALLOWED = NO;
+\t\t\t\tCODE_SIGNING_REQUIRED = NO;
 \t\t\t\tCURRENT_PROJECT_VERSION = 1;
 \t\t\t\tGENERATE_INFOPLIST_FILE = YES;
 \t\t\t\tIPHONEOS_DEPLOYMENT_TARGET = 16.0;

@@ -10,7 +10,7 @@ final class MemoryMonitorService {
 
     func captureSnapshot() -> RAMSnapshot {
         let totalPhysical = ProcessInfo.processInfo.physicalMemory
-        let pageSize = UInt64(vm_kernel_page_size)
+        let pageSize = UInt64(vm_page_size > 0 ? vm_page_size : vm_size_t(getpagesize()))
 
         var vmStats = vm_statistics64_data_t()
         var count = mach_msg_type_number_t(
