@@ -67,6 +67,32 @@ final class iCleanerProTests: XCTestCase {
         XCTAssertGreaterThan(ImageHasher.hammingDistance(hashA, hashRev), 15)
     }
 
+    func testGameBoosterReadinessEvaluation() {
+        let service = GameBoosterService.shared
+        let report = service.evaluateReadiness()
+
+        XCTAssertGreaterThanOrEqual(report.score, 10)
+        XCTAssertLessThanOrEqual(report.score, 100)
+        XCTAssertFalse(report.summary.isEmpty)
+    }
+
+    func testGameLibraryPersistence() {
+        let service = GameBoosterService.shared
+        let initialGames = service.loadGames()
+        XCTAssertFalse(initialGames.isEmpty)
+
+        let testGame = GameItem(
+            name: "Test Game \(UUID().uuidString)",
+            category: .moba,
+            urlScheme: "testgame://"
+        )
+        let updated = service.addGame(testGame)
+        XCTAssertTrue(updated.contains(where: { $0.id == testGame.id }))
+
+        let afterDelete = service.deleteGame(id: testGame.id)
+        XCTAssertFalse(afterDelete.contains(where: { $0.id == testGame.id }))
+    }
+
     private func makeGradientCGImage(reverse: Bool) -> CGImage? {
         let width = 32
         let height = 32

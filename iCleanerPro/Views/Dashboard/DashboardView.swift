@@ -13,6 +13,7 @@ struct DashboardView: View {
                 VStack(spacing: 18) {
                     heroStatusCard
                     smartScanCTAButton
+                    gameBoosterBanner
                     storageOverviewCard
                     quickActionsGrid
                     deviceHealthBanner
@@ -230,6 +231,47 @@ struct DashboardView: View {
                 .buttonStyle(.plain)
             }
         }
+    }
+
+    private var gameBoosterBanner: some View {
+        Button {
+            selectedTab = .gameBooster
+        } label: {
+            HStack(spacing: 14) {
+                Image(systemName: "gamecontroller.fill")
+                    .font(.title2)
+                    .foregroundStyle(GamingTheme.neonGreen)
+                    .frame(width: 44, height: 44)
+                    .background(GamingTheme.neonGreen.opacity(0.16))
+                    .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+
+                VStack(alignment: .leading, spacing: 3) {
+                    HStack(spacing: 6) {
+                        Text("Game Booster")
+                            .font(.subheadline.weight(.bold))
+                            .foregroundStyle(.primary)
+                        Text("MỚI")
+                            .font(.system(size: 9, weight: .black, design: .monospaced))
+                            .foregroundStyle(GamingTheme.neonGreen)
+                            .padding(.horizontal, 6)
+                            .padding(.vertical, 2)
+                            .background(GamingTheme.neonGreen.opacity(0.18))
+                            .clipShape(Capsule())
+                    }
+                    Text("Tối ưu hóa thiết bị, Gaming Preset & Thư viện game")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+
+                Spacer()
+
+                Image(systemName: "chevron.right")
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(.tertiary)
+            }
+            .premiumCard(cornerRadius: 18, padding: 14)
+        }
+        .buttonStyle(.plain)
     }
 
     private var deviceHealthBanner: some View {

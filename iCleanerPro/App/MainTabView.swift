@@ -3,6 +3,7 @@ import SwiftUI
 struct MainTabView: View {
     enum Tab: Hashable {
         case dashboard
+        case gameBooster
         case junk
         case ram
         case storage
@@ -17,6 +18,12 @@ struct MainTabView: View {
                     Label("Tổng quan", systemImage: "gauge.with.dots.needle.67percent")
                 }
                 .tag(Tab.dashboard)
+
+            GameBoosterDashboardView()
+                .tabItem {
+                    Label("Game Booster", systemImage: "gamecontroller.fill")
+                }
+                .tag(Tab.gameBooster)
 
             JunkCleanerView()
                 .tabItem {
