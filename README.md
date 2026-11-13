@@ -11,6 +11,14 @@
 - **Cache Cleaner**: Phân biệt rõ vùng Cache an toàn có thể xóa và Dữ liệu người dùng được bảo vệ.
 - **Storage Manager**: Tích hợp **PhotoKit** (Full & Limited Access), tìm ảnh trùng lặp bằng **dHash + Vision FeaturePrint**, tìm ảnh/video dung lượng lớn, và quản lý tệp qua **Files Picker (`.fileImporter`)**.
 - **Game Booster**: Giao diện Cyberpunk Neon Gaming, đồng hồ đo độ sẵn sàng của máy (Readiness Score 0-100), nút BOOST NOW tối ưu bộ nhớ trước trận, cấu hình Gaming Presets (Balanced, Performance, Battery Saver, Gaming Focus), Checklist chuẩn bị, Thư viện Game (launch URL scheme), theo dõi phiên chơi game trực tiếp (Stopwatch HUD) và lưu trữ lịch sử phiên chơi.
+- **Smart Game Manager**: Hệ thống tự động quản lý game toàn diện:
+  + **Auto Detect Installed Games**: Nhận diện game đã cài đặt thông qua URL Scheme (`canOpenURL` + `LSApplicationQueriesSchemes`).
+  + **Auto Game Update Checker**: Tự động truy vấn Apple iTunes Lookup API so sánh phiên bản đang cài đặt với App Store, gắn huy hiệu `UPDATE AVAILABLE` và nút `UPDATE NOW` mở trực tiếp trang cập nhật App Store.
+  + **One-Tap Open Game & Play**: Mở game trực tiếp qua URL Scheme hoặc hiển thị hướng dẫn mở thủ công kèm bộ đếm giờ phiên chơi ngầm.
+  + **Auto Game Optimizer**: Quy trình 3 bước tự động phân tích thiết bị, dọn cache & RAM của iCleaner Pro trước khi vào trận.
+  + **Auto Clean After Gaming**: Tự động dọn dẹp tệp tạm sandbox & thu hồi bộ nhớ ngay sau khi phiên chơi game kết thúc.
+  + **Kho Game Phổ Biến & Tìm Kiếm App Store**: Tích hợp danh mục game HOT tại VN/Quốc tế và tìm kiếm trực tiếp trên App Store theo từ khóa.
+  + **Smart Automation Settings**: Bật/tắt 6 cơ chế tự động hóa linh hoạt và minh bạch.
 - **Intro & Onboarding Walkthrough**: Màn hình AppSplashView với hiệu ứng hào quang & vòng xoay neon mượt mà, bộ thẻ Onboarding hướng dẫn người dùng lần đầu vào app (lưu trạng thái tự động bằng `@AppStorage`), và nút biểu tượng `info.circle` trên thanh tiêu đề Dashboard giúp xem lại phần giới thiệu mọi lúc.
 
 Xem chi tiết kiến trúc và hướng dẫn xuất `.ipa` tại [ARCHITECTURE_AND_IPA_GUIDE.md](./ARCHITECTURE_AND_IPA_GUIDE.md).

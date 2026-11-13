@@ -273,7 +273,7 @@ struct DashboardView: View {
                             .background(GamingTheme.neonGreen.opacity(0.18))
                             .clipShape(Capsule())
                     }
-                    Text("Tối ưu hóa thiết bị, Gaming Preset & Thư viện game")
+                    Text("Smart Game Manager, Kiểm tra cập nhật & Auto Clean sau trận")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }

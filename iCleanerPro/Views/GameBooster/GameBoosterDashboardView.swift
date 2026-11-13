@@ -7,6 +7,7 @@ struct GameBoosterDashboardView: View {
     @State private var showChecklistSheet = false
     @State private var showHistorySheet = false
     @State private var showActiveSessionView = false
+    @State private var showSmartGameManagerSheet = false
 
     var body: some View {
         NavigationStack {
@@ -19,6 +20,7 @@ struct GameBoosterDashboardView: View {
                     readinessHUDCard
                     boostNowButton
                     presetSelectorSection
+                    smartGameManagerBanner
                     quickGameLauncherSection
                     gamingModeChecklistQuickCard
                     realTimeMonitorCard
@@ -40,14 +42,26 @@ struct GameBoosterDashboardView: View {
                     }
                 }
 
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItemGroup(placement: .topBarTrailing) {
+                    Button {
+                        showSmartGameManagerSheet = true
+                    } label: {
+                        Image(systemName: "cpu.fill")
+                            .foregroundStyle(GamingTheme.neonGreen)
+                    }
+                    .accessibilityLabel("Smart Game Manager")
+
                     Button {
                         viewModel.refreshLiveMetrics()
                     } label: {
                         Image(systemName: "arrow.clockwise")
                             .foregroundStyle(GamingTheme.neonGreen)
                     }
+                    .accessibilityLabel("Làm mới")
                 }
+            }
+            .sheet(isPresented: $showSmartGameManagerSheet) {
+                SmartGameManagerView()
             }
             .sheet(isPresented: $showLibrarySheet) {
                 GameLibraryView(viewModel: viewModel)
@@ -304,6 +318,53 @@ struct GameBoosterDashboardView: View {
         }
     }
 
+    // MARK: - Smart Game Manager Banner
+    private var smartGameManagerBanner: some View {
+        Button {
+            showSmartGameManagerSheet = true
+        } label: {
+            HStack(spacing: 14) {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 14, style: .continuous)
+                        .fill(GamingTheme.neonGreen.opacity(0.18))
+                        .frame(width: 48, height: 48)
+
+                    Image(systemName: "cpu.fill")
+                        .font(.title2)
+                        .foregroundStyle(GamingTheme.neonGreen)
+                }
+
+                VStack(alignment: .leading, spacing: 3) {
+                    HStack(spacing: 6) {
+                        Text("SMART GAME MANAGER")
+                            .font(.system(size: 13, weight: .black, design: .monospaced))
+                            .foregroundStyle(.white)
+
+                        Text("AUTO")
+                            .font(.system(size: 9, weight: .black, design: .monospaced))
+                            .foregroundStyle(GamingTheme.neonCyan)
+                            .padding(.horizontal, 5)
+                            .padding(.vertical, 2)
+                            .background(GamingTheme.neonCyan.opacity(0.18))
+                            .clipShape(Capsule())
+                    }
+
+                    Text("Tự nhận diện, Update Checker & Auto Clean sau trận")
+                        .font(.caption2)
+                        .foregroundStyle(.white.opacity(0.7))
+                }
+
+                Spacer()
+
+                Image(systemName: "chevron.right")
+                    .font(.caption.bold())
+                    .foregroundStyle(GamingTheme.neonGreen)
+            }
+            .gamingCard(glowColor: GamingTheme.neonGreen.opacity(0.2), cornerRadius: 18, padding: 14)
+        }
+        .buttonStyle(.plain)
+    }
+
     // MARK: - Quick Game Launcher Carousel
     private var quickGameLauncherSection: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -313,9 +374,9 @@ struct GameBoosterDashboardView: View {
                     .foregroundStyle(GamingTheme.neonGreen)
                 Spacer()
                 Button {
-                    showLibrarySheet = true
+                    showSmartGameManagerSheet = true
                 } label: {
-                    Text("Quản lý (\(viewModel.games.count)) >")
+                    Text("Smart Manager (\(viewModel.games.count)) >")
                         .font(.caption.bold())
                         .foregroundStyle(GamingTheme.neonCyan)
                 }

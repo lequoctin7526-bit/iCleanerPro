@@ -105,6 +105,53 @@ final class iCleanerProTests: XCTestCase {
         }
     }
 
+    func testVersionComparatorLogic() {
+        XCTAssertTrue(VersionComparator.isNewer(storeVersion: "1.55.0", installedVersion: "1.54.1"))
+        XCTAssertTrue(VersionComparator.isNewer(storeVersion: "2.0", installedVersion: "1.9.9"))
+        XCTAssertTrue(VersionComparator.isNewer(storeVersion: "3.2.1", installedVersion: "3.2.0"))
+        XCTAssertFalse(VersionComparator.isNewer(storeVersion: "1.0.0", installedVersion: "1.0.0"))
+        XCTAssertFalse(VersionComparator.isNewer(storeVersion: "1.2.0", installedVersion: "1.2.1"))
+        XCTAssertFalse(VersionComparator.isNewer(storeVersion: "1.0", installedVersion: "1.0.0"))
+    }
+
+    func testSmartGameModelUpdateDetection() {
+        var game = SmartGameModel(
+            name: "Test Game",
+            bundleId: "com.test.game",
+            appStoreId: "123456789",
+            installedVersion: "1.2.0",
+            latestStoreVersion: "1.3.0"
+        )
+        XCTAssertTrue(game.hasUpdateAvailable)
+
+        game.latestStoreVersion = "1.2.0"
+        XCTAssertFalse(game.hasUpdateAvailable)
+
+        game.latestStoreVersion = nil
+        XCTAssertFalse(game.hasUpdateAvailable)
+    }
+
+    func testGamePresetCatalogIntegrity() {
+        let presets = GamePresetCatalog.presets
+        XCTAssertFalse(presets.isEmpty)
+        for preset in presets {
+            XCTAssertFalse(preset.name.isEmpty)
+            XCTAssertFalse(preset.bundleId.isEmpty)
+            XCTAssertFalse(preset.appStoreId.isEmpty)
+            XCTAssertNotNil(preset.urlScheme)
+        }
+    }
+
+    func testSmartGameManagerSettingsPersistence() {
+        let service = SmartGameManagerService.shared
+        var settings = service.loadSettings()
+        settings.autoOptimizeBeforePlay.toggle()
+        service.saveSettings(settings)
+
+        let reloaded = service.loadSettings()
+        XCTAssertEqual(reloaded.autoOptimizeBeforePlay, settings.autoOptimizeBeforePlay)
+    }
+
     private func makeGradientCGImage(reverse: Bool) -> CGImage? {
         let width = 32
         let height = 32

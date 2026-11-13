@@ -49,6 +49,21 @@
 	<false/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>aov</string>
+		<string>fb1830911760458117</string>
+		<string>pubgmobile</string>
+		<string>wildrift</string>
+		<string>freefire</string>
+		<string>genshinimpact</string>
+		<string>roblox</string>
+		<string>codm</string>
+		<string>honkaistarrail</string>
+		<string>fifamobile</string>
+		<string>playtogether</string>
+		<string>itms-apps</string>
+	</array>
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<true/>
 	<key>NSPhotoLibraryAddUsageDescription</key>
