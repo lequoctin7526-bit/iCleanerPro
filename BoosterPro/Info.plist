@@ -51,6 +51,7 @@
 	<true/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
+		<string>fb</string>
 		<string>aov</string>
 		<string>fb1830911760458117</string>
 		<string>pubgmobile</string>

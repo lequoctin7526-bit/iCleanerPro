@@ -421,6 +421,13 @@ final class BoosterProTests: XCTestCase {
         XCTAssertEqual(AutoCleanSchedulerService.processingTaskIdentifier, "com.boosterpro.app.autoclean.processing")
     }
 
+    func testDeveloperInfoIntegrity() {
+        XCTAssertEqual(DeveloperInfo.creatorName, "Quốc Tín")
+        XCTAssertEqual(DeveloperInfo.appCreatedBy, "App được tạo bởi Quốc Tín")
+        XCTAssertTrue(DeveloperInfo.facebookURL.contains("facebook.com"))
+        XCTAssertNotNil(URL(string: DeveloperInfo.facebookURL))
+    }
+
     private func makeGradientCGImage(reverse: Bool) -> CGImage? {
         let width = 32
         let height = 32

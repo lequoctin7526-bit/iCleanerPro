@@ -20,6 +20,7 @@ struct DashboardView: View {
                     storageOverviewCard
                     quickActionsGrid
                     deviceHealthBanner
+                    creatorFooterCard
                 }
                 .padding(.horizontal, 16)
                 .padding(.vertical, 12)
@@ -375,5 +376,62 @@ struct DashboardView: View {
             .premiumCard(cornerRadius: 18, padding: 14)
         }
         .buttonStyle(.plain)
+    }
+
+    private var creatorFooterCard: some View {
+        VStack(spacing: 12) {
+            HStack(spacing: 14) {
+                ZStack {
+                    Circle()
+                        .fill(
+                            LinearGradient(
+                                colors: [Color(red: 0.10, green: 0.50, blue: 0.98), Color(red: 0.08, green: 0.72, blue: 0.85)],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                        )
+                        .frame(width: 44, height: 44)
+                        .shadow(color: Color.blue.opacity(0.28), radius: 6, x: 0, y: 3)
+
+                    Image(systemName: "person.crop.circle.badge.checkmark")
+                        .font(.title3.weight(.bold))
+                        .foregroundStyle(.white)
+                }
+
+                VStack(alignment: .leading, spacing: 3) {
+                    Text(DeveloperInfo.appCreatedBy)
+                        .font(.subheadline.weight(.bold))
+                        .foregroundStyle(.primary)
+
+                    Text("Nhà phát triển Booster Pro")
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+                }
+
+                Spacer()
+
+                Link(destination: URL(string: DeveloperInfo.facebookURL)!) {
+                    HStack(spacing: 6) {
+                        Image(systemName: "link.circle.fill")
+                            .font(.caption.bold())
+                        Text("Facebook")
+                            .font(.caption.bold())
+                    }
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 8)
+                    .background(
+                        LinearGradient(
+                            colors: [Color(red: 0.09, green: 0.45, blue: 0.95), Color(red: 0.05, green: 0.35, blue: 0.85)],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+                    .clipShape(Capsule())
+                    .shadow(color: Color.blue.opacity(0.3), radius: 4, x: 0, y: 2)
+                }
+            }
+        }
+        .premiumCard(cornerRadius: 18, padding: 14)
     }
 }

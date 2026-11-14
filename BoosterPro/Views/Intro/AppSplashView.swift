@@ -74,6 +74,33 @@ struct AppSplashView: View {
             }
             .scaleEffect(scaleEffect)
             .opacity(opacity)
+
+            // Creator Attribution & Facebook Link
+            VStack {
+                Spacer()
+
+                VStack(spacing: 6) {
+                    Text(DeveloperInfo.appCreatedBy)
+                        .font(.system(size: 13, weight: .semibold))
+                        .foregroundStyle(.white.opacity(0.88))
+
+                    Link(destination: URL(string: DeveloperInfo.facebookURL)!) {
+                        HStack(spacing: 5) {
+                            Image(systemName: "link.circle.fill")
+                                .font(.system(size: 12, weight: .bold))
+                            Text("Facebook: \(DeveloperInfo.creatorName)")
+                                .font(.system(size: 11, weight: .bold))
+                        }
+                        .foregroundStyle(AppTheme.secondaryAccent)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 5)
+                        .background(Color.white.opacity(0.12))
+                        .clipShape(Capsule())
+                    }
+                }
+                .padding(.bottom, 28)
+            }
+            .opacity(opacity)
         }
         .onAppear {
             withAnimation(.spring(response: 0.7, dampingFraction: 0.72)) {
@@ -89,8 +116,8 @@ struct AppSplashView: View {
                 ringPulse = 1.08
             }
 
-            // Automatically transition to main app after 1.25s
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.25) {
+            // Automatically transition to main app after 1.8s
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.8) {
                 onFinished()
             }
         }

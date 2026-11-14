@@ -201,6 +201,28 @@ struct OnboardingIntroView: View {
                 .shadow(color: (slides[currentIndex].gradientColors.first ?? .blue).opacity(0.35), radius: 10, x: 0, y: 5)
             }
             .buttonStyle(.plain)
+
+            // Creator Attribution & Facebook Link
+            HStack(spacing: 8) {
+                Text(DeveloperInfo.appCreatedBy)
+                    .font(.caption2.weight(.medium))
+                    .foregroundStyle(.secondary)
+
+                Text("•")
+                    .font(.caption2)
+                    .foregroundStyle(.secondary.opacity(0.4))
+
+                Link(destination: URL(string: DeveloperInfo.facebookURL)!) {
+                    HStack(spacing: 4) {
+                        Image(systemName: "link.circle.fill")
+                            .font(.system(size: 11, weight: .bold))
+                        Text("Facebook")
+                            .font(.caption2.bold())
+                    }
+                    .foregroundStyle(AppTheme.primaryAccent)
+                }
+            }
+            .padding(.top, 2)
         }
     }
 }
