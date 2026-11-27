@@ -461,8 +461,8 @@ final class BoosterProTests: XCTestCase {
             name: "Genshin Impact",
             bundleId: "com.miHoYo.GenshinImpact",
             appStoreId: "1517783697",
-            installedVersion: "4.5.0",
-            category: .rpg
+            category: .rpg,
+            installedVersion: "4.5.0"
         )
         let service = SmartGameManagerService.shared
 
