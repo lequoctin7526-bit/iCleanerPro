@@ -483,7 +483,8 @@ final class BoosterProTests: XCTestCase {
         XCTAssertEqual(session.batteryLevelStart, 0.85)
         XCTAssertFalse(session.finalThermalTitle.isEmpty)
         XCTAssertGreaterThanOrEqual(session.durationSeconds, 1800)
-        XCTAssertGreaterThan(snapshot.readinessScore, 0)
+        XCTAssertGreaterThanOrEqual(snapshot.appFootprintAfter, 0)
+        XCTAssertFalse(snapshot.verifiedSteps.isEmpty)
     }
 
     func testAutoCleanMutualExclusionLock() {
