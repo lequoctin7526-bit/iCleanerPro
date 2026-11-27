@@ -26,6 +26,21 @@ final class ImageCacheManager {
     }
 }
 
+/// Represents a structured diagnostic log record for the in-app privacy and diagnostics viewer.
+struct DiagnosticLogItem: Identifiable, Sendable {
+    let id: UUID
+    let timestamp: Date
+    let category: String
+    let message: String
+
+    init(id: UUID = UUID(), timestamp: Date = Date(), category: String = "System", message: String) {
+        self.id = id
+        self.timestamp = timestamp
+        self.category = category
+        self.message = message
+    }
+}
+
 /// Persists real session diagnostic entries inside Library/Logs so users can inspect and clean real logs.
 actor DiagnosticLogger {
     static let shared = DiagnosticLogger()
@@ -62,6 +77,42 @@ actor DiagnosticLogger {
         } catch {
             // Silently ignore logging I/O error to avoid disrupting primary user action.
         }
+    }
+
+    func readRecentLogs(limit: Int = 50) -> [DiagnosticLogItem] {
+        guard fileManager.fileExists(atPath: currentLogFileURL.path),
+              let content = try? String(contentsOf: currentLogFileURL, encoding: .utf8) else {
+            return []
+        }
+
+        let lines = content.components(separatedBy: .newlines).filter { !$0.trimmingCharacters(in: .whitespaces).isEmpty }
+        let formatter = ISO8601DateFormatter()
+        var items: [DiagnosticLogItem] = []
+
+        for line in lines.suffix(limit).reversed() {
+            var timestamp = Date()
+            var category = "System"
+            var message = line
+
+            if line.hasPrefix("[") {
+                let parts = line.split(separator: "]", maxSplits: 2, omittingEmptySubsequences: true)
+                if parts.count >= 2 {
+                    let tsString = parts[0].trimmingCharacters(in: CharacterSet(charactersIn: "["))
+                    if let parsedDate = formatter.date(from: tsString) {
+                        timestamp = parsedDate
+                    }
+                    let catString = parts[1].trimmingCharacters(in: CharacterSet(charactersIn: " ["))
+                    category = catString.isEmpty ? "System" : catString
+                    if parts.count == 3 {
+                        message = parts[2].trimmingCharacters(in: .whitespaces)
+                    }
+                }
+            }
+
+            items.append(DiagnosticLogItem(timestamp: timestamp, category: category, message: message))
+        }
+
+        return items
     }
 
     func clearLogs() -> Int64 {

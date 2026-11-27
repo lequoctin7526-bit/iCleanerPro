@@ -141,14 +141,32 @@ final class AutoCleanSchedulerService {
         }
     }
 
-    // MARK: - Cancellation Control
+    // MARK: - Concurrency & Cancellation Control
+    func tryAcquireCleaningLock() -> Bool {
+        lock.lock()
+        defer { lock.unlock() }
+        if isCleaningInProgress {
+            return false
+        }
+        isCleaningInProgress = true
+        isCancellationRequested = false
+        return true
+    }
+
+    func releaseCleaningLock() {
+        lock.lock()
+        defer { lock.unlock() }
+        isCleaningInProgress = false
+        isCancellationRequested = false
+    }
+
     func requestCancellation() {
         lock.lock()
         isCancellationRequested = true
         lock.unlock()
     }
 
-    private func checkAndResetCancellation() -> Bool {
+    private func checkCancellation() -> Bool {
         lock.lock()
         defer { lock.unlock() }
         return isCancellationRequested
@@ -168,6 +186,24 @@ final class AutoCleanSchedulerService {
         isBackground: Bool = false,
         progressCallback: ((String, Double) -> Void)? = nil
     ) async -> AutoCleanExecutionResult {
+        // Atomic concurrency lock check
+        guard tryAcquireCleaningLock() else {
+            let conflictMsg = "Bỏ qua: Một tiến trình dọn dẹp khác đang chạy đồng thời."
+            return AutoCleanExecutionResult(
+                wasSuccessful: false,
+                trigger: trigger,
+                categories: [],
+                bytesFreed: 0,
+                durationSeconds: 0,
+                statusMessage: conflictMsg,
+                skippedReason: conflictMsg
+            )
+        }
+
+        defer {
+            releaseCleaningLock()
+        }
+
         var config = loadConfiguration()
 
         // 1. Evaluate safety conditions
@@ -198,18 +234,6 @@ final class AutoCleanSchedulerService {
             )
         }
 
-        // Concurrency Lock
-        lock.lock()
-        isCleaningInProgress = true
-        isCancellationRequested = false
-        lock.unlock()
-
-        defer {
-            lock.lock()
-            isCleaningInProgress = false
-            lock.unlock()
-        }
-
         let startTime = Date()
         var categoriesCleaned: [String] = []
 
@@ -218,7 +242,7 @@ final class AutoCleanSchedulerService {
         let beforeSandboxBytes = measureDeletableSandboxSize()
 
         // Cooperative cancellation check
-        if checkAndResetCancellation() {
+        if checkCancellation() {
             return makeCancelledResult(trigger: trigger, startTime: startTime)
         }
 
@@ -238,7 +262,7 @@ final class AutoCleanSchedulerService {
             }
         }
 
-        if checkAndResetCancellation() {
+        if checkCancellation() {
             return makeCancelledResult(trigger: trigger, startTime: startTime)
         }
 
@@ -253,7 +277,7 @@ final class AutoCleanSchedulerService {
             }
         }
 
-        if checkAndResetCancellation() {
+        if checkCancellation() {
             return makeCancelledResult(trigger: trigger, startTime: startTime)
         }
 
@@ -264,7 +288,7 @@ final class AutoCleanSchedulerService {
             categoriesCleaned.append("Nhật ký ứng dụng (Logs)")
         }
 
-        if checkAndResetCancellation() {
+        if checkCancellation() {
             return makeCancelledResult(trigger: trigger, startTime: startTime)
         }
 

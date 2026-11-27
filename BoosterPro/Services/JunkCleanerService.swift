@@ -176,6 +176,12 @@ final class JunkCleanerService: @unchecked Sendable {
                 deletedCount += 1
             } catch {
                 failedCount += 1
+                Task {
+                    await DiagnosticLogger.shared.log(
+                        "Không thể xóa file tại \(item.url.lastPathComponent): \(error.localizedDescription)",
+                        category: "JunkCleaner"
+                    )
+                }
             }
         }
 

@@ -96,4 +96,61 @@ extension View {
     ) -> some View {
         modifier(GamingCardModifier(glowColor: glowColor, cornerRadius: cornerRadius, padding: padding))
     }
+
+    func liquidGlassCard(
+        glowColor: Color = GamingTheme.neonCyan.opacity(0.22),
+        cornerRadius: CGFloat = 20,
+        padding: CGFloat = 16
+    ) -> some View {
+        modifier(LiquidGlassCardModifier(glowColor: glowColor, cornerRadius: cornerRadius, padding: padding))
+    }
 }
+
+struct LiquidGlassCardModifier: ViewModifier {
+    var glowColor: Color = GamingTheme.neonCyan.opacity(0.22)
+    var cornerRadius: CGFloat = 20
+    var padding: CGFloat = 16
+
+    func body(content: Content) -> some View {
+        content
+            .padding(padding)
+            .background(.ultraThinMaterial)
+            .background(GamingTheme.cardBackground.opacity(0.55))
+            .clipShape(RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
+            .overlay(
+                RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+                    .stroke(
+                        LinearGradient(
+                            colors: [Color.white.opacity(0.22), glowColor, Color.white.opacity(0.06)],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        ),
+                        lineWidth: 1.0
+                    )
+            )
+            .shadow(color: glowColor.opacity(0.20), radius: 14, x: 0, y: 6)
+    }
+}
+
+/// Centralized haptic feedback controller with safe main-actor execution.
+@MainActor
+enum HapticManager {
+    static func impact(style: UIImpactFeedbackGenerator.FeedbackStyle = .medium) {
+        let generator = UIImpactFeedbackGenerator(style: style)
+        generator.prepare()
+        generator.impactOccurred()
+    }
+
+    static func notification(type: UINotificationFeedbackGenerator.FeedbackType) {
+        let generator = UINotificationFeedbackGenerator()
+        generator.prepare()
+        generator.notificationOccurred(type)
+    }
+
+    static func selection() {
+        let generator = UISelectionFeedbackGenerator()
+        generator.prepare()
+        generator.selectionChanged()
+    }
+}
+

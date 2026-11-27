@@ -23,8 +23,16 @@ enum ByteFormatterUtil {
         fileFormatter.string(fromByteCount: max(0, bytes))
     }
 
+    static func formatFileSize(_ bytes: Int) -> String {
+        formatFileSize(Int64(bytes))
+    }
+
     static func format(_ bytes: Int64) -> String {
         formatFileSize(bytes)
+    }
+
+    static func format(_ bytes: Int) -> String {
+        formatFileSize(Int64(bytes))
     }
 
     static func format(_ bytes: UInt64) -> String {

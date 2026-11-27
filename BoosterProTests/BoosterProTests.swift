@@ -428,6 +428,100 @@ final class BoosterProTests: XCTestCase {
         XCTAssertNotNil(URL(string: DeveloperInfo.facebookURL))
     }
 
+    func testPhotoAssetEstimatedSizeClassification() {
+        let localItem = MediaAssetItem(
+            localIdentifier: "local-1",
+            creationDate: Date(),
+            pixelWidth: 1920,
+            pixelHeight: 1080,
+            duration: 0,
+            mediaType: .image,
+            fileSizeBytes: 2_500_000,
+            isEstimatedSize: false,
+            isLocallyAvailable: true
+        )
+        XCTAssertFalse(localItem.isEstimatedSize)
+        XCTAssertTrue(localItem.isLocallyAvailable)
+        XCTAssertFalse(localItem.formattedSize.contains("Ước tính"))
+
+        let icloudItem = MediaAssetItem(
+            localIdentifier: "icloud-1",
+            creationDate: Date(),
+            pixelWidth: 4000,
+            pixelHeight: 3000,
+            duration: 0,
+            mediaType: .image,
+            fileSizeBytes: 3_500_000,
+            isEstimatedSize: true,
+            isLocallyAvailable: false
+        )
+        XCTAssertTrue(icloudItem.isEstimatedSize)
+        XCTAssertFalse(icloudItem.isLocallyAvailable)
+        XCTAssertTrue(icloudItem.formattedSize.contains("Ước tính") || icloudItem.formattedSize.contains("iCloud"))
+    }
+
+    func testSmartGameRealSessionTelemetry() async {
+        let game = SmartGameModel(
+            name: "Genshin Impact",
+            bundleId: "com.miHoYo.GenshinImpact",
+            appStoreId: "1517783697",
+            installedVersion: "4.5.0",
+            category: .rpg
+        )
+        let service = SmartGameManagerService.shared
+
+        let initialScore = 76
+        let initialThermal = "Hơi ấm"
+        let batteryStart: Float = 0.85
+
+        let report = await service.executePostGameAutoClean(
+            for: game,
+            playDuration: 1800,
+            initialReadinessScore: initialScore,
+            initialThermalTitle: initialThermal,
+            batteryLevelStart: batteryStart
+        )
+
+        XCTAssertEqual(report.initialReadinessScore, 76)
+        XCTAssertEqual(report.initialThermalTitle, "Hơi ấm")
+        XCTAssertEqual(report.batteryLevelStart, 0.85)
+        XCTAssertGreaterThan(report.currentReadinessScore, 0)
+        XCTAssertFalse(report.currentThermalTitle.isEmpty)
+    }
+
+    func testAutoCleanMutualExclusionLock() {
+        let service = AutoCleanSchedulerService.shared
+        service.releaseCleaningLock()
+
+        XCTAssertTrue(service.tryAcquireCleaningLock(), "Initial lock acquisition should succeed")
+        XCTAssertFalse(service.tryAcquireCleaningLock(), "Secondary concurrent acquisition must fail")
+        XCTAssertTrue(service.isCleaningInProgress, "State must indicate cleaning in progress")
+
+        service.releaseCleaningLock()
+        XCTAssertFalse(service.isCleaningInProgress, "State must indicate cleaning finished")
+        XCTAssertTrue(service.tryAcquireCleaningLock(), "Re-acquisition after release must succeed")
+        service.releaseCleaningLock()
+    }
+
+    func testDiagnosticLogging() async {
+        let logger = DiagnosticLogger.shared
+        _ = await logger.clearLogs()
+        let initialLogs = await logger.readRecentLogs(limit: 10)
+        XCTAssertTrue(initialLogs.isEmpty)
+
+        await logger.log("Test log entry 1", category: "Test")
+        await logger.log("Test log entry 2", category: "Warning")
+
+        let logs = await logger.readRecentLogs(limit: 10)
+        XCTAssertEqual(logs.count, 2)
+        XCTAssertTrue(logs.contains(where: { $0.message.contains("Test log entry 1") }))
+        XCTAssertTrue(logs.contains(where: { $0.message.contains("Test log entry 2") }))
+
+        _ = await logger.clearLogs()
+        let finalLogs = await logger.readRecentLogs(limit: 10)
+        XCTAssertTrue(finalLogs.isEmpty)
+    }
+
     private func makeGradientCGImage(reverse: Bool) -> CGImage? {
         let width = 32
         let height = 32

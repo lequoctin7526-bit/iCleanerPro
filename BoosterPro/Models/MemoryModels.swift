@@ -68,4 +68,20 @@ struct RAMCleanupResult: Equatable {
     let availableMemoryDeltaBytes: Int64
     let purgedComponents: [String]
     let timestamp: Date
+
+    var appFootprintAfter: UInt64 {
+        afterSnapshot.appFootprintBytes
+    }
+
+    var appFootprintBefore: UInt64 {
+        beforeSnapshot.appFootprintBytes
+    }
+
+    var availableMemoryAfter: UInt64 {
+        afterSnapshot.procAvailableBytes
+    }
+
+    var availableMemoryBefore: UInt64 {
+        beforeSnapshot.procAvailableBytes
+    }
 }

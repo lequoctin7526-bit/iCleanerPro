@@ -46,6 +46,9 @@ final class SmartGameManagerViewModel: ObservableObject {
     // Active gaming session state
     @Published var activeSessionGame: SmartGameModel? = nil
     @Published var sessionElapsedSeconds: TimeInterval = 0
+    @Published var sessionInitialScore: Int = 100
+    @Published var sessionInitialThermal: String = "Bình thường"
+    @Published var sessionInitialBattery: Float = -1.0
     @Published var lastCleanedSession: GameSessionRecord? = nil
 
     @Published var automationSettings: SmartGameAutomationSettings = .default
@@ -114,15 +117,21 @@ final class SmartGameManagerViewModel: ObservableObject {
         if let matchingGame = games.first(where: { $0.id == gameId }) {
             activeSessionGame = matchingGame
             sessionStartDate = start
+            sessionInitialScore = saved["initialScore"] as? Int ?? 100
+            sessionInitialThermal = saved["initialThermal"] as? String ?? "Bình thường"
+            sessionInitialBattery = Float(saved["initialBattery"] as? Double ?? -1.0)
             sessionElapsedSeconds = max(0, Date().timeIntervalSince(start))
             restartSessionTimer()
         }
     }
 
-    private func persistActiveSessionState(game: SmartGameModel, start: Date) {
+    private func persistActiveSessionState(game: SmartGameModel, start: Date, score: Int, thermal: String, battery: Float) {
         let payload: [String: Any] = [
             "gameId": game.id.uuidString,
-            "startTime": start.timeIntervalSince1970
+            "startTime": start.timeIntervalSince1970,
+            "initialScore": score,
+            "initialThermal": thermal,
+            "initialBattery": Double(battery)
         ]
         UserDefaults.standard.set(payload, forKey: activeSessionStorageKey)
     }
@@ -278,7 +287,21 @@ final class SmartGameManagerViewModel: ObservableObject {
         let now = Date()
         sessionStartDate = now
         sessionElapsedSeconds = 0
-        persistActiveSessionState(game: game, start: now)
+
+        // Capture real initial readiness and telemetry
+        let readiness = GameBoosterService.shared.evaluateReadiness()
+        sessionInitialScore = readiness.score
+        sessionInitialThermal = readiness.thermalTitle
+        UIDevice.current.isBatteryMonitoringEnabled = true
+        sessionInitialBattery = UIDevice.current.batteryLevel
+
+        persistActiveSessionState(
+            game: game,
+            start: now,
+            score: sessionInitialScore,
+            thermal: sessionInitialThermal,
+            battery: sessionInitialBattery
+        )
 
         restartSessionTimer()
     }
@@ -300,12 +323,19 @@ final class SmartGameManagerViewModel: ObservableObject {
         clearActiveSessionState()
 
         let duration = max(1, sessionElapsedSeconds)
+        let initialScore = sessionInitialScore
+        let initialThermal = sessionInitialThermal
+        let initialBat = sessionInitialBattery >= 0 ? sessionInitialBattery : nil
 
         if automationSettings.autoCleanAfterGaming {
             Task {
                 let (snapshot, session) = await service.executePostGameAutoClean(
                     game: game,
-                    duration: duration
+                    duration: duration,
+                    presetName: "Cân bằng",
+                    initialReadinessScore: initialScore,
+                    initialThermalTitle: initialThermal,
+                    batteryLevelStart: initialBat
                 )
                 self.lastOptimizationSnapshot = snapshot
                 self.lastCleanedSession = session

@@ -34,11 +34,39 @@ struct MediaAssetItem: Identifiable, Hashable {
     let asset: PHAsset
     let mediaType: PHAssetMediaType
     let fileSizeBytes: Int64
+    let isEstimatedSize: Bool
+    let isLocallyAvailable: Bool
     let creationDate: Date?
     let pixelWidth: Int
     let pixelHeight: Int
     let duration: TimeInterval
     var isSelected: Bool
+
+    init(
+        id: String,
+        asset: PHAsset,
+        mediaType: PHAssetMediaType,
+        fileSizeBytes: Int64,
+        isEstimatedSize: Bool = false,
+        isLocallyAvailable: Bool = true,
+        creationDate: Date?,
+        pixelWidth: Int,
+        pixelHeight: Int,
+        duration: TimeInterval,
+        isSelected: Bool
+    ) {
+        self.id = id
+        self.asset = asset
+        self.mediaType = mediaType
+        self.fileSizeBytes = fileSizeBytes
+        self.isEstimatedSize = isEstimatedSize
+        self.isLocallyAvailable = isLocallyAvailable
+        self.creationDate = creationDate
+        self.pixelWidth = pixelWidth
+        self.pixelHeight = pixelHeight
+        self.duration = duration
+        self.isSelected = isSelected
+    }
 
     var resolutionLabel: String {
         "\(pixelWidth)×\(pixelHeight)"
@@ -46,6 +74,22 @@ struct MediaAssetItem: Identifiable, Hashable {
 
     var isVideo: Bool {
         mediaType == .video
+    }
+
+    var isScreenshot: Bool {
+        asset.mediaSubtypes.contains(.photoScreenshot)
+    }
+
+    var isHighResolution: Bool {
+        pixelWidth * pixelHeight >= 12_000_000
+    }
+
+    var formattedSize: String {
+        let base = ByteFormatterUtil.formatFileSize(fileSizeBytes)
+        if isEstimatedSize {
+            return "~\(base) (Ước lượng)"
+        }
+        return base
     }
 
     func hash(into hasher: inout Hasher) {

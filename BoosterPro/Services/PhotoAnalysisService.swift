@@ -51,7 +51,7 @@ final class PhotoAnalysisService: @unchecked Sendable {
             var results: [MediaAssetItem] = []
 
             assets.enumerateObjects { asset, index, _ in
-                let size = self.assetByteSize(for: asset)
+                let (size, isEstimated, isLocallyAvailable) = self.assetByteSizeAndStatus(for: asset)
                 if size >= minimumBytes {
                     results.append(
                         MediaAssetItem(
@@ -59,6 +59,8 @@ final class PhotoAnalysisService: @unchecked Sendable {
                             asset: asset,
                             mediaType: asset.mediaType,
                             fileSizeBytes: size,
+                            isEstimatedSize: isEstimated,
+                            isLocallyAvailable: isLocallyAvailable,
                             creationDate: asset.creationDate,
                             pixelWidth: asset.pixelWidth,
                             pixelHeight: asset.pixelHeight,
@@ -109,12 +111,14 @@ final class PhotoAnalysisService: @unchecked Sendable {
             if let cgImage = await requestThumbnailCGImage(for: asset, targetSize: CGSize(width: 192, height: 192)),
                let dHash = ImageHasher.computeDHash(for: cgImage) {
                 let featurePrint = ImageHasher.generateFeaturePrint(for: cgImage)
-                let size = assetByteSize(for: asset)
+                let (size, isEstimated, isLocallyAvailable) = assetByteSizeAndStatus(for: asset)
                 let item = MediaAssetItem(
                     id: asset.localIdentifier,
                     asset: asset,
                     mediaType: asset.mediaType,
                     fileSizeBytes: size,
+                    isEstimatedSize: isEstimated,
+                    isLocallyAvailable: isLocallyAvailable,
                     creationDate: asset.creationDate,
                     pixelWidth: asset.pixelWidth,
                     pixelHeight: asset.pixelHeight,
@@ -278,23 +282,39 @@ final class PhotoAnalysisService: @unchecked Sendable {
         }
     }
 
-    private func assetByteSize(for asset: PHAsset) -> Int64 {
+    func assetByteSizeAndStatus(for asset: PHAsset) -> (bytes: Int64, isEstimated: Bool, isLocallyAvailable: Bool) {
         let resources = PHAssetResource.assetResources(for: asset)
         var total: Int64 = 0
+        var hasValidResource = false
+        var isLocal = true
+
         for resource in resources {
             if resource.responds(to: Selector(("fileSize"))),
-               let val = resource.value(forKey: "fileSize") as? NSNumber {
+               let val = resource.value(forKey: "fileSize") as? NSNumber,
+               val.int64Value > 0 {
                 total += val.int64Value
+                hasValidResource = true
+            }
+            if let local = resource.value(forKey: "locallyAvailable") as? Bool {
+                isLocal = local
             }
         }
-        if total == 0 {
+
+        if !hasValidResource || total == 0 {
             let pixels = Int64(asset.pixelWidth * asset.pixelHeight)
+            let estimate: Int64
             if asset.mediaType == .video {
-                total = max(1_048_576, Int64(asset.duration * 2_500_000))
+                estimate = max(1_048_576, Int64(asset.duration * 2_500_000))
             } else {
-                total = max(500_000, pixels * 2)
+                estimate = max(500_000, pixels * 2)
             }
+            return (estimate, true, isLocal)
         }
-        return total
+
+        return (total, false, isLocal)
+    }
+
+    func assetByteSize(for asset: PHAsset) -> Int64 {
+        assetByteSizeAndStatus(for: asset).bytes
     }
 }

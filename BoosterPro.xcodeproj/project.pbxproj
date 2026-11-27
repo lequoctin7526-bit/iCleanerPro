@@ -73,17 +73,18 @@
 		D00000000000000000000091 /* AppSplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000090 /* AppSplashView.swift */; };
 		D00000000000000000000093 /* OnboardingIntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000092 /* OnboardingIntroView.swift */; };
 		D00000000000000000000096 /* JunkCleanerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000095 /* JunkCleanerView.swift */; };
-		D00000000000000000000099 /* RAMCleanerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000098 /* RAMCleanerView.swift */; };
-		D0000000000000000000009C /* ScanResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000009B /* ScanResultView.swift */; };
-		D0000000000000000000009E /* SmartScanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000009D /* SmartScanView.swift */; };
-		D000000000000000000000A1 /* DuplicatePhotosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F000000000000000000000A0 /* DuplicatePhotosView.swift */; };
-		D000000000000000000000A3 /* LargeMediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F000000000000000000000A2 /* LargeMediaView.swift */; };
-		D000000000000000000000A5 /* SandboxFilesManagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F000000000000000000000A4 /* SandboxFilesManagerView.swift */; };
-		D000000000000000000000A7 /* StorageManagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F000000000000000000000A6 /* StorageManagerView.swift */; };
-		D000000000000000000000A9 /* BoosterProTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F000000000000000000000A8 /* BoosterProTests.swift */; };
-		D000000000000000000000AB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F000000000000000000000AA /* Assets.xcassets */; };
-		D000000000000000000000AE /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F000000000000000000000AD /* Localizable.strings */; };
-		D000000000000000000000B0 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = F000000000000000000000AF /* PrivacyInfo.xcprivacy */; };
+		D00000000000000000000099 /* PrivacySecurityCenterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000098 /* PrivacySecurityCenterView.swift */; };
+		D0000000000000000000009C /* RAMCleanerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000009B /* RAMCleanerView.swift */; };
+		D0000000000000000000009F /* ScanResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000009E /* ScanResultView.swift */; };
+		D000000000000000000000A1 /* SmartScanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F000000000000000000000A0 /* SmartScanView.swift */; };
+		D000000000000000000000A4 /* DuplicatePhotosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F000000000000000000000A3 /* DuplicatePhotosView.swift */; };
+		D000000000000000000000A6 /* LargeMediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F000000000000000000000A5 /* LargeMediaView.swift */; };
+		D000000000000000000000A8 /* SandboxFilesManagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F000000000000000000000A7 /* SandboxFilesManagerView.swift */; };
+		D000000000000000000000AA /* StorageManagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F000000000000000000000A9 /* StorageManagerView.swift */; };
+		D000000000000000000000AC /* BoosterProTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F000000000000000000000AB /* BoosterProTests.swift */; };
+		D000000000000000000000AE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F000000000000000000000AD /* Assets.xcassets */; };
+		D000000000000000000000B1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F000000000000000000000B0 /* Localizable.strings */; };
+		D000000000000000000000B3 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = F000000000000000000000B2 /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -166,19 +167,20 @@
 		F00000000000000000000090 /* AppSplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSplashView.swift; sourceTree = "<group>"; };
 		F00000000000000000000092 /* OnboardingIntroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingIntroView.swift; sourceTree = "<group>"; };
 		F00000000000000000000095 /* JunkCleanerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JunkCleanerView.swift; sourceTree = "<group>"; };
-		F00000000000000000000098 /* RAMCleanerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAMCleanerView.swift; sourceTree = "<group>"; };
-		F0000000000000000000009B /* ScanResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanResultView.swift; sourceTree = "<group>"; };
-		F0000000000000000000009D /* SmartScanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartScanView.swift; sourceTree = "<group>"; };
-		F000000000000000000000A0 /* DuplicatePhotosView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuplicatePhotosView.swift; sourceTree = "<group>"; };
-		F000000000000000000000A2 /* LargeMediaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeMediaView.swift; sourceTree = "<group>"; };
-		F000000000000000000000A4 /* SandboxFilesManagerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SandboxFilesManagerView.swift; sourceTree = "<group>"; };
-		F000000000000000000000A6 /* StorageManagerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManagerView.swift; sourceTree = "<group>"; };
-		F000000000000000000000A8 /* BoosterProTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoosterProTests.swift; sourceTree = "<group>"; };
-		F000000000000000000000AA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		F000000000000000000000AD /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
-		F000000000000000000000AF /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		F000000000000000000000B1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F000000000000000000000B2 /* BoosterPro.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BoosterPro.entitlements; sourceTree = "<group>"; };
+		F00000000000000000000098 /* PrivacySecurityCenterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacySecurityCenterView.swift; sourceTree = "<group>"; };
+		F0000000000000000000009B /* RAMCleanerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAMCleanerView.swift; sourceTree = "<group>"; };
+		F0000000000000000000009E /* ScanResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanResultView.swift; sourceTree = "<group>"; };
+		F000000000000000000000A0 /* SmartScanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartScanView.swift; sourceTree = "<group>"; };
+		F000000000000000000000A3 /* DuplicatePhotosView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuplicatePhotosView.swift; sourceTree = "<group>"; };
+		F000000000000000000000A5 /* LargeMediaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeMediaView.swift; sourceTree = "<group>"; };
+		F000000000000000000000A7 /* SandboxFilesManagerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SandboxFilesManagerView.swift; sourceTree = "<group>"; };
+		F000000000000000000000A9 /* StorageManagerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManagerView.swift; sourceTree = "<group>"; };
+		F000000000000000000000AB /* BoosterProTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoosterProTests.swift; sourceTree = "<group>"; };
+		F000000000000000000000AD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F000000000000000000000B0 /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
+		F000000000000000000000B2 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		F000000000000000000000B4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F000000000000000000000B5 /* BoosterPro.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BoosterPro.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -215,11 +217,11 @@
 				C00000000000000000000047 /* Utilities */,
 				C00000000000000000000052 /* ViewModels */,
 				C00000000000000000000068 /* Views */,
-				F000000000000000000000AA /* Assets.xcassets */,
-				C000000000000000000000AC /* Resources */,
-				F000000000000000000000AF /* PrivacyInfo.xcprivacy */,
-				F000000000000000000000B1 /* Info.plist */,
-				F000000000000000000000B2 /* BoosterPro.entitlements */,
+				F000000000000000000000AD /* Assets.xcassets */,
+				C000000000000000000000AF /* Resources */,
+				F000000000000000000000B2 /* PrivacyInfo.xcprivacy */,
+				F000000000000000000000B4 /* Info.plist */,
+				F000000000000000000000B5 /* BoosterPro.entitlements */,
 			);
 			path = BoosterPro;
 			sourceTree = "<group>";
@@ -266,10 +268,10 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		C000000000000000000000AC /* Resources */ = {
+		C000000000000000000000AF /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				F000000000000000000000AD /* Localizable.strings */,
+				F000000000000000000000B0 /* Localizable.strings */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -331,9 +333,10 @@
 				C00000000000000000000076 /* GameBooster */,
 				C0000000000000000000008F /* Intro */,
 				C00000000000000000000094 /* JunkCleaner */,
-				C00000000000000000000097 /* RAMCleaner */,
-				C0000000000000000000009A /* Scan */,
-				C0000000000000000000009F /* StorageManager */,
+				C00000000000000000000097 /* Privacy */,
+				C0000000000000000000009A /* RAMCleaner */,
+				C0000000000000000000009D /* Scan */,
+				C000000000000000000000A2 /* StorageManager */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -407,30 +410,38 @@
 			path = JunkCleaner;
 			sourceTree = "<group>";
 		};
-		C00000000000000000000097 /* RAMCleaner */ = {
+		C00000000000000000000097 /* Privacy */ = {
 			isa = PBXGroup;
 			children = (
-				F00000000000000000000098 /* RAMCleanerView.swift */,
+				F00000000000000000000098 /* PrivacySecurityCenterView.swift */,
+			);
+			path = Privacy;
+			sourceTree = "<group>";
+		};
+		C0000000000000000000009A /* RAMCleaner */ = {
+			isa = PBXGroup;
+			children = (
+				F0000000000000000000009B /* RAMCleanerView.swift */,
 			);
 			path = RAMCleaner;
 			sourceTree = "<group>";
 		};
-		C0000000000000000000009A /* Scan */ = {
+		C0000000000000000000009D /* Scan */ = {
 			isa = PBXGroup;
 			children = (
-				F0000000000000000000009B /* ScanResultView.swift */,
-				F0000000000000000000009D /* SmartScanView.swift */,
+				F0000000000000000000009E /* ScanResultView.swift */,
+				F000000000000000000000A0 /* SmartScanView.swift */,
 			);
 			path = Scan;
 			sourceTree = "<group>";
 		};
-		C0000000000000000000009F /* StorageManager */ = {
+		C000000000000000000000A2 /* StorageManager */ = {
 			isa = PBXGroup;
 			children = (
-				F000000000000000000000A0 /* DuplicatePhotosView.swift */,
-				F000000000000000000000A2 /* LargeMediaView.swift */,
-				F000000000000000000000A4 /* SandboxFilesManagerView.swift */,
-				F000000000000000000000A6 /* StorageManagerView.swift */,
+				F000000000000000000000A3 /* DuplicatePhotosView.swift */,
+				F000000000000000000000A5 /* LargeMediaView.swift */,
+				F000000000000000000000A7 /* SandboxFilesManagerView.swift */,
+				F000000000000000000000A9 /* StorageManagerView.swift */,
 			);
 			path = StorageManager;
 			sourceTree = "<group>";
@@ -438,7 +449,7 @@
 		C00000000000000000000002 /* BoosterProTests */ = {
 			isa = PBXGroup;
 			children = (
-				F000000000000000000000A8 /* BoosterProTests.swift */,
+				F000000000000000000000AB /* BoosterProTests.swift */,
 			);
 			path = BoosterProTests;
 			sourceTree = "<group>";
@@ -508,9 +519,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D000000000000000000000AB /* Assets.xcassets in Resources */,
-				D000000000000000000000AE /* Localizable.strings in Resources */,
-				D000000000000000000000B0 /* PrivacyInfo.xcprivacy in Resources */,
+				D000000000000000000000AE /* Assets.xcassets in Resources */,
+				D000000000000000000000B1 /* Localizable.strings in Resources */,
+				D000000000000000000000B3 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -589,13 +600,14 @@
 				D00000000000000000000091 /* AppSplashView.swift in Sources */,
 				D00000000000000000000093 /* OnboardingIntroView.swift in Sources */,
 				D00000000000000000000096 /* JunkCleanerView.swift in Sources */,
-				D00000000000000000000099 /* RAMCleanerView.swift in Sources */,
-				D0000000000000000000009C /* ScanResultView.swift in Sources */,
-				D0000000000000000000009E /* SmartScanView.swift in Sources */,
-				D000000000000000000000A1 /* DuplicatePhotosView.swift in Sources */,
-				D000000000000000000000A3 /* LargeMediaView.swift in Sources */,
-				D000000000000000000000A5 /* SandboxFilesManagerView.swift in Sources */,
-				D000000000000000000000A7 /* StorageManagerView.swift in Sources */,
+				D00000000000000000000099 /* PrivacySecurityCenterView.swift in Sources */,
+				D0000000000000000000009C /* RAMCleanerView.swift in Sources */,
+				D0000000000000000000009F /* ScanResultView.swift in Sources */,
+				D000000000000000000000A1 /* SmartScanView.swift in Sources */,
+				D000000000000000000000A4 /* DuplicatePhotosView.swift in Sources */,
+				D000000000000000000000A6 /* LargeMediaView.swift in Sources */,
+				D000000000000000000000A8 /* SandboxFilesManagerView.swift in Sources */,
+				D000000000000000000000AA /* StorageManagerView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -603,7 +615,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D000000000000000000000A9 /* BoosterProTests.swift in Sources */,
+				D000000000000000000000AC /* BoosterProTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -196,13 +196,20 @@ final class SmartGameManagerService: @unchecked Sendable {
     func executePostGameAutoClean(
         game: SmartGameModel,
         duration: TimeInterval,
-        presetName: String = "Cân bằng"
+        presetName: String = "Cân bằng",
+        initialReadinessScore: Int? = nil,
+        initialThermalTitle: String? = nil,
+        batteryLevelStart: Float? = nil
     ) async -> (GameOptimizationSnapshot, GameSessionRecord) {
         let snapshot = await executePreGameOptimization(for: game)
 
         let processInfo = ProcessInfo.processInfo
         UIDevice.current.isBatteryMonitoringEnabled = true
-        let battery = UIDevice.current.batteryLevel
+        let currentBattery = UIDevice.current.batteryLevel
+
+        let finalThermal = thermalTitle(for: processInfo.thermalState)
+        let resolvedInitialThermal = initialThermalTitle ?? finalThermal
+        let resolvedInitialScore = initialReadinessScore ?? GameBoosterService.shared.evaluateReadiness().score
 
         let session = GameSessionRecord(
             id: UUID(),
@@ -212,11 +219,11 @@ final class SmartGameManagerService: @unchecked Sendable {
             startTime: Date().addingTimeInterval(-duration),
             endTime: Date(),
             durationSeconds: duration,
-            initialReadinessScore: 88,
-            initialThermalTitle: "Bình thường",
-            finalThermalTitle: thermalTitle(for: processInfo.thermalState),
-            batteryLevelStart: battery,
-            batteryLevelEnd: battery
+            initialReadinessScore: resolvedInitialScore,
+            initialThermalTitle: resolvedInitialThermal,
+            finalThermalTitle: finalThermal,
+            batteryLevelStart: batteryLevelStart ?? currentBattery,
+            batteryLevelEnd: currentBattery
         )
 
         boosterService.saveSessionRecord(session)

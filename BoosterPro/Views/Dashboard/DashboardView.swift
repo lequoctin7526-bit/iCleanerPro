@@ -8,6 +8,7 @@ struct DashboardView: View {
     @State private var navigateToDeviceBooster = false
     @State private var showIntroSheet = false
     @State private var showAutoCleanSettingsSheet = false
+    @State private var showPrivacySecuritySheet = false
 
     var body: some View {
         NavigationStack {
@@ -20,6 +21,7 @@ struct DashboardView: View {
                     storageOverviewCard
                     quickActionsGrid
                     deviceHealthBanner
+                    privacySecurityBanner
                     creatorFooterCard
                 }
                 .padding(.horizontal, 16)
@@ -44,6 +46,14 @@ struct DashboardView: View {
                                 .foregroundColor(AppTheme.primaryAccent)
                         }
                         .accessibilityLabel("Cài đặt Auto Clean")
+
+                        Button {
+                            showPrivacySecuritySheet = true
+                        } label: {
+                            Image(systemName: "checkmark.shield.fill")
+                                .foregroundColor(Color(hex: "#00F5A0"))
+                        }
+                        .accessibilityLabel("Quyền riêng tư & Bảo mật")
                     }
                 }
 
@@ -73,6 +83,9 @@ struct DashboardView: View {
             }
             .sheet(isPresented: $showAutoCleanSettingsSheet) {
                 AutoCleanSettingsView()
+            }
+            .sheet(isPresented: $showPrivacySecuritySheet) {
+                PrivacySecurityCenterView()
             }
             .sheet(isPresented: $showSmartScanSheet, onDismiss: {
                 Task { await viewModel.refreshDashboard() }
@@ -363,6 +376,39 @@ struct DashboardView: View {
                         .font(.subheadline.weight(.bold))
                         .foregroundStyle(.primary)
                     Text("Nhiệt độ: \(viewModel.cpuMetrics.thermalStateTitle) • Uptime: \(ByteFormatterUtil.formatDuration(viewModel.cpuMetrics.systemUptimeSeconds))")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+
+                Spacer()
+
+                Image(systemName: "chevron.right")
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(.tertiary)
+            }
+            .premiumCard(cornerRadius: 18, padding: 14)
+        }
+        .buttonStyle(.plain)
+    }
+
+    private var privacySecurityBanner: some View {
+        Button {
+            showPrivacySecuritySheet = true
+        } label: {
+            HStack(spacing: 14) {
+                Image(systemName: "checkmark.shield.fill")
+                    .font(.title2)
+                    .foregroundStyle(Color(hex: "#00F5A0"))
+                    .frame(width: 44, height: 44)
+                    .background(Color(hex: "#00F5A0").opacity(0.14))
+                    .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+
+                VStack(alignment: .leading, spacing: 3) {
+                    Text("Trung Tâm Quyền Riêng Tư & Bảo Mật")
+                        .font(.subheadline.weight(.bold))
+                        .foregroundStyle(.primary)
+
+                    Text("100% On-Device • Apple Privacy Manifest • Nhật ký")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
