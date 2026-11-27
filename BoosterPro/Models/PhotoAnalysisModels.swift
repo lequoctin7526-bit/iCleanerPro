@@ -31,7 +31,7 @@ enum PhotoPermissionState: Equatable {
 /// Wraps a real PHAsset along with its computed byte size and selection state.
 struct MediaAssetItem: Identifiable, Hashable {
     let id: String
-    let asset: PHAsset
+    let asset: PHAsset?
     let mediaType: PHAssetMediaType
     let fileSizeBytes: Int64
     let isEstimatedSize: Bool
@@ -44,16 +44,16 @@ struct MediaAssetItem: Identifiable, Hashable {
 
     init(
         id: String,
-        asset: PHAsset,
-        mediaType: PHAssetMediaType,
+        asset: PHAsset? = nil,
+        mediaType: PHAssetMediaType = .image,
         fileSizeBytes: Int64,
         isEstimatedSize: Bool = false,
         isLocallyAvailable: Bool = true,
-        creationDate: Date?,
-        pixelWidth: Int,
-        pixelHeight: Int,
-        duration: TimeInterval,
-        isSelected: Bool
+        creationDate: Date? = nil,
+        pixelWidth: Int = 0,
+        pixelHeight: Int = 0,
+        duration: TimeInterval = 0,
+        isSelected: Bool = false
     ) {
         self.id = id
         self.asset = asset
@@ -77,7 +77,7 @@ struct MediaAssetItem: Identifiable, Hashable {
     }
 
     var isScreenshot: Bool {
-        asset.mediaSubtypes.contains(.photoScreenshot)
+        asset?.mediaSubtypes.contains(.photoScreenshot) ?? false
     }
 
     var isHighResolution: Bool {

@@ -430,34 +430,30 @@ final class BoosterProTests: XCTestCase {
 
     func testPhotoAssetEstimatedSizeClassification() {
         let localItem = MediaAssetItem(
-            localIdentifier: "local-1",
-            creationDate: Date(),
-            pixelWidth: 1920,
-            pixelHeight: 1080,
-            duration: 0,
+            id: "local-1",
             mediaType: .image,
             fileSizeBytes: 2_500_000,
             isEstimatedSize: false,
-            isLocallyAvailable: true
+            isLocallyAvailable: true,
+            pixelWidth: 1920,
+            pixelHeight: 1080
         )
         XCTAssertFalse(localItem.isEstimatedSize)
         XCTAssertTrue(localItem.isLocallyAvailable)
-        XCTAssertFalse(localItem.formattedSize.contains("Ước tính"))
+        XCTAssertFalse(localItem.formattedSize.contains("Ước lượng"))
 
         let icloudItem = MediaAssetItem(
-            localIdentifier: "icloud-1",
-            creationDate: Date(),
-            pixelWidth: 4000,
-            pixelHeight: 3000,
-            duration: 0,
+            id: "icloud-1",
             mediaType: .image,
             fileSizeBytes: 3_500_000,
             isEstimatedSize: true,
-            isLocallyAvailable: false
+            isLocallyAvailable: false,
+            pixelWidth: 4000,
+            pixelHeight: 3000
         )
         XCTAssertTrue(icloudItem.isEstimatedSize)
         XCTAssertFalse(icloudItem.isLocallyAvailable)
-        XCTAssertTrue(icloudItem.formattedSize.contains("Ước tính") || icloudItem.formattedSize.contains("iCloud"))
+        XCTAssertTrue(icloudItem.formattedSize.contains("Ước lượng"))
     }
 
     func testSmartGameRealSessionTelemetry() async {
@@ -474,19 +470,20 @@ final class BoosterProTests: XCTestCase {
         let initialThermal = "Hơi ấm"
         let batteryStart: Float = 0.85
 
-        let report = await service.executePostGameAutoClean(
-            for: game,
-            playDuration: 1800,
+        let (snapshot, session) = await service.executePostGameAutoClean(
+            game: game,
+            duration: 1800,
             initialReadinessScore: initialScore,
             initialThermalTitle: initialThermal,
             batteryLevelStart: batteryStart
         )
 
-        XCTAssertEqual(report.initialReadinessScore, 76)
-        XCTAssertEqual(report.initialThermalTitle, "Hơi ấm")
-        XCTAssertEqual(report.batteryLevelStart, 0.85)
-        XCTAssertGreaterThan(report.currentReadinessScore, 0)
-        XCTAssertFalse(report.currentThermalTitle.isEmpty)
+        XCTAssertEqual(session.initialReadinessScore, 76)
+        XCTAssertEqual(session.initialThermalTitle, "Hơi ấm")
+        XCTAssertEqual(session.batteryLevelStart, 0.85)
+        XCTAssertFalse(session.finalThermalTitle.isEmpty)
+        XCTAssertGreaterThanOrEqual(session.durationSeconds, 1800)
+        XCTAssertGreaterThan(snapshot.readinessScore, 0)
     }
 
     func testAutoCleanMutualExclusionLock() {

@@ -69,7 +69,13 @@ jobs:
             -scheme BoosterPro \
             -destination "platform=iOS Simulator,name=${DEVICE_NAME:-iPhone 16}" \
             CODE_SIGN_IDENTITY="-" \
-            CODE_SIGNING_ALLOWED=YES
+            CODE_SIGNING_ALLOWED=YES > test.log 2>&1 || {
+              echo "=== UNIT TESTS FAILED ==="
+              while IFS= read -r line; do
+                echo "::error::$line"
+              done < <(grep -E "error:|fatal error:|Test Case .* failed|failed with exit code" test.log | head -n 40)
+              exit 1
+            }
 
       - name: Build & Archive Release arm64 App
         run: |
@@ -138,8 +144,11 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: xcodebuild-log
-          path: xcodebuild.log
+          name: build-test-logs
+          path: |
+            test.log
+            xcodebuild.log
+          if-no-files-found: ignore
 
       - name: Upload IPA Artifact
         if: success()

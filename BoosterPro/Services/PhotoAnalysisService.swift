@@ -242,7 +242,7 @@ final class PhotoAnalysisService: @unchecked Sendable {
 
     /// Deletes only user-confirmed PHAssets via PhotoKit's standard confirmation dialog.
     func deleteAssets(_ items: [MediaAssetItem]) async throws -> Int64 {
-        let assetsToDelete = items.map(\.asset)
+        let assetsToDelete = items.compactMap(\.asset)
         guard !assetsToDelete.isEmpty else { return 0 }
 
         let totalBytes = items.reduce(0) { $0 + $1.fileSizeBytes }

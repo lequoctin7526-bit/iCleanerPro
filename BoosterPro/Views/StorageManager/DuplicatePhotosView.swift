@@ -210,7 +210,7 @@ struct DuplicatePhotosView: View {
 
 /// Reusable async PhotoKit thumbnail loader.
 struct PHAssetThumbnailView: View {
-    let asset: PHAsset
+    let asset: PHAsset?
     let photoService: PhotoAnalysisService
     let size: CGSize
 
@@ -228,7 +228,8 @@ struct PHAssetThumbnailView: View {
                     .scaleEffect(0.7)
             }
         }
-        .task(id: asset.localIdentifier) {
+        .task(id: asset?.localIdentifier ?? "") {
+            guard let asset else { return }
             let scale = UIScreen.main.scale
             let pixelSize = CGSize(width: size.width * scale, height: size.height * scale)
             image = await photoService.loadThumbnail(for: asset, targetSize: pixelSize)
