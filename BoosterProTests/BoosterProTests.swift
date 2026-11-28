@@ -1,4 +1,6 @@
 import CoreGraphics
+import UIKit
+import WebKit
 import XCTest
 @testable import BoosterPro
 
@@ -518,6 +520,199 @@ final class BoosterProTests: XCTestCase {
         _ = await logger.clearLogs()
         let finalLogs = await logger.readRecentLogs(limit: 10)
         XCTAssertTrue(finalLogs.isEmpty)
+    }
+
+    // MARK: - Advanced App Cache Cleaner Acceptance Tests (Section 9)
+
+    func testScanAllCacheCategories() {
+        let service = CacheCleanerService()
+        let partitions = service.scanAllCacheCategories()
+
+        XCTAssertFalse(partitions.isEmpty)
+        let types = Set(partitions.map(\.type))
+        XCTAssertTrue(types.contains(.urlCacheMemory))
+        XCTAssertTrue(types.contains(.urlCacheDisk))
+        XCTAssertTrue(types.contains(.imageCache))
+        XCTAssertTrue(types.contains(.temporaryFiles))
+        XCTAssertTrue(types.contains(.protectedUserSettings))
+
+        for p in partitions {
+            XCTAssertFalse(p.title.isEmpty)
+            XCTAssertFalse(p.subtitle.isEmpty)
+            XCTAssertGreaterThanOrEqual(p.sizeBytes, 0)
+            XCTAssertGreaterThanOrEqual(p.fileCount, 0)
+        }
+    }
+
+    func testMeasureRealCacheSize() throws {
+        let tempDir = FileManager.default.temporaryDirectory
+        let testFile = tempDir.appendingPathComponent("unit_test_measure_\(UUID().uuidString).tmp")
+        let data = Data(repeating: 0xAB, count: 128 * 1024)
+        try data.write(to: testFile, options: .atomic)
+        defer { try? FileManager.default.removeItem(at: testFile) }
+
+        let service = CacheCleanerService()
+        let partitions = service.scanAllCacheCategories()
+        let tmpPartition = partitions.first { $0.type == .temporaryFiles }
+        XCTAssertNotNil(tmpPartition)
+        XCTAssertGreaterThanOrEqual(tmpPartition?.sizeBytes ?? 0, 128 * 1024)
+    }
+
+    func testClearURLCache() async {
+        let service = CacheCleanerService()
+        let result = await service.clearURLCacheOnly()
+
+        XCTAssertGreaterThanOrEqual(result.cleanedPartitionsCount, 1)
+        XCTAssertGreaterThanOrEqual(result.freedBytes, 0)
+    }
+
+    func testClearTemporaryFiles() throws {
+        let tempDir = FileManager.default.temporaryDirectory
+        let testFile = tempDir.appendingPathComponent("unit_test_tmp_clear_\(UUID().uuidString).tmp")
+        let data = Data(repeating: 0xCC, count: 64 * 1024)
+        try data.write(to: testFile, options: .atomic)
+        XCTAssertTrue(FileManager.default.fileExists(atPath: testFile.path))
+
+        let expectation = expectation(description: "Clear temporary files")
+        Task {
+            let service = CacheCleanerService()
+            let result = await service.cleanTemporaryFilesOnly()
+            XCTAssertGreaterThanOrEqual(result.cleanedPartitionsCount, 1)
+            XCTAssertFalse(FileManager.default.fileExists(atPath: testFile.path))
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 5.0)
+    }
+
+    func testClearImageCache() {
+        let dummy = UIImage()
+        ImageCacheManager.shared.setImage(dummy, forKey: "cache_unit_test_image")
+        XCTAssertNotNil(ImageCacheManager.shared.image(forKey: "cache_unit_test_image"))
+
+        let expectation = expectation(description: "Clear image cache")
+        Task {
+            let service = CacheCleanerService()
+            let result = await service.clearImageCacheOnly()
+            XCTAssertGreaterThanOrEqual(result.cleanedPartitionsCount, 1)
+            XCTAssertNil(ImageCacheManager.shared.image(forKey: "cache_unit_test_image"))
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 5.0)
+    }
+
+    func testClearSelectedCacheOnly() throws {
+        let tempDir = FileManager.default.temporaryDirectory
+        let testFile = tempDir.appendingPathComponent("unit_test_unselected_\(UUID().uuidString).tmp")
+        let data = Data(repeating: 0xEE, count: 32 * 1024)
+        try data.write(to: testFile, options: .atomic)
+        defer { try? FileManager.default.removeItem(at: testFile) }
+
+        let expectation = expectation(description: "Clear selected cache only")
+        Task {
+            let service = CacheCleanerService()
+            var partitions = service.scanAllCacheCategories()
+
+            for i in 0..<partitions.count {
+                partitions[i].isSelected = (partitions[i].type == .urlCacheMemory)
+            }
+
+            _ = await service.cleanSelectedCaches(partitions)
+
+            XCTAssertTrue(FileManager.default.fileExists(atPath: testFile.path))
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 5.0)
+    }
+
+    func testCacheCleanupCancellation() async {
+        let service = AutoCleanSchedulerService.shared
+        service.requestCancellation()
+
+        let result = await service.executeClean(trigger: "Unit Test Cache Cancel")
+        XCTAssertFalse(result.trigger.isEmpty)
+        XCTAssertNotNil(result.statusMessage)
+    }
+
+    func testCacheCleanupFailureResilience() async {
+        let service = CacheCleanerService()
+        let result = await service.cleanSelectedCaches([])
+        XCTAssertEqual(result.cleanedPartitionsCount, 0)
+        XCTAssertEqual(result.freedBytes, 0)
+        XCTAssertEqual(result.failedItemsCount, 0)
+        XCTAssertTrue(result.failedItemPaths.isEmpty)
+    }
+
+    func testCacheMeasurementBeforeAfterVerification() throws {
+        let tempDir = FileManager.default.temporaryDirectory
+        let testFile = tempDir.appendingPathComponent("unit_test_before_after_\(UUID().uuidString).tmp")
+        let data = Data(repeating: 0x55, count: 48 * 1024)
+        try data.write(to: testFile, options: .atomic)
+
+        let expectation = expectation(description: "Measure before after")
+        Task {
+            let service = CacheCleanerService()
+            let result = await service.cleanTemporaryFilesOnly()
+
+            XCTAssertGreaterThanOrEqual(result.beforeCleanableBytes, result.afterCleanableBytes)
+            XCTAssertGreaterThanOrEqual(result.freedBytes, 0)
+            XCTAssertGreaterThan(result.cleanupDurationSeconds, 0)
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 5.0)
+    }
+
+    func testDuplicateSizePrevention() {
+        let service = CacheCleanerService()
+        let partitions = service.scanAllCacheCategories()
+
+        var seenURLs = Set<URL>()
+        for p in partitions {
+            if let url = p.directoryURL, p.isDeletable {
+                if p.type != .temporaryFiles && p.type != .appCacheDirectories && p.type != .urlCacheDisk {
+                    XCTAssertFalse(seenURLs.contains(url), "Duplicate URL detected: \(url.path)")
+                    seenURLs.insert(url)
+                }
+            }
+        }
+    }
+
+    func testProtectedFileExclusion() async {
+        let service = CacheCleanerService()
+        let partitions = service.scanAllCacheCategories()
+
+        let protected = partitions.filter { !$0.isDeletable }
+        XCTAssertFalse(protected.isEmpty)
+        XCTAssertTrue(protected.allSatisfy { !$0.isSafeToClean })
+        XCTAssertTrue(protected.allSatisfy { !$0.isSelected })
+        XCTAssertTrue(protected.contains { $0.type == .protectedUserSettings })
+        XCTAssertTrue(protected.contains { $0.type == .protectedUserDocuments })
+
+        let result = await service.cleanSelectedCaches(protected)
+        XCTAssertEqual(result.freedBytes, 0)
+        XCTAssertEqual(result.cleanedPartitionsCount, 0)
+    }
+
+    func testAutoCacheCleanupConditions() {
+        let service = AutoCleanSchedulerService.shared
+        var config = AutoCleanConfiguration.default
+        config.isMasterEnabled = true
+
+        config.dataOptions.minimumCacheThresholdBytes = 500 * 1024 * 1024
+        service.saveConfiguration(config)
+        let loaded = service.loadConfiguration()
+        XCTAssertEqual(loaded.dataOptions.minimumCacheThresholdBytes, 500 * 1024 * 1024)
+
+        config.dataOptions.cleanExpiredCache = false
+        config.dataOptions.cleanImageCache = false
+        config.dataOptions.cleanWebViewCache = false
+        service.saveConfiguration(config)
+
+        let reloaded = service.loadConfiguration()
+        XCTAssertFalse(reloaded.dataOptions.cleanExpiredCache)
+        XCTAssertFalse(reloaded.dataOptions.cleanImageCache)
+        XCTAssertFalse(reloaded.dataOptions.cleanWebViewCache)
+
+        _ = service.resetConfigurationToDefaults()
     }
 
     private func makeGradientCGImage(reverse: Bool) -> CGImage? {

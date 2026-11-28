@@ -74,6 +74,13 @@ struct AutoCleanDataOptions: Codable, Hashable {
     var cleanAppMemory: Bool = true
     var cleanGameResources: Bool = true
 
+    // Advanced Cache specific toggles
+    var cleanExpiredCache: Bool = true
+    var cleanImageCache: Bool = true
+    var cleanWebViewCache: Bool = true
+    var cleanWebViewCookies: Bool = false // Safe default: false
+    var minimumCacheThresholdBytes: Int64 = 0 // 0 = no threshold
+
     static var allEnabled: AutoCleanDataOptions {
         AutoCleanDataOptions()
     }
@@ -85,7 +92,12 @@ struct AutoCleanDataOptions: Codable, Hashable {
             cleanAppCache: false,
             cleanAppLogs: false,
             cleanAppMemory: true,
-            cleanGameResources: false
+            cleanGameResources: false,
+            cleanExpiredCache: false,
+            cleanImageCache: false,
+            cleanWebViewCache: false,
+            cleanWebViewCookies: false,
+            minimumCacheThresholdBytes: 0
         )
     }
 
@@ -97,6 +109,15 @@ struct AutoCleanDataOptions: Codable, Hashable {
         if cleanAppLogs { count += 1 }
         if cleanAppMemory { count += 1 }
         if cleanGameResources { count += 1 }
+        return count
+    }
+
+    var activeCacheSubcategoriesCount: Int {
+        var count = 0
+        if cleanExpiredCache { count += 1 }
+        if cleanImageCache { count += 1 }
+        if cleanWebViewCache { count += 1 }
+        if cleanWebViewCookies { count += 1 }
         return count
     }
 }

@@ -270,10 +270,33 @@ final class AutoCleanSchedulerService {
         if config.dataOptions.cleanAppCache {
             progressCallback?("Đang dọn bộ nhớ đệm ứng dụng...", 0.5)
             let partitions = cacheService.auditCachePartitions()
-            let deletable = partitions.filter { $0.isDeletable }
-            if !deletable.isEmpty {
-                _ = await cacheService.cleanSelectedCaches(deletable)
-                categoriesCleaned.append("Bộ nhớ đệm (Caches)")
+            var deletable = partitions.filter { $0.isDeletable && $0.isSafeToClean }
+
+            // Check minimum cache size threshold if specified
+            let totalCache = deletable.reduce(0) { $0 + $1.sizeBytes }
+            if config.dataOptions.minimumCacheThresholdBytes > 0 && totalCache < config.dataOptions.minimumCacheThresholdBytes {
+                // Skip cache cleanup as threshold has not been reached
+            } else {
+                if !config.dataOptions.cleanExpiredCache {
+                    deletable.removeAll { $0.type == .expiredDownloads }
+                }
+                if !config.dataOptions.cleanImageCache {
+                    deletable.removeAll { $0.type == .imageCache || $0.type == .imageThumbnailCache }
+                }
+                if !config.dataOptions.cleanWebViewCache {
+                    deletable.removeAll { $0.type == .webViewCache }
+                }
+                if config.dataOptions.cleanWebViewCookies {
+                    if let cookiePart = partitions.first(where: { $0.type == .webViewWebsiteData }) {
+                        var c = cookiePart
+                        c.isSelected = true
+                        deletable.append(c)
+                    }
+                }
+                if !deletable.isEmpty {
+                    _ = await cacheService.cleanSelectedCaches(deletable)
+                    categoriesCleaned.append("Bộ nhớ đệm (Caches)")
+                }
             }
         }
 

@@ -301,6 +301,24 @@ struct AutoCleanSettingsView: View {
                     isOn: $viewModel.config.dataOptions.cleanAppCache
                 )
 
+                if viewModel.config.dataOptions.cleanAppCache {
+                    VStack(spacing: 8) {
+                        subCategoryToggle(
+                            title: "• Dọn tệp tải tạm hết hạn (>24h)",
+                            isOn: $viewModel.config.dataOptions.cleanExpiredCache
+                        )
+                        subCategoryToggle(
+                            title: "• Dọn bộ nhớ đệm ảnh & Thumbnails",
+                            isOn: $viewModel.config.dataOptions.cleanImageCache
+                        )
+                        subCategoryToggle(
+                            title: "• Dọn bộ nhớ đệm WebView",
+                            isOn: $viewModel.config.dataOptions.cleanWebViewCache
+                        )
+                    }
+                    .padding(.leading, 12)
+                }
+
                 Divider()
 
                 categoryToggle(
@@ -366,6 +384,18 @@ struct AutoCleanSettingsView: View {
                     .font(.caption2)
                     .foregroundColor(.secondary)
             }
+        }
+        .tint(Color(hex: "#00F5A0"))
+        .onChange(of: isOn.wrappedValue) { _ in
+            viewModel.saveConfiguration()
+        }
+    }
+
+    private func subCategoryToggle(title: String, isOn: Binding<Bool>) -> some View {
+        Toggle(isOn: isOn) {
+            Text(title)
+                .font(.caption.weight(.medium))
+                .foregroundColor(.secondary)
         }
         .tint(Color(hex: "#00F5A0"))
         .onChange(of: isOn.wrappedValue) { _ in
