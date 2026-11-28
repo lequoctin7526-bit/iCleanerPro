@@ -71,9 +71,11 @@ jobs:
             CODE_SIGN_IDENTITY="-" \
             CODE_SIGNING_ALLOWED=YES > test.log 2>&1 || {
               echo "=== UNIT TESTS FAILED ==="
+              echo "--- LAST 100 LINES OF TEST.LOG ---"
+              tail -n 100 test.log
               while IFS= read -r line; do
                 echo "::error::$line"
-              done < <(grep -E "error:|fatal error:|Test Case .* failed|failed with exit code" test.log | head -n 40)
+              done < <(grep -E "error:|fatal error:|failed with exit code" test.log | head -n 40)
               exit 1
             }
 
